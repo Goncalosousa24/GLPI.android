@@ -41,7 +41,12 @@ object PreferenceManager {
     }
 
     fun getBaseUrl(context: Context): String {
-        return getPrefs(context).getString(KEY_BASE_URL, "http://10.0.2.2:8080/") ?: "http://10.0.2.2:8080/"
+        val url = getPrefs(context).getString(KEY_BASE_URL, "http://glpi.ad.cm-vilaverde.pt/") ?: "http://glpi.ad.cm-vilaverde.pt/"
+        if (url == "http://10.0.2.2:8080/") {
+            setBaseUrl(context, "http://glpi.ad.cm-vilaverde.pt/")
+            return "http://glpi.ad.cm-vilaverde.pt/"
+        }
+        return url
     }
 
     fun setBaseUrl(context: Context, url: String) {
