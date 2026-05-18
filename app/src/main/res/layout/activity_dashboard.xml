@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashboardActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fundo_app">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/header_bg"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bg_header_arredondado"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/header_layout"
+                android:layout_marginBottom="-16dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:id="@+id/btn_menu_hamburger"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_hamburger"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        app:lottie_rawRes="@raw/hamburguer"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amiko_bold"
+                    android:text="DASHBOARD"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/search_bar_row"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/header_bg">
+
+                <FrameLayout
+                    android:id="@+id/search_container_dashboard"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_search_bar_focused"
+                    android:addStatesFromChildren="true"
+                    android:elevation="0dp">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lupa_anim_dashboard"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false"
+                        app:lottie_rawRes="@raw/pesquisa" />
+                    <EditText
+                        android:id="@+id/search_bar_dashboard"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="Pesquisar por ID ou título (#)"
+                        android:textColorHint="@color/texto_dica"
+                        android:paddingStart="52dp"
+                        android:paddingEnd="16dp"
+                        android:textColor="@color/texto_principal"
+                        android:textSize="14sp"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text" />
+                </FrameLayout>
+ 
+                <FrameLayout
+                    android:id="@+id/btn_vista_pessoal"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_botao_vista_pessoal"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:id="@+id/iv_vista_pessoal"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/seletor_ic_vista_pessoal"
+                        android:duplicateParentState="true"
+                        android:scaleType="centerInside" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/search_bar_row"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:clipToPadding="false"
+                    android:paddingBottom="120dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <GridLayout
+                            android:id="@+id/grid_cartoes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2"
+                            android:padding="12dp"
+                            android:rowCount="2"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/btn_abertos"
+                                android:layout_width="0dp" android:layout_height="160dp"
+                                android:layout_rowWeight="1" android:layout_columnWeight="1"
+                                android:layout_margin="8dp" android:background="@drawable/bg_cartao_brilhante" android:elevation="0dp" android:padding="16dp">
+
+                                <TextView
+                                    android:id="@+id/tv_numero_abertos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/black_han_sans"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="56sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@+id/tv_label_abertos"
+                                    app:layout_constraintVertical_chainStyle="packed" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_abertos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="+1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_reducao_abertos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="-1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_label_abertos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:text="NOVOS"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/texto_principal"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_numero_abertos" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/btn_progresso"
+                                android:layout_width="0dp" android:layout_height="160dp"
+                                android:layout_rowWeight="1" android:layout_columnWeight="1"
+                                android:layout_margin="8dp" android:background="@drawable/bg_cartao_brilhante" android:elevation="0dp" android:padding="16dp">
+
+                                <TextView
+                                    android:id="@+id/tv_numero_progresso"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/black_han_sans"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="56sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@+id/tv_label_progresso"
+                                    app:layout_constraintVertical_chainStyle="packed" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_progresso"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="+1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_reducao_progresso"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="-1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_label_progresso"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:text="EM PROGRESSO"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/texto_principal"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_numero_progresso" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/btn_resolvido"
+                                android:layout_width="0dp" android:layout_height="160dp"
+                                android:layout_rowWeight="1" android:layout_columnWeight="1"
+                                android:layout_margin="8dp" android:background="@drawable/bg_cartao_brilhante" android:elevation="0dp" android:padding="16dp">
+
+                                <TextView
+                                    android:id="@+id/tv_numero_resolvido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/black_han_sans"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="56sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@+id/tv_label_resolvido"
+                                    app:layout_constraintVertical_chainStyle="packed" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_resolvido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="+1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_reducao_resolvido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="-1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_label_resolvido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:text="RESOLVIDOS"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/texto_principal"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_numero_resolvido" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/btn_prioritarios"
+                                android:layout_width="0dp" android:layout_height="160dp"
+                                android:layout_rowWeight="1" android:layout_columnWeight="1"
+                                android:layout_margin="8dp" android:background="@drawable/bg_cartao_brilhante" android:elevation="0dp" android:padding="16dp">
+
+                                <TextView
+                                    android:id="@+id/tv_numero_prioritarios"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/black_han_sans"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="56sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@+id/tv_label_prioritarios"
+                                    app:layout_constraintVertical_chainStyle="packed" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_prioritarios"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="+1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_badge_reducao_prioritarios"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_badge_update"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="-1"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"
+                                    android:elevation="0dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:layout_margin="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_label_prioritarios"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:text="PRIORITÁRIOS"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/texto_principal"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_numero_prioritarios" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </GridLayout>
+
+                        <TextView
+                            android:id="@+id/tv_atividade_titulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/amiko_bold"
+                            android:text="ÚLTIMAS ATUALIZAÇÕES"
+                            android:textColor="@color/azul_glpi"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/grid_cartoes" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_ultimas_atividades"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginHorizontal="20dp"
+                            android:nestedScrollingEnabled="false"
+                            android:layoutAnimation="@anim/layout_animation_slide_up"
+                            app:layout_constraintTop_toBottomOf="@id/tv_atividade_titulo" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_resultados_pesquisa"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="20dp"
+                android:clipToPadding="false"
+                android:paddingBottom="120dp"
+                android:visibility="gone"
+                android:layoutAnimation="@anim/layout_animation_slide_up"
+                app:layout_constraintTop_toBottomOf="@id/search_bar_row"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_bottom_nav"
+            app:elevation="8dp"
+            app:itemActiveIndicatorStyle="@null"
+            app:itemRippleColor="@android:color/transparent"
+            app:itemTextColor="@color/nav_item_color"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/bottom_nav_menu"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+        <include 
+            layout="@layout/layout_custom_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="110dp" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_drawer"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/fundo_app"
+        app:backgroundTint="@null"
+        app:itemTextColor="@color/seletor_texto_menu"
+        app:itemIconTint="@color/seletor_texto_menu"
+        app:itemShapeFillColor="@color/seletor_fundo_menu"
+        app:itemTextAppearance="@style/EstiloMenuLateral"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/nav_header_lateral"
+        app:itemVerticalPadding="16dp"
+        app:itemIconPadding="24dp" />
+</androidx.drawerlayout.widget.DrawerLayout>

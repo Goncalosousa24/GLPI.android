@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_add_device"
+            android:title="ADICIONAR DISPOSITIVO" />
+
+        <item
+            android:id="@+id/nav_borrow_device"
+            android:title="RESERVAS" />
+
+        <item
+            android:id="@+id/nav_scan"
+            android:title="SCAN DE EQUIPAMENTO" />
+
+        <item
+            android:id="@+id/nav_report_problem"
+            android:title="REPORTAR PROBLEMA" />
+
+        <item
+            android:id="@+id/nav_activity"
+            android:title="ALTERAR ESTADO" />
+
+        <item
+            android:id="@+id/nav_asset_history"
+            android:title="HISTÓRICO DE EQUIPAMENTO" />
+
+
+
+    </group>
+
+</menu>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout_borrow"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_app"
+    tools:context=".BorrowDeviceActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/header_bg_borrow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_header_arredondado"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tv_logo_header_borrow"
+            android:layout_marginBottom="-16dp" />
+
+        <FrameLayout
+            android:id="@+id/btn_voltar_borrow"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_seta_borrow"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/esquerda"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_logo_header_borrow"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:text="EMPRESTIMOS"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/search_row_borrow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/header_bg_borrow">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_cartao_brilhante">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_lupa_borrow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    app:lottie_rawRes="@raw/pesquisa"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="false" />
+                <EditText
+                    android:id="@+id/search_bar_borrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Pesquisar nome ou S/N..."
+                    android:textColorHint="@color/texto_dica"
+                    android:paddingStart="52dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="14sp"
+                    android:inputType="text" />
+            </FrameLayout>
+
+// empty
+
+// nothing but replacing with empty
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_chips_borrow"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintTop_toBottomOf="@id/search_row_borrow">
+
+            <TextView
+                android:id="@+id/btn_abrir_calendario"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_botao_filtro_ativo"
+                android:textColor="@color/branco"
+                android:gravity="center"
+                android:text="ABRIR CALENDÁRIO DE RESERVAS"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_main_borrow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toBottomOf="@id/container_chips_borrow"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_borrow_devices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="24dp"
+                    android:layoutAnimation="@anim/layout_animation_slide_up" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="120dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btn_pagina_anterior_borrow"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="40dp"
+                        android:background="@drawable/bg_cartao_brilhante"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/seta_voltar_borrow"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:scaleX="-1"
+                            app:lottie_rawRes="@raw/seta_direita"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btn_proxima_pagina_borrow"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_cartao_brilhante"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/seta_avancar_borrow"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            app:lottie_rawRes="@raw/seta_direita"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_lista_vazia_borrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenhum equipamento encontrado."
+            android:textColor="@color/texto_dica"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_chips_borrow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

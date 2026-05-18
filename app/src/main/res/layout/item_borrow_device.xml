@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cartao_brilhante"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtDeviceNameBorrow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/amiko_bold"
+        android:textColor="@color/azul_glpi"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toStartOf="@id/btnEmprestarDevice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="PC-DIRECAO-01" />
+
+    <TextView
+        android:id="@+id/txtDeviceSerialBorrow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/azul_glpi"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnEmprestarDevice"
+        app:layout_constraintStart_toStartOf="@id/txtDeviceNameBorrow"
+        app:layout_constraintTop_toBottomOf="@id/txtDeviceNameBorrow"
+        tools:text="S/N: 5CG9274HG" />
+
+    <TextView
+        android:id="@+id/txtDeviceUserBorrow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/texto_principal"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@id/btnEmprestarDevice"
+        app:layout_constraintStart_toStartOf="@id/txtDeviceNameBorrow"
+        app:layout_constraintTop_toBottomOf="@id/txtDeviceSerialBorrow"
+        tools:text="goncalo.sousa" />
+
+    <TextView
+        android:id="@+id/txtCurrentStateBorrow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/texto_dica"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/btnEmprestarDevice"
+        app:layout_constraintStart_toStartOf="@id/txtDeviceNameBorrow"
+        app:layout_constraintTop_toBottomOf="@id/txtDeviceUserBorrow"
+        tools:text="Estado: Novo" />
+
+    <FrameLayout
+        android:id="@+id/btnEmprestarDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn_arredondado"
+        android:backgroundTint="@color/azul_glpi"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="EMPRESTAR"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

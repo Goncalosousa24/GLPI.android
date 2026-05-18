@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "752676907887",
+    "project_id": "glpi-mobile-a009b",
+    "storage_bucket": "glpi-mobile-a009b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752676907887:android:553a7d92385e100eef569a",
+        "android_client_info": {
+          "package_name": "com.example.glpimobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4uMKWklyhCsfHSikrn2WQRQjKyB-p-4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

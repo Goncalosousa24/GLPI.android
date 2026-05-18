@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_arredondado">
+
+    <ImageView
+        android:id="@+id/iv_close_filter"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="-8dp"
+        android:layout_marginTop="-8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/azul_glpi" />
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="FILTRAR POR PERFIL"
+        android:textColor="@color/texto_principal"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_close_filter" />
+
+    <RadioGroup
+        android:id="@+id/rg_profile_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_title">
+
+        <!-- TODOS -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_todos"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Todos"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_todos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <!-- Super-Admin -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_super_admin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Super-Admin"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_super_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <!-- Observer -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_observador"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Observador"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_observador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <!-- Admin -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_admin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Admin"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <!-- Leitura -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_leitura"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Leitura (Read-Only)"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_leitura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <!-- Supervisor -->
+        <LinearLayout
+            android:id="@+id/ll_perfil_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Supervisor"
+                android:textAllCaps="true"
+                android:fontFamily="@font/amiko_bold"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/texto_principal" />
+            <RadioButton
+                android:id="@+id/rb_perfil_supervisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/azul_glpi"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

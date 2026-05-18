@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cartao_brilhante"
+    android:padding="16dp">
+
+    <!-- User Section -->
+    <LinearLayout
+        android:id="@+id/ll_user_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/tv_res_time_badge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/meu1"
+            app:tint="@color/azul_glpi" />
+
+        <TextView
+            android:id="@+id/tv_res_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/amiko_bold"
+            android:textColor="@color/texto_principal"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="MARIA SILVA" />
+    </LinearLayout>
+
+    <!-- Time Badge -->
+    <TextView
+        android:id="@+id/tv_res_time_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pill_azul"
+        android:fontFamily="@font/amiko_bold"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:textColor="@color/azul_glpi"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_user_info"
+        tools:text="09:00 - 13:00" />
+
+    <!-- Comment quote layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_comment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_user_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Vertical Quote Indicator -->
+        <View
+            android:id="@+id/v_quote_bar"
+            android:layout_width="3dp"
+            android:layout_height="0dp"
+            android:background="#4D0047FF"
+            app:layout_constraintBottom_toBottomOf="@id/tv_res_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_res_comment" />
+
+        <TextView
+            android:id="@+id/tv_res_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/amiko_bold"
+            android:textColor="@color/texto_secundario"
+            android:textSize="13sp"
+            android:textStyle="normal"
+            android:lineSpacingMultiplier="1.2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/v_quote_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Necessário para inventário local." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="locais_glpi">
+        <item>Selecione a Localização...</item>
+        <item>Biblioteca</item>
+        <item>Casa do Conhecimento</item>
+        <item>DAEF</item>
+        <item>DAF</item>
+        <item>DAO</item>
+        <item>DE</item>
+        <item>DJ</item>
+        <item>DOT</item>
+        <item>DPO</item>
+        <item>DPS</item>
+        <item>DRH</item>
+        <item>DSI</item>
+        <item>DUE</item>
+        <item>EC PRADO</item>
+        <item>EXE</item>
+        <item>STOCK</item>
+        <item>UCP</item>
+        <item>UCT</item>
+        <item>UIC</item>
+        <item>UMAQ</item>
+    </string-array>
+</resources>

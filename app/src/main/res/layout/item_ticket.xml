@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cartao_brilhante"
+    android:elevation="4dp"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_ticket_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MÉDIO"
+        android:textColor="@color/texto_principal"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/barrier_topo_acoes"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="12dp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_topo_acoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="btn_delete_container,layout_trash_actions" />
+
+    <TextView
+        android:id="@+id/tv_ticket_assunto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amiko_bold"
+        android:text="Assunto do Ticket"
+        android:textColor="@color/texto_principal"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_ticket_priority"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_ticket_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TICKET #1042"
+        android:textAllCaps="true"
+        android:textColor="@color/texto_principal"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_assunto" />
+
+    <FrameLayout
+        android:id="@+id/btn_atores_container"
+        android:layout_width="84dp"
+        android:layout_height="36dp"
+        android:visibility="gone"
+        android:background="@drawable/bg_button_atores_oval"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_detalhes_posse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_ticket_assunto">
+
+        <TextView
+            android:id="@+id/tv_btn_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="EDITAR"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_sucesso_atribuicao"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/concluidos"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_detalhes_posse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/layout_detalhes_posse" />
+
+    <TextView
+        android:id="@+id/tv_ticket_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:text="2026-03-04"
+        android:textColor="@color/texto_dica"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_atores_container"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_id"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layout_detalhes_posse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/btn_atores_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_data">
+
+        <TextView
+            android:id="@+id/tv_ticket_requester"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Criado por: Carregando..."
+            android:textColor="@color/texto_principal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_ticket_technician"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Atribuído a: Não atribuído"
+            android:textColor="@color/texto_principal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_separador_descricao"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/azul_glpi"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_detalhes_posse" />
+
+    <TextView
+        android:id="@+id/tv_ticket_descricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/texto_principal"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_separador_descricao" />
+
+    <TextView
+        android:id="@+id/tv_ticket_solucao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#1A0061FF"
+        android:padding="12dp"
+        android:text="SOLUÇÃO: Carregando..."
+        android:textColor="@color/azul_glpi"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_descricao" />
+
+    <LinearLayout
+        android:id="@+id/layout_acoes_resolvido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_solucao">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_aprovar_solucao"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/bg_botao_azul"
+            android:text="APROVAR"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_recusar_solucao"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_botao_vermelho"
+            android:text="RECUSAR"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom_trash_actions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_acoes_resolvido">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bottom_restore"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_botao_azul"
+            android:text="RESTAURAR TICKET"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bottom_purge"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_botao_vermelho"
+            android:text="ELIMINAR DEFINITIVAMENTE"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_respostas_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_bottom_trash_actions" />
+
+    <FrameLayout
+        android:id="@+id/btn_delete_container"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/layout_detalhes_posse"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_trash_purge" />
+    </FrameLayout>
+
+    <!-- Botões de Reciclagem (Restaurar / Purgar) -->
+    <LinearLayout
+        android:id="@+id/layout_trash_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/layout_detalhes_posse"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/btn_restore_container"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/btn_trash_restore"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <FrameLayout
+            android:id="@+id/btn_purge_container"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_delete_x"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

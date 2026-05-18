@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/allerta_stencil</item>
+        <item>@font/amiko_bold</item>
+        <item>@font/assistant_extralight</item>
+        <item>@font/audiowide</item>
+        <item>@font/baloo_bhaijaan</item>
+        <item>@font/baloo_thambi</item>
+        <item>@font/bayon</item>
+        <item>@font/black_han_sans</item>
+        <item>@font/black_ops_one</item>
+        <item>@font/bruno_ace</item>
+        <item>@font/gajraj_one</item>
+        <item>@font/lexend_tera_thin</item>
+    </array>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_criar_ticket"
+            android:title="CRIAR NOVO TICKET" />
+
+        <item
+            android:id="@+id/nav_my_tickets"
+            android:title="TICKETS CRIADOS" />
+
+        <item
+            android:id="@+id/nav_delete_tickets"
+            android:title="ELIMINAR TICKETS" />
+
+        <item
+            android:id="@+id/nav_resolved_tickets"
+            android:title="TICKETS RESOLVIDOS" />
+
+
+        <item
+            android:id="@+id/nav_estatisticas"
+            android:title="ESTATÍSTICAS" />
+
+        <item
+            android:id="@+id/nav_editar_tickets"
+            android:title="EDITAR TICKETS" />
+
+
+    </group>
+
+</menu>

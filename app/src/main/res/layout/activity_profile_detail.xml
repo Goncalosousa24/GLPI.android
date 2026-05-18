@@ -1,0 +1,417 @@
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_profile_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileDetailActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fundo_app">
+
+            <View
+                android:id="@+id/header_bg_profile"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bg_header_arredondado"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/header_layout_profile"
+                android:layout_marginBottom="-16dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/header_layout_profile"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toTopOf="parent">
+ 
+                <FrameLayout
+                    android:id="@+id/btn_menu_hamburger_profile_detail"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+ 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_hamburger_profile_detail"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        app:lottie_rawRes="@raw/hamburguer"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false"
+                        app:lottie_colorFilter="@android:color/white" />
+                </FrameLayout>
+ 
+                <TextView
+                    android:id="@+id/tv_titulo_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amiko_bold"
+                    android:text="PERFIL"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_profile"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/header_bg_profile"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:clipToPadding="false"
+                    android:paddingBottom="120dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <View android:layout_width="match_parent" android:layout_height="20dp" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/iv_avatar_perfil"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            app:lottie_rawRes="@raw/perfil"
+                            app:lottie_autoPlay="true"
+                            app:lottie_repeatCount="0"
+                            android:scaleType="centerInside" />
+
+                        <TextView
+                            android:id="@+id/tv_nome_perfil_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/amiko_bold"
+                            android:text="..."
+                            android:textColor="@color/texto_principal"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_tipo_perfil_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/amiko_bold"
+                            android:text="..."
+                            android:textColor="@color/texto_secundario"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/bg_cartao_brilhante"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:id="@+id/id_label_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amiko_bold"
+                                android:text="INFORMAÇÕES DA CONTA"
+                                android:textColor="@color/texto_secundario"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <View
+                                android:id="@+id/divider1"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginVertical="12dp"
+                                android:background="@color/linha_separadora"
+                                app:layout_constraintTop_toBottomOf="@id/id_label_info" />
+
+                            <TextView
+                                android:id="@+id/label_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/amiko_bold"
+                                android:text="E-MAIL"
+                                android:textColor="@color/texto_secundario"
+                                android:textSize="13sp"
+                                android:textAllCaps="true"
+                                app:layout_constraintTop_toBottomOf="@id/divider1"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_email_perfil_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amiko_bold"
+                                android:text="..."
+                                android:textColor="@color/texto_principal"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textAllCaps="true"
+                                app:layout_constraintTop_toBottomOf="@id/label_email"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <View
+                                android:id="@+id/divider2"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginVertical="12dp"
+                                android:background="@color/linha_separadora"
+                                app:layout_constraintTop_toBottomOf="@id/tv_email_perfil_detail" />
+
+                            <TextView
+                                android:id="@+id/label_dep"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/amiko_bold"
+                                android:text="TIPO DE CONTA"
+                                android:textColor="@color/texto_secundario"
+                                android:textSize="13sp"
+                                android:textAllCaps="true"
+                                app:layout_constraintTop_toBottomOf="@id/divider2"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_entidade_perfil_detail"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:fontFamily="@font/amiko_bold"
+                                android:text="..."
+                                android:textColor="@color/texto_principal"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textAllCaps="true"
+                                app:layout_constraintTop_toBottomOf="@id/label_dep"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/btn_troca_perfil" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_troca_perfil"
+                                android:layout_width="60dp"
+                                android:layout_height="34dp"
+                                android:layout_marginEnd="8dp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:padding="0dp"
+                                app:backgroundTint="@color/azul_glpi"
+                                app:cornerRadius="17dp"
+                                app:icon="@drawable/ic_sync_white"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:iconSize="20dp"
+                                app:layout_constraintBottom_toBottomOf="@id/tv_entidade_perfil_detail"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_entidade_perfil_detail" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="vertical">
+
+                            <!-- Card 1: Meus Dispositivos -->
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/card_equipamentos_profile"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginBottom="12dp"
+                                android:background="@drawable/bg_cartao_brilhante"
+                                android:elevation="3dp"
+                                android:paddingHorizontal="24dp"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <TextView
+                                    android:id="@+id/tv_label_meus_dispositivos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="MEUS DISPOSITIVOS"
+                                    android:textColor="@color/texto_secundario"
+                                    android:textSize="15sp"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:textStyle="bold"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tv_count_equipamentos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="34sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginEnd="8dp"
+                                    android:visibility="gone"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                                <com.airbnb.lottie.LottieAnimationView
+                                    android:id="@+id/lottie_loading_equipamentos"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_marginEnd="0dp"
+                                    app:lottie_rawRes="@raw/carregar"
+                                    app:lottie_autoPlay="true"
+                                    app:lottie_loop="true"
+                                    android:visibility="visible"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <!-- Card 2: Tickets este mês -->
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/card_tickets_mes_profile"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:background="@drawable/bg_cartao_brilhante"
+                                android:elevation="3dp"
+                                android:paddingHorizontal="24dp"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <TextView
+                                    android:id="@+id/tv_label_tickets_mes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TICKETS ESTE MÊS"
+                                    android:textColor="@color/texto_secundario"
+                                    android:textSize="15sp"
+                                    android:fontFamily="@font/amiko_bold"
+                                    android:textStyle="bold"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tv_count_tickets_mes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/azul_glpi"
+                                    android:textSize="34sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginEnd="8dp"
+                                    android:visibility="gone"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                                <com.airbnb.lottie.LottieAnimationView
+                                    android:id="@+id/lottie_loading_tickets_mes"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_marginEnd="0dp"
+                                    app:lottie_rawRes="@raw/carregar"
+                                    app:lottie_autoPlay="true"
+                                    app:lottie_loop="true"
+                                    android:visibility="visible"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_profile_detail"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_bottom_nav"
+            app:elevation="8dp"
+            app:itemActiveIndicatorStyle="@null"
+            app:itemRippleColor="@android:color/transparent"
+            app:itemTextColor="@color/nav_item_color"
+            app:itemIconTint="@color/nav_item_color"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            app:menu="@menu/bottom_nav_menu" />
+        <include 
+            layout="@layout/layout_custom_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="110dp" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_drawer_profile_detail"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/fundo_app"
+        app:backgroundTint="@null"
+        app:itemTextColor="@color/seletor_texto_menu"
+        app:itemIconTint="@color/seletor_texto_menu"
+        app:itemShapeFillColor="@color/seletor_fundo_menu"
+        app:itemShapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:itemTextAppearanceActive="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:menu="@menu/profile_drawer_menu"
+        app:headerLayout="@layout/nav_header_perfil"
+        app:itemVerticalPadding="16dp"
+        app:itemIconPadding="24dp" />
+
+    <!-- Overlay de Carregamento -->
+    <FrameLayout
+        android:id="@+id/loading_overlay_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            app:lottie_rawRes="@raw/carregar"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+    </FrameLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

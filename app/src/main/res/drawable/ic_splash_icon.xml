@@ -1,0 +1,26 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fundo: Quadrado Superelipse (SQUIRCLE) de 80dp -->
+    <item
+        android:width="80dp"
+        android:height="80dp"
+        android:gravity="center">
+        <vector
+            android:width="80dp"
+            android:height="80dp"
+            android:viewportWidth="100"
+            android:viewportHeight="100">
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M50,10C20,10 10,20 10,50C10,80 20,90 50,90C80,90 90,80 90,50C90,20 80,10 50,10Z" />
+        </vector>
+    </item>
+
+    <!-- Logótipo Branco Direto (para fundo Azul GLPI) -->
+    <item
+        android:width="42dp"
+        android:height="42dp"
+        android:gravity="center"
+        android:drawable="@drawable/ic_splash_logo_white" />
+
+</layer-list>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_assets_layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_app"
+    tools:context=".UserAssetsActivity">
+
+    <!-- Header similar to other activities -->
+    <View
+        android:id="@+id/header_bg_user_assets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_header_arredondado"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/header_layout"
+        android:layout_marginBottom="-16dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/btn_voltar_user_assets"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_voltar_user_assets"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/esquerda"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"
+                app:lottie_colorFilter="@android:color/white" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko_bold"
+            android:text="DISPOSITIVOS POR UTILIZADOR"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Search Bar -->
+    <FrameLayout
+        android:id="@+id/search_container_user_assets"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_search_bar_focused"
+        android:addStatesFromChildren="true"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/header_bg_user_assets">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lupa_anim_user_assets"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/pesquisa" />
+
+        <EditText
+            android:id="@+id/search_bar_user_assets"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:hint="Nome do utilizador (ex: João)..."
+            android:textColorHint="@color/texto_dica"
+            android:paddingStart="56dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/texto_principal"
+            android:textSize="15sp"
+            android:inputType="text" />
+    </FrameLayout>
+
+    <!-- Results List -->
+    <HorizontalScrollView
+        android:id="@+id/scroll_chips_user_assets"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        android:paddingHorizontal="20dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/search_container_user_assets">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/chip_todos_user_assets"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/selector_chip_filtros"
+                android:text="TODOS"
+                android:textColor="@color/selector_texto_chip"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/chip_com_equip_user_assets"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/selector_chip_filtros"
+                android:text="COM EQUIPAMENTOS"
+                android:textColor="@color/selector_texto_chip"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/chip_sem_equip_user_assets"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/selector_chip_filtros"
+                android:text="SEM EQUIPAMENTOS"
+                android:textColor="@color/selector_texto_chip"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingHorizontal="16dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_user_assets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scroll_chips_user_assets">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_user_assets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="16dp"
+                android:layoutAnimation="@anim/layout_animation_slide_up" />
+
+            <!-- Pagination Controls (only for user list) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pagination_user_assets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btn_pagina_anterior_user"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_cartao_brilhante"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_proxima_pagina_user">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/seta_voltar_user"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:scaleX="-1"
+                        app:lottie_rawRes="@raw/seta_direita"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btn_proxima_pagina_user"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="100dp"
+                    android:background="@drawable/bg_cartao_brilhante"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_goneMarginStart="0dp"
+                    app:layout_constraintStart_toEndOf="@+id/btn_pagina_anterior_user"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/seta_avancar_user"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        app:lottie_rawRes="@raw/seta_direita"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_empty_user_assets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pesquise um utilizador para ver os seus equipamentos."
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginHorizontal="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scroll_chips_user_assets" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progress_user_assets"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/carregar"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scroll_chips_user_assets" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

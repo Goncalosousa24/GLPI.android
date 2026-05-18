@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cartao_brilhante"
+    android:padding="20dp"
+    android:minHeight="78dp"
+    android:elevation="2dp">
+
+    <!-- LABEL 'PORTA' ENCIMA DA BOLA -->
+    <TextView
+        android:id="@+id/tv_port_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PORTA"
+        android:textColor="@color/texto_principal"
+        android:textSize="12sp"
+        android:fontFamily="@font/amiko_bold"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_port_number_badge"
+        app:layout_constraintStart_toStartOf="@id/tv_port_number_badge"
+        app:layout_constraintEnd_toEndOf="@id/tv_port_number_badge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- BOLA AZUL COM NÚMERO DA PORTA -->
+    <TextView
+        android:id="@+id/tv_port_number_badge"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_port_number_circle"
+        android:gravity="center"
+        android:text="20"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_port_label" />
+
+    <TextView
+        android:id="@+id/tv_connected_device_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/amiko_bold"
+        android:text="NOME DO COMPUTADOR"
+        android:textColor="@color/texto_principal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:maxLines="2"
+        android:minLines="2"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@id/tv_port_number_badge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_port_id_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:text="Jacinta Macedo"
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/tv_port_number_badge"
+        app:layout_constraintTop_toBottomOf="@id/tv_connected_device_name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_port_mac"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:text="00:00:00:00:00"
+        android:textColor="@color/texto_secundario"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/tv_port_number_badge"
+        app:layout_constraintTop_toBottomOf="@id/tv_connected_device_name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_port_ip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="16dp"
+        android:text="10.0.0.1"
+        android:textColor="@color/texto_secundario"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/tv_port_number_badge"
+        app:layout_constraintTop_toBottomOf="@id/tv_port_mac"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="115dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cartao_brilhante"
+    android:elevation="4dp"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_ticket_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TICKET #1042"
+        android:textAllCaps="true"
+        android:textColor="@color/texto_principal"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_ticket_status"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_status_ticket"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4.5dp"
+        android:text="NOVO"
+        android:textColor="@color/white"
+        android:textSize="10.5sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_ticket_assunto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text="Assunto do Ticket"
+        android:textColor="@color/texto_principal"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_id" />
+
+    <TextView
+        android:id="@+id/tv_ticket_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="2026-03-04"
+        android:textColor="@color/texto_dica"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_assunto"
+app:layout_constraintStart_toStartOf="parent" />
+
+<TextView
+    android:id="@+id/tv_ticket_descricao"
+    android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/texto_principal"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:lineSpacingExtra="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ticket_data" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

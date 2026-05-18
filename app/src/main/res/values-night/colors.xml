@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul_glpi">#0047FF</color>
+    <color name="cor_titulo_dialogo">#FFFFFF</color>
+    <color name="azul_glpi_light">#4D7CFF</color>
+    <color name="azul_glpi_dark">#002B9A</color>
+    <color name="glpi_blue">#0047FF</color>
+    <color name="cor_info_card_destaque">#B0B0B0</color>
+
+    <color name="fundo_app">#121212</color>
+    <color name="fundo_cartao">#1E1E1E</color>
+    <color name="fundo_caixa_texto">#252525</color>
+    <color name="texto_principal">#FFFFFF</color>
+    <color name="texto_secundario">#E0E0E0</color>
+    <color name="texto_dica">#B0B0B0</color>
+    <color name="linha_separadora">#333333</color>
+    <color name="borda_cartao">#333333</color>
+    <color name="off_white">#1E1E1E</color>
+    <color name="cor_fundo_input">#1E1E1E</color>
+
+    <color name="texto_chip_inativo">#E0E0E0</color>
+    <color name="cor_texto_filtro_inativo">#E0E0E0</color>
+    <color name="fundo_filtro_inativo">#2C2C2E</color>
+    <color name="traco_filtro_inativo">#48484A</color>
+    <color name="branco">#FFFFFF</color>
+
+    <color name="cor_dinamica_icones">#FFFFFF</color>
+    <color name="azul_claro_transparente">#330047FF</color>
+
+    <!-- Cores de Estado dos Tickets (Modo Noite) -->
+    <color name="cor_novo">#FFB74D</color>
+    <color name="cor_processamento">#4DD0E1</color>
+    <color name="cor_pendente">#BDBDBD</color>
+    <color name="cor_solucionado">#81C784</color>
+    <color name="cor_fechado">#90A4AE</color>
+    <color name="cor_urgente">#FF8A80</color>
+    <color name="cor_solucao">#A5D6A7</color>
+    <color name="cor_followup">#64B5F6</color>
+    <color name="vermelho_forte">#FF0000</color>
+    <color name="fundo_splash">@color/azul_glpi</color>
+</resources>

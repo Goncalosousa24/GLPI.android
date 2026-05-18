@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_app"
+    tools:context=".MyTicketsHistoryActivity">
+
+    <!-- ANIMAÇÃO DE CARREGAMENTO (CENTRO DA TELA) -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_loading_my_tickets"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/carregar"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- HEADER REMOVIDO DAQUI E PASSADO PARA O FINAL -->
+
+    <!-- CONTEÚDO SCROLLABLE (COLOCADO PRIMEIRO PARA FICAR POR BAIXO NA CAMADA VISUAL) -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh_my_tickets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/search_and_filter_layout_history"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_my_tickets"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_my_tickets_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="10dp"
+                    android:nestedScrollingEnabled="false"
+                    android:layoutAnimation="@anim/layout_animation_slide_up" />
+
+                <!-- Paginação -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/pagination_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btn_pagina_anterior_history"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_cartao_brilhante"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btn_proxima_pagina_history">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_seta_voltar_history"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:scaleX="-1"
+                            app:lottie_rawRes="@raw/seta_direita"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"
+                            app:lottie_colorFilter="@color/azul_glpi"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btn_proxima_pagina_history"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/bg_cartao_brilhante"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_goneMarginStart="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_pagina_anterior_history"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_seta_avancar_history"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            app:lottie_rawRes="@raw/seta_direita"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"
+                            app:lottie_colorFilter="@color/azul_glpi"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tv_empty_my_tickets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:text="Nenhum ticket encontrado no histórico."
+                    android:textColor="@color/texto_dica"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- BARREIRA VISUAL (AGORA DEPOIS DA LISTA PARA FICAR POR CIMA) -->
+    <View
+        android:id="@+id/search_barrier_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/fundo_app"
+        app:layout_constraintTop_toBottomOf="@id/header_bg_my_tickets"
+        app:layout_constraintBottom_toBottomOf="@id/search_and_filter_layout_history"
+        android:layout_marginBottom="-12dp" />
+
+    <!-- BARRA DE PESQUISA E FILTROS -->
+    <LinearLayout
+        android:id="@+id/search_and_filter_layout_history"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/header_bg_my_tickets">
+
+        <FrameLayout
+            android:id="@+id/search_container_history"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search_bar_focused"
+            android:addStatesFromChildren="true">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_lupa_history"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                app:lottie_rawRes="@raw/pesquisa"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"
+                app:lottie_colorFilter="@color/azul_glpi" />
+
+            <EditText
+                android:id="@+id/et_search_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="Pesquisar no histórico..."
+                android:textColorHint="@color/texto_dica"
+                android:paddingStart="52dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/texto_principal"
+                android:textSize="13sp"
+                android:inputType="text" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_filter_history"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_cartao_brilhante"
+            android:clickable="true"
+            android:focusable="true">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_filtro_history"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/filtro"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"
+                app:lottie_colorFilter="@color/azul_glpi" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- HEADER (FIXO NO TOPO - CAMADA SUPERIOR) -->
+    <View
+        android:id="@+id/header_bg_my_tickets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_header_arredondado"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/header_layout_my_tickets"
+        android:layout_marginBottom="-16dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout_my_tickets"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/btn_voltar_my_tickets"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_seta_my_tickets"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/esquerda"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_titulo_my_tickets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MEUS TICKETS"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- REMOVIDO DAQUI E PASSADO PARA CIMA NO XML PARA FICAR NO FUNDO -->
+    <!-- Alerta Personalizado (Toast Premium) -->
+    <include
+        layout="@layout/layout_custom_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

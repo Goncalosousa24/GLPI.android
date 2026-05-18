@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="2dp">
+
+    <View
+        android:id="@+id/v_reserved_circle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circulo_reservado"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/v_selection_circle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circulo_azul"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_day_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/amiko_bold"
+        android:text="15"
+        android:textColor="@color/texto_principal"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/v_has_tickets_dot"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_circulo_azul"
+        android:backgroundTint="@color/cor_urgente"
+        android:visibility="invisible" />
+
+</FrameLayout>

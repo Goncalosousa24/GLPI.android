@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_app">
+
+    <View
+        android:id="@+id/header_bg_settings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_header_arredondado"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/header_layout_settings"
+        android:layout_marginBottom="-16dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout_settings"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/btn_voltar_settings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_seta_settings"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/esquerda"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="CONFIGURAÇÕES"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header_bg_settings"
+        app:layout_constraintBottom_toTopOf="@id/btn_guardar_settings_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <View android:layout_width="match_parent" android:layout_height="20dp" />
+
+            <!-- Card: Notificações -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_cartao_brilhante"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/label_notificacoes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NOTIFICAÇÕES"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/divider_notif"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/linha_separadora"
+                    app:layout_constraintTop_toBottomOf="@id/label_notificacoes" />
+
+                <!-- Geral -->
+                <TextView
+                    android:id="@+id/tv_notif_geral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Ativar Notificações"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/divider_notif"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notif_geral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_geral"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_geral" />
+
+                <View
+                    android:id="@+id/divider_notif_sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/linha_separadora"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notif_geral" />
+
+                <!-- Tickets Abertos -->
+                <TextView
+                    android:id="@+id/tv_notif_abertos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Tickets Abertos"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/divider_notif_sub"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notif_abertos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_abertos"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_abertos" />
+
+                <!-- Tickets Encerrados -->
+                <TextView
+                    android:id="@+id/tv_notif_encerrados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingVertical="8dp"
+                    android:text="Tickets Encerrados"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notif_abertos"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notif_encerrados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_encerrados"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_encerrados" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Card: Aparência -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_cartao_brilhante"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/label_aparencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="APARÊNCIA"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/linha_separadora"
+                    app:layout_constraintTop_toBottomOf="@id/label_aparencia" />
+
+                <TextView
+                    android:id="@+id/tv_dark_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Modo Escuro"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/divider4"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_dark_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_dark_mode"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_dark_mode" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- SECÇÃO SEGURANÇA REMOVIDA -->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/btn_guardar_settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_guardar_settings"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/bg_botao_azul_gradiente"
+            android:text="GUARDAR ALTERAÇÕES"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/amiko_bold"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.GLPImobile" parent="Base.Theme.GLPImobile">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/fundo_app</item>
+        <item name="android:colorBackground">@color/fundo_app</item>
+        <item name="colorPrimary">@color/azul_glpi</item>
+    </style>
+
+</resources>

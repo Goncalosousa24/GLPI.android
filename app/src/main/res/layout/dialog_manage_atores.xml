@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_arredondado">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 1. Header Fixo -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_close_dialog"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_close"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/azul_glpi" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="EDITAR TICKET"
+                android:textColor="@color/azul_glpi"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- 2. ScrollView com conteúdo rolável no meio (sem scrollbars laterais) -->
+        <ScrollView
+            android:id="@+id/sv_dialog_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 2.1 Requerente -->
+                <LinearLayout
+                    android:id="@+id/layout_requester"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/btn_edit_requester"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="8dp"
+                            app:lottie_rawRes="@raw/pesquisa"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="REQUERENTE"
+                                android:textColor="@color/texto_dica"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tv_current_requester"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Não definido"
+                                android:textColor="@color/texto_principal"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/iv_requester_seta"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/texto_dica" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_requester_search_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/et_search_requester"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_pesquisa_selecao"
+                                android:hint="Pesquisar..."
+                                android:paddingHorizontal="16dp"
+                                android:textSize="13sp"
+                                android:textColor="@color/texto_principal"
+                                android:maxLines="1"
+                                android:inputType="textPersonName" />
+                            <ProgressBar
+                                android:id="@+id/pb_search_requester"
+                                style="?android:attr/progressBarStyleSmall"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="end|center_vertical"
+                                android:layout_marginEnd="12dp"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_requester_results"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 2.2 Atribuído a -->
+                <LinearLayout
+                    android:id="@+id/layout_technician"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/btn_edit_technician"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="8dp"
+                            app:lottie_rawRes="@raw/pesquisa"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ATRIBUÍDO A:"
+                                android:textColor="@color/texto_dica"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tv_current_technician"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Não atribuído"
+                                android:textColor="@color/texto_principal"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/iv_technician_seta"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/texto_dica" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_technician_search_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/et_search_technician"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_pesquisa_selecao"
+                                android:hint="Pesquisar..."
+                                android:paddingHorizontal="16dp"
+                                android:textSize="13sp"
+                                android:textColor="@color/texto_principal"
+                                android:maxLines="1"
+                                android:inputType="textPersonName" />
+                            <ProgressBar
+                                android:id="@+id/pb_search_technician"
+                                style="?android:attr/progressBarStyleSmall"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="end|center_vertical"
+                                android:layout_marginEnd="12dp"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_technician_results"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 2.3 Tipo -->
+                <LinearLayout
+                    android:id="@+id/layout_tipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TIPO"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_tipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/rb_incidente"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Incidente"
+                            android:textSize="13sp"
+                            android:textColor="@color/texto_principal"
+                            android:buttonTint="@color/azul_glpi" />
+                        <RadioButton
+                            android:id="@+id/rb_pedido"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pedido"
+                            android:textSize="13sp"
+                            android:textColor="@color/texto_principal"
+                            android:buttonTint="@color/azul_glpi" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- 2.4 Categoria -->
+                <LinearLayout
+                    android:id="@+id/layout_categoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CATEGORIA"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_categoria_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_categoria_selecionada"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="Hardware" />
+
+                        <ImageView
+                            android:id="@+id/iv_categoria_seta"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/texto_dica" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_categoria_opcoes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- 2.5 Fonte -->
+                <LinearLayout
+                    android:id="@+id/layout_fonte"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FONTE DO PEDIDO"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_fonte_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_fonte_selecionada"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="Helpdesk" />
+
+                        <ImageView
+                            android:id="@+id/iv_fonte_seta"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/texto_dica" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_fonte_opcoes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- 2.6 Prioridade -->
+                <LinearLayout
+                    android:id="@+id/layout_prioridade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PRIORIDADE"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_prioridade_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_prioridade_selecionada"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="Médio" />
+
+                        <ImageView
+                            android:id="@+id/iv_prioridade_seta"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/texto_dica" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_prioridade_opcoes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- 2.7 TTO -->
+                <LinearLayout
+                    android:id="@+id/layout_tto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TEMPO PARA ATENDIMENTO (TTO)"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_tto_selecionado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="---- / -- / --" />
+
+                        <ImageView
+                            android:id="@+id/iv_tto_calendario"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/azul_glpi" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 2.8 TTR -->
+                <LinearLayout
+                    android:id="@+id/layout_ttr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_cartao_interativo"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TEMPO PARA SOLUÇÃO (TTR)"
+                        android:textColor="@color/texto_dica"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_ttr_selecionado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="---- / -- / --" />
+
+                        <ImageView
+                            android:id="@+id/iv_ttr_calendario"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/azul_glpi" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- 3. Footer Fixo -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_salvar_ticket"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_botao_azul"
+            android:text="EDITAR"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <include 
+        layout="@layout/layout_custom_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp" />
+
+</FrameLayout>

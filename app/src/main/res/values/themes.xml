@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.GLPImobile" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/azul_glpi</item>
+        <item name="android:statusBarColor">@color/fundo_app</item>
+        <item name="android:windowBackground">@color/fundo_app</item>
+        <item name="android:colorBackground">@color/fundo_app</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
+        <item name="colorControlHighlight">@android:color/transparent</item>
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+
+    <style name="Theme.GLPImobile" parent="Base.Theme.GLPImobile" />
+
+    <style name="CustomAlertDialog" parent="Theme.Material3.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_dialog_history</item>
+        <item name="android:colorBackground">@color/fundo_cartao</item>
+        
+        <!-- Bolas Azul GLPI -->
+        <item name="colorAccent">@color/azul_glpi</item>
+        <item name="android:colorAccent">@color/azul_glpi</item>
+        <item name="colorControlActivated">@color/azul_glpi</item>
+
+        <item name="android:textColorPrimary">@color/texto_principal</item>
+        <item name="android:textColor">@color/texto_principal</item>
+    </style>
+
+    <style name="GLPI_AnimacaoActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="GLPI_CalendarViewTheme" parent="ThemeOverlay.AppCompat.DayNight">
+        <item name="android:textColorPrimary">@color/texto_principal</item>
+        <item name="android:textColorSecondary">@color/texto_dica</item>
+
+        <item name="colorAccent">@color/azul_glpi</item>
+        <item name="android:colorAccent">@color/azul_glpi</item>
+        <item name="colorControlActivated">@color/azul_glpi</item>
+
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="CalTextAppearanceWeekDay" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/texto_dica</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="EstiloMenuLateral" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.SwitchAzul" parent="">
+        <item name="colorControlActivated">@color/azul_glpi</item>
+        <item name="colorAccent">@color/azul_glpi</item>
+        <item name="colorControlNormal">#BDBDBD</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
+    </style>
+
+
+
+
+    <style name="GLPI_PickerTheme" parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/azul_glpi</item>
+        <item name="colorAccent">@color/azul_glpi</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">@color/texto_principal</item>
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <style name="GLPI_ErrorText" parent="TextAppearance.AppCompat">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/amiko_bold</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+ 
+    <style name="CustomDialogTheme" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlActivated">@color/azul_glpi</item>
+        <item name="colorAccent">@color/azul_glpi</item>
+    </style>
+
+    <!-- Splash Screen Theme -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/fundo_splash</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.GLPImobile</item>
+    </style>
+
+</resources>

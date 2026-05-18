@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul_glpi">#0047FF</color>
+    <color name="azul_premium">@color/azul_glpi</color>
+    <color name="cor_primaria">@color/azul_glpi</color>
+    <color name="cor_titulo_dialogo">@color/azul_glpi</color>
+    <color name="azul_glpi_light">#4D7CFF</color>
+    <color name="azul_glpi_dark">#002B9A</color>
+    <color name="glpi_blue">#0047FF</color>
+    <color name="cor_info_card_destaque">#0047FF</color>
+    <color name="branco">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="azul_claro_transparente">#1A0047FF</color>
+
+    <color name="fundo_app">#FFFFFF</color>
+    <color name="fundo_cartao">#F8F8F8</color>
+    <color name="fundo_caixa_texto">#F2F2F2</color>
+    <color name="texto_principal">#000000</color>
+    <color name="texto_secundario">#444444</color>
+    <color name="texto_dica">#888888</color>
+    <color name="linha_separadora">#E0E0E0</color>
+    <color name="borda_cartao">#0D000000</color>
+    <color name="off_white">#F8F8F8</color>
+    <color name="cor_fundo_input">#FFFFFF</color>
+
+    <color name="texto_chip_inativo">#000000</color>
+    <color name="cor_texto_filtro_inativo">#000000</color>
+    <color name="fundo_filtro_inativo">#FFFFFF</color>
+    <color name="traco_filtro_inativo">#E0E0E0</color>
+
+    <color name="cor_dinamica_icones">#FFFFFF</color>
+
+    <!-- Cores de Estado dos Tickets -->
+    <color name="cor_novo">#FF9800</color>
+    <color name="cor_processamento">#00BCD4</color>
+    <color name="cor_pendente">#9E9E9E</color>
+    <color name="cor_solucionado">#4CAF50</color>
+    <color name="cor_solucionado_dark">#2E7D32</color>
+    <color name="cor_fechado">#2C3E50</color>
+    <color name="cor_urgente">#FF5252</color>
+    <color name="cor_solucao">#2E7D32</color>
+    <color name="cor_followup">#1976D2</color>
+    <color name="vermelho_forte">#FF0000</color>
+    <color name="cor_solucionado_azul">#89CFF0</color>
+    <color name="cor_solucionado_azul_dark">#64AAD2</color>
+    <color name="fundo_splash">@color/azul_glpi</color>
+</resources>

@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Fundo sólido para garantir que não há falhas -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M2,18L12,2L22,18L2,18Z" />
+    <!-- Amarelo (Topo Esquerda) -->
+    <path
+        android:fillColor="#FBBC04"
+        android:pathData="M12,2L6,12L10,12L14,4.5L12,2Z" />
+    <!-- Verde (Topo Direita) -->
+    <path
+        android:fillColor="#34A853"
+        android:pathData="M12,2L18,12H14L10,4.5L12,2Z" />
+    <!-- Azul (Base e Esquerda) -->
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M2,18H18L14,12H6L2,18Z" />
+    <!-- Vermelho (Canto Inferior Direito) -->
+    <path
+        android:fillColor="#EA4335"
+        android:pathData="M22,18H18L14,12H18L22,18Z" />
+</vector>
