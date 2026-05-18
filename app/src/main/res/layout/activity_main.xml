@@ -8,6 +8,22 @@
 
 
 
+    <ImageView
+        android:id="@+id/iv_config_server"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_settings_gear"
+        app:tint="@color/azul_glpi"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Configurar Servidor" />
+
     <LinearLayout
         android:id="@+id/logo_container"
         android:layout_width="wrap_content"

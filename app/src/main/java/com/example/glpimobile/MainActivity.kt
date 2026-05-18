@@ -1,5 +1,7 @@
 package com.example.glpimobile
 
+import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
@@ -79,7 +81,12 @@ class MainActivity : AppCompatActivity() {
             }
             etPassword.setSelection(etPassword.text.length)
         }
-        
+
+        val ivConfigServer = findViewById<ImageView>(R.id.iv_config_server)
+        ivConfigServer?.setOnClickListener {
+            mostrarDialogConfiguracaoServidor()
+        }
+
         // Aplicar cor azul à animação de carregamento
         lottieCarregar?.setAnimation(R.raw.loading)
         lottieCarregar?.addValueCallback(
@@ -214,6 +221,49 @@ class MainActivity : AppCompatActivity() {
         if (showWelcome) intent.putExtra("SHOW_WELCOME", true)
         startActivity(intent)
         finish()
+    }
+
+    private fun mostrarDialogConfiguracaoServidor() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_config_server, null)
+        val etUrl = dialogView.findViewById<EditText>(R.id.et_server_url)
+        val btnCancelar = dialogView.findViewById<Button>(R.id.btn_cancelar_config)
+        val btnGuardar = dialogView.findViewById<Button>(R.id.btn_guardar_config)
+
+        val currentUrl = PreferenceManager.getBaseUrl(this)
+        etUrl.setText(currentUrl)
+
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnGuardar.setOnClickListener {
+            var urlInput = etUrl.text.toString().trim()
+            if (urlInput.isEmpty()) {
+                AlertHelper.exibirAlertaPremium(this, "O URL do servidor não pode ser vazio.", isError = true)
+                return@setOnClickListener
+            }
+
+            // Normalizar URL
+            if (!urlInput.startsWith("http://") && !urlInput.startsWith("https://")) {
+                urlInput = "http://$urlInput"
+            }
+            if (!urlInput.endsWith("/")) {
+                urlInput = "$urlInput/"
+            }
+
+            PreferenceManager.setBaseUrl(this, urlInput)
+            AlertHelper.exibirAlertaPremium(this, "Servidor configurado com sucesso!", isError = false)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun dispatchTouchEvent(ev: android.view.MotionEvent?): Boolean {
