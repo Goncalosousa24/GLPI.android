@@ -7,16 +7,12 @@
             android:title="CRIAR NOVO TICKET" />
 
         <item
-            android:id="@+id/nav_my_tickets"
-            android:title="TICKETS CRIADOS" />
+            android:id="@+id/nav_vista_geral"
+            android:title="VISTA GERAL" />
 
         <item
             android:id="@+id/nav_delete_tickets"
-            android:title="ELIMINAR TICKETS" />
-
-        <item
-            android:id="@+id/nav_resolved_tickets"
-            android:title="TICKETS RESOLVIDOS" />
+            android:title="TICKETS ELIMINADOS" />
 
 
         <item

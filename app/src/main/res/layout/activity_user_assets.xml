@@ -185,10 +185,10 @@
             <!-- Pagination Controls (only for user list) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pagination_user_assets"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:visibility="gone">
+                android:layout_marginTop="24dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btn_pagina_anterior_user"

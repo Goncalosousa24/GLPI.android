@@ -36,15 +36,15 @@ class ResolvedTicketsActivity : AppCompatActivity() {
     private lateinit var btnAnterior: View
     private lateinit var btnProxima: View
     private lateinit var tvListaVazia: TextView
-    
+
     private var currentPage = 0
     private val pageSize = 10
     private var currentOrder = "DESC"
-    private val testIdMeus = GlpiConfig.USER_ID
-    private val testIdAtribuidos = GlpiConfig.USER_ID
     private var initialTicketId: String? = null
-
     private var isContextoPessoal = false
+
+    // 0 = Todos, 5 = Resolvidos, 6 = Encerrados
+    private var statusFiltro: Int = 0
 
     // 🔑 TOKENS SINCRONIZADOS
     private val TOKEN_SESSAO get() = GlpiConfig.SESSION_TOKEN
@@ -68,6 +68,7 @@ class ResolvedTicketsActivity : AppCompatActivity() {
 
         btnVoltar.setOnClickListener { voltarParaMenu() }
 
+        // Botão de Ordem
         val lottieOrdem = findViewById<LottieAnimationView>(R.id.lottie_ordem)
         aplicarCorLottie(lottieOrdem, corAzulGlpi)
         findViewById<FrameLayout>(R.id.btn_ordem).setOnClickListener {
@@ -77,9 +78,19 @@ class ResolvedTicketsActivity : AppCompatActivity() {
             carregarTicketsResolvidos()
         }
 
+        // 🔵 Botão de Filtro
+        val btnFiltro = findViewById<FrameLayout>(R.id.btn_filtro)
+        val lottieFiltro = findViewById<LottieAnimationView>(R.id.lottie_filtro)
+        aplicarCorLottie(lottieFiltro, corAzulGlpi)
+        playFilterAnimation()
+
+        btnFiltro.setOnClickListener {
+            mostrarDialogFiltro()
+        }
+
         rvTickets = findViewById(R.id.rv_tickets_resolvidos)
         rvTickets.layoutManager = LinearLayoutManager(this)
-        
+
         nestedScroll = findViewById(R.id.nested_scroll_resolved)
         swipeRefresh = findViewById(R.id.swipe_refresh_resolved)
         btnAnterior = findViewById(R.id.btn_pagina_anterior_resolved)
@@ -87,9 +98,9 @@ class ResolvedTicketsActivity : AppCompatActivity() {
         tvListaVazia = findViewById(R.id.tv_lista_vazia)
 
         swipeRefresh.setColorSchemeColors(corAzulGlpi)
-        swipeRefresh.setOnRefreshListener { 
+        swipeRefresh.setOnRefreshListener {
             currentPage = 0
-            carregarTicketsResolvidos() 
+            carregarTicketsResolvidos()
         }
 
         btnAnterior.setOnClickListener {
@@ -110,12 +121,69 @@ class ResolvedTicketsActivity : AppCompatActivity() {
         searchBar.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterSearch(s.toString())
+                applyFilters(s.toString())
             }
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
 
         carregarTicketsResolvidos()
+    }
+
+    /** Extrai o ID numérico do campo de estado (campo "12") do ticket */
+    private fun extrairStatus(ticket: Map<String, Any>): String {
+        val raw = ticket["12"]
+        return when {
+            raw == null -> ""
+            raw is Map<*, *> -> raw["id"]?.toString()?.substringBefore(".") ?: ""
+            else -> raw.toString().substringBefore(".")
+        }
+    }
+
+    /** Aplica filtro por estado e por texto simultaneamente */
+    private fun applyFilters(query: String = "") {
+        // 1. Filtrar por estado
+        val afterStatusFilter = when (statusFiltro) {
+            5 -> fullTicketsList.filter { extrairStatus(it) == "5" }
+            6 -> fullTicketsList.filter { extrairStatus(it) == "6" }
+            else -> fullTicketsList
+        }
+
+        // 2. Filtrar por texto
+        filteredTicketsList = if (query.isEmpty()) {
+            afterStatusFilter
+        } else {
+            afterStatusFilter.filter { ticket ->
+                val subject = ticket["1"]?.toString() ?: ""
+                val ticketId = ticket["2"]?.toString() ?: ""
+                val content = ticket["21"]?.toString() ?: ""
+                val reqId1 = ticket["22"]?.toString() ?: ""
+                val reqId2 = ticket["4"]?.toString() ?: ""
+                val reqName = TicketAdapter.UNAME_CACHE[reqId1] ?: TicketAdapter.UNAME_CACHE[reqId2] ?: ""
+
+                subject.contains(query, ignoreCase = true) ||
+                ticketId.contains(query, ignoreCase = true) ||
+                content.contains(query, ignoreCase = true) ||
+                reqName.contains(query, ignoreCase = true)
+            }
+        }
+        currentPage = 0
+
+        if (filteredTicketsList.isEmpty()) {
+            val msg = when {
+                query.isNotEmpty() && statusFiltro != 0 -> "Nenhum ticket encontrado para '$query'."
+                query.isNotEmpty() -> "Nenhum ticket encontrado para '$query'."
+                statusFiltro != 0 -> "Nenhum ticket para o filtro selecionado."
+                else -> "Não existem tickets no histórico."
+            }
+            tvListaVazia?.text = msg
+            tvListaVazia?.visibility = View.VISIBLE
+            rvTickets.visibility = View.GONE
+            findViewById<View>(R.id.pagination_resolved).visibility = View.GONE
+        } else {
+            tvListaVazia?.visibility = View.GONE
+            rvTickets.visibility = View.VISIBLE
+            applyPagination()
+        }
     }
 
     private fun applyPagination() {
@@ -126,12 +194,12 @@ class ResolvedTicketsActivity : AppCompatActivity() {
 
         rvTickets.adapter = TicketAdapter(pageItems, showResolutionDate = true, initialExpandedTicketId = initialTicketId)
         rvTickets.scheduleLayoutAnimation()
-        
+
         val hasPagination = listToPaginate.size > pageSize
         findViewById<View>(R.id.pagination_resolved).visibility = if (hasPagination) View.VISIBLE else View.GONE
         btnAnterior.visibility = if (currentPage > 0) View.VISIBLE else View.GONE
         btnProxima.visibility = if (end < listToPaginate.size) View.VISIBLE else View.GONE
-        
+
         nestedScroll.smoothScrollTo(0, 0)
     }
 
@@ -141,44 +209,100 @@ class ResolvedTicketsActivity : AppCompatActivity() {
         }
     }
 
-    private fun filterSearch(query: String) {
-        filteredTicketsList = if (query.isEmpty()) {
-            fullTicketsList
-        } else {
-            fullTicketsList.filter { ticket ->
-                val subject = ticket["1"]?.toString() ?: ""
-                val ticketId = ticket["2"]?.toString() ?: ""
-                val content = ticket["21"]?.toString() ?: ""
-                val reqId1 = ticket["22"]?.toString() ?: ""
-                val reqId2 = ticket["4"]?.toString() ?: ""
-                val reqName = TicketAdapter.UNAME_CACHE[reqId1] ?: TicketAdapter.UNAME_CACHE[reqId2] ?: ""
+    private fun mostrarDialogFiltro() {
+        val opcoes = arrayOf("TODOS", "RESOLVIDOS", "ENCERRADOS")
+        val statusIds = arrayOf(0, 5, 6)
 
-                subject.contains(query, ignoreCase = true) || 
-                ticketId.contains(query, ignoreCase = true) ||
-                content.contains(query, ignoreCase = true) ||
-                reqName.contains(query, ignoreCase = true)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_custom_filter_state, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogView.findViewById<TextView>(R.id.tv_filter_title).text = "FILTRAR POR ESTADO"
+        val container = dialogView.findViewById<android.widget.LinearLayout>(R.id.container_filter_options)
+
+        dialogView.findViewById<View>(R.id.btn_close_filter).setOnClickListener { dialog.dismiss() }
+
+        val d = resources.displayMetrics.density
+        val corAzul = ContextCompat.getColor(this, R.color.azul_glpi)
+
+        opcoes.forEachIndexed { index, title ->
+            val isSelected = statusFiltro == statusIds[index]
+
+            val row = android.widget.LinearLayout(this).apply {
+                orientation = android.widget.LinearLayout.HORIZONTAL
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    (48 * d).toInt()
+                )
+                gravity = android.view.Gravity.CENTER_VERTICAL
+                setPadding((24 * d).toInt(), 0, (24 * d).toInt(), 0)
+
+                val outValue = android.util.TypedValue()
+                context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+                setBackgroundResource(outValue.resourceId)
+
+                setOnClickListener {
+                    statusFiltro = statusIds[index]
+
+                    // Atualizar visual do botão (ativo vs inativo)
+                    val btnFiltroMain = this@ResolvedTicketsActivity.findViewById<FrameLayout>(R.id.btn_filtro)
+                    if (statusFiltro != 0) {
+                        btnFiltroMain?.setBackgroundResource(R.drawable.bg_filtro_ativo)
+                    } else {
+                        btnFiltroMain?.setBackgroundResource(R.drawable.bg_cartao_brilhante)
+                    }
+
+                    playFilterAnimation()
+
+                    val currentQuery = this@ResolvedTicketsActivity
+                        .findViewById<EditText>(R.id.search_bar_tickets).text.toString()
+                    applyFilters(currentQuery)
+                    dialog.dismiss()
+                }
             }
+
+            val tv = TextView(this).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                )
+                text = title
+                setTextColor(ContextCompat.getColor(context, R.color.texto_principal))
+                textSize = 14f
+                isAllCaps = true
+                typeface = androidx.core.content.res.ResourcesCompat.getFont(context, R.font.amiko_bold)
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+                gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
+            }
+
+            val rb = android.widget.RadioButton(this).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                buttonTintList = android.content.res.ColorStateList.valueOf(corAzul)
+                isChecked = isSelected
+                isClickable = false
+                isFocusable = false
+            }
+
+            row.addView(tv)
+            row.addView(rb)
+            container.addView(row)
         }
-        currentPage = 0
-        
-        if (filteredTicketsList.isEmpty() && query.isNotEmpty()) {
-            tvListaVazia?.text = "Nenhum ticket encontrado para '$query'"
-            tvListaVazia?.visibility = View.VISIBLE
-            rvTickets.visibility = View.GONE
-            findViewById<View>(R.id.pagination_resolved).visibility = View.GONE
-        } else {
-            tvListaVazia?.visibility = if (filteredTicketsList.isEmpty()) View.VISIBLE else View.GONE
-            rvTickets.visibility = if (filteredTicketsList.isEmpty()) View.GONE else View.VISIBLE
-            findViewById<View>(R.id.pagination_resolved).visibility = if (filteredTicketsList.isEmpty()) View.GONE else View.VISIBLE
-            applyPagination()
-        }
+
+        dialog.show()
+        dialog.window?.setLayout(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     private fun carregarTicketsResolvidos() {
         swipeRefresh.isRefreshing = true
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Regra unificada: Tanto para Geral como para Pessoal, mostrar apenas o Mês Atual
                 val cal = Calendar.getInstance()
                 cal.set(Calendar.DAY_OF_MONTH, 1)
                 val dataLimite = SimpleDateFormat("yyyy-MM-dd 00:00:00", Locale.getDefault()).format(cal.time)
@@ -186,28 +310,28 @@ class ResolvedTicketsActivity : AppCompatActivity() {
                 val userId = GlpiConfig.USER_ID
 
                 val response = if (isContextoPessoal) {
-                    // VISTA PESSOAL (Dashboard) -> "Geral" da lista = Sónia (Criados + Atribuídos)
                     val loginBusca = GlpiConfig.USER_NAME.split(".", " ").firstOrNull() ?: ""
                     val nomeCompleto = GlpiConfig.USER_FULL_NAME
-                    
+
                     GlpiRetrofit.api.getTicketsMeusFinalizadosHistorico(
-                        TOKEN_SESSAO, TOKEN_APP, 
+                        TOKEN_SESSAO, TOKEN_APP,
                         userId, userId, userId, userId, userId, userId,
                         loginBusca, nomeCompleto.ifEmpty { loginBusca },
                         dataLimite = dataLimite, order = currentOrder, sort = 19, range = "0-299"
                     )
                 } else {
-                    // VISTA GERAL (Dashboard) -> "Geral" da lista = Toda a Equipa
-                    GlpiRetrofit.api.getListaGeralFinalizadosHistorico(TOKEN_SESSAO, TOKEN_APP, dataLimite = dataLimite, order = currentOrder, sort = 19, range = "0-299")
+                    GlpiRetrofit.api.getListaGeralFinalizadosHistorico(
+                        TOKEN_SESSAO, TOKEN_APP,
+                        dataLimite = dataLimite, order = currentOrder, sort = 19, range = "0-299"
+                    )
                 }
 
                 withContext(Dispatchers.Main) {
                     fullTicketsList = if (response.isSuccessful) response.body()?.data ?: emptyList() else emptyList()
-                    
-                    // Sincronizar com a pesquisa atual
+
                     val currentQuery = findViewById<EditText>(R.id.search_bar_tickets).text.toString()
-                    filterSearch(currentQuery)
-                    
+                    applyFilters(currentQuery)
+
                     currentPage = 0
 
                     if (initialTicketId != null) {
@@ -223,15 +347,13 @@ class ResolvedTicketsActivity : AppCompatActivity() {
                     android.util.Log.d("API_RESOLVIDOS", "Tickets carregados: ${fullTicketsList.size}")
 
                     if (fullTicketsList.isEmpty()) {
-                        val msgVazia = "Não existem tickets no histórico geral descritos nos últimos 60 dias."
-                        tvListaVazia.text = msgVazia
+                        tvListaVazia.text = "Não existem tickets no histórico."
                         tvListaVazia.visibility = View.VISIBLE
                         rvTickets.visibility = View.GONE
                         findViewById<View>(R.id.pagination_resolved).visibility = View.GONE
-                    } else {
+                    } else if (filteredTicketsList.isNotEmpty()) {
                         tvListaVazia.visibility = View.GONE
                         rvTickets.visibility = View.VISIBLE
-                        findViewById<View>(R.id.pagination_resolved).visibility = View.VISIBLE
                         applyPagination()
                     }
                     swipeRefresh.isRefreshing = false

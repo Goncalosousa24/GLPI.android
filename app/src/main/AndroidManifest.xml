@@ -12,9 +12,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_splash_logo_white"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_splash_logo_white"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GLPImobile"
         android:usesCleartextTraffic="true"
@@ -60,6 +60,7 @@
         <activity android:name=".MyStatisticsActivity" android:exported="false" />
         <activity android:name=".ActionHistoryActivity" android:exported="false" />
         <activity android:name=".MyTicketsHistoryActivity" android:exported="false" />
+        <activity android:name=".GeneralViewTicketsActivity" android:exported="false" />
         <activity android:name=".SettingsActivity" android:exported="false" />
         <activity android:name=".EditTicketsActivity" android:exported="false" />
         <activity android:name=".AgendaActivity" android:exported="false" />

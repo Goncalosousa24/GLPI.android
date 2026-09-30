@@ -8,18 +8,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class TicketHistoryAdapter(
+class GeneralViewTicketsAdapter(
     private var tickets: List<Map<String, Any>>,
     private val hideStatusTag: Boolean = false,
     private val disableExpansion: Boolean = false
-) : RecyclerView.Adapter<TicketHistoryAdapter.HistoryViewHolder>() {
+) : RecyclerView.Adapter<GeneralViewTicketsAdapter.GeneralViewHolder>() {
 
     fun updateList(newList: List<Map<String, Any>>) {
         tickets = newList
         notifyDataSetChanged()
     }
 
-    class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class GeneralViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvId: TextView = itemView.findViewById(R.id.tv_ticket_id)
         val tvTitulo: TextView = itemView.findViewById(R.id.tv_ticket_assunto)
         val tvData: TextView = itemView.findViewById(R.id.tv_ticket_data)
@@ -28,12 +28,24 @@ class TicketHistoryAdapter(
         var isExpanded: Boolean = false
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ticket_history, parent, false)
-        return HistoryViewHolder(view)
+        return GeneralViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
+    private fun extractId(valor: Any?): String {
+        if (valor == null) return ""
+        if (valor is Map<*, *>) return valor["id"]?.toString()?.substringBefore(".") ?: ""
+        if (valor is List<*>) {
+            val primeiro = valor.firstOrNull()
+            if (primeiro is Map<*, *>) return primeiro["id"]?.toString()?.substringBefore(".") ?: ""
+            return primeiro?.toString()?.substringBefore(".") ?: ""
+        }
+        val s = valor.toString()
+        return if (s.contains(".")) s.substringBefore(".") else s
+    }
+
+    override fun onBindViewHolder(holder: GeneralViewHolder, position: Int) {
         val ticket = tickets[position]
 
         val rawId = ticket["2"]?.toString() ?: ticket["id"]?.toString() ?: ""
@@ -41,8 +53,7 @@ class TicketHistoryAdapter(
 
         val titulo = ticket["1"]?.toString() ?: "Sem título"
         val dataAtualizacao = ticket["19"]?.toString() ?: ""
-        val rawEstado = ticket["12"]?.toString() ?: ""
-        val estado = if (rawEstado.contains(".")) rawEstado.substringBefore(".") else rawEstado
+        val estado = extractId(ticket["12"])
         val descricaoHtml = ticket["21"]?.toString() ?: ""
 
         holder.tvId.text = "Ticket #$idLimpo"

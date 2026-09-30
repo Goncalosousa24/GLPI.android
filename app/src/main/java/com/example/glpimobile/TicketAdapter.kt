@@ -196,7 +196,7 @@ class TicketAdapter(
         }
 
         val prioridadeCor = when(prioridadeId) {
-            "4", "5", "6" -> R.color.cor_urgente // ALTA / MUITO ALTA / PRINCIPAL
+            "4", "5", "6" -> R.color.vermelho_forte // ALTA / MUITO ALTA / PRINCIPAL
             else -> R.color.azul_glpi
         }
 
@@ -250,23 +250,23 @@ class TicketAdapter(
             holder.tvData.text = "Criado em: $dataCriacao"
         } else if (showAgendaMode) {
             val sb = StringBuilder()
+            sb.append("<b>CRIADO EM:</b> $dataCriacao")
             if (dataLimite.isNotEmpty()) {
+                sb.append("<br>")
                 if (estado != "5" && estado != "6") {
                     val expirado = isExpired(dataLimite, estado)
                     if (expirado) {
-                        sb.append("<b>EXPIRADO:</b> $dataLimite<br>")
+                        sb.append("<b>EXPIRADO:</b> $dataLimite")
                         holder.tvData.setTextColor(ContextCompat.getColor(context, R.color.vermelho_forte))
                     } else {
-                        sb.append("<b>LIMITE:</b> $dataLimite<br>")
+                        sb.append("<b>LIMITE:</b> $dataLimite")
                         holder.tvData.setTextColor(ContextCompat.getColor(context, R.color.cor_info_card_destaque))
                     }
                 } else {
-                    sb.append("<b>CONCLUÍDO</b><br>")
+                    sb.append("<b>CONCLUÍDO</b>")
                     holder.tvData.setTextColor(ContextCompat.getColor(context, R.color.cor_info_card_destaque))
                 }
-            }
-            sb.append("<b>CRIADO EM:</b> $dataCriacao")
-            if (dataLimite.isEmpty()) {
+            } else {
                 sb.append(" (SEM DATA LIMITE)")
                 holder.tvData.setTextColor(ContextCompat.getColor(context, R.color.cor_info_card_destaque))
             }
@@ -287,6 +287,11 @@ class TicketAdapter(
         if (showEditButton) {
             holder.btnAtoresContainer.visibility = View.VISIBLE
             holder.lottieSucesso.visibility = View.GONE
+            if (estado == "6") {
+                holder.btnAtoresContainer.setBackgroundResource(R.drawable.bg_button_closed_oval)
+            } else {
+                holder.btnAtoresContainer.setBackgroundResource(R.drawable.bg_button_atores_oval)
+            }
             holder.btnAtoresContainer.setOnClickListener {
                 val ticketId = ticket["2"]?.toString()?.replace(".0", "") ?: return@setOnClickListener
                 showAtoresManagementDialog(ticketId, ticket, autor, tecnicoExibicao, holder)
@@ -331,6 +336,8 @@ class TicketAdapter(
         val targetVisibility = if (deveExpandir) View.VISIBLE else View.GONE
         
         holder.tvTitulo.maxLines = if (deveExpandir) 10 else 1
+        holder.tvRequester.maxLines = if (deveExpandir) 10 else 1
+        holder.tvTechnician.maxLines = if (deveExpandir) 10 else 1
         holder.tvDescricao.visibility = targetVisibility
         holder.vSeparador.visibility = targetVisibility
         
@@ -448,52 +455,7 @@ class TicketAdapter(
         }
     }
 
-    private fun marcarComoResolvido(ticketId: String, holder: TicketViewHolder) {
-        val context = holder.itemView.context
-        scope.launch {
-            try {
-                val sessionToken = PreferenceManager.getSessionToken(context)
-                val appToken = PreferenceManager.getAppToken(context)
 
-                // Status 5 = Solucionado (Resolved) no GLPI
-                val input = mapOf("input" to mapOf("status" to 5))
-
-                val response = withContext(Dispatchers.IO) {
-                    GlpiRetrofit.api.updateTicketStatus(ticketId, sessionToken, appToken, input)
-                }
-
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        exibirAlertaPremium(context, "Ticket marcado como RESOLVIDO!", null, isError = false)
-                        
-                        // Atualizar visualmente o ticket na lista sem recarregar tudo
-                        // Ou podemos simplesmente emitir um aviso para quem chamou o adapter fazer refresh
-                        // Por agora, vamos apenas simular a mudança de estado no mapa local e notificar
-                        val position = holder.adapterPosition
-                        if (position != RecyclerView.NO_POSITION) {
-                            val updatedTicket = tickets[position].toMutableMap()
-                            updatedTicket["12"] = "5" // Atualiza o status no mapa (campo 12 costuma ser o ID do status)
-                            updatedTicket["status"] = 5
-                            
-                            val newList = tickets.toMutableList()
-                            newList[position] = updatedTicket
-                            tickets = newList
-                            
-                            // Fechar a expansão após resolver
-                            expandedPosition = -1
-                            notifyItemChanged(position)
-                        }
-                    } else {
-                        exibirAlertaPremium(context, "Erro ao resolver ticket: ${response.code()}", null, isError = true)
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    exibirAlertaPremium(context, "Erro de rede: ${e.message}", null, isError = true)
-                }
-            }
-        }
-    }
 
     private val categoryMap = mutableMapOf<String, String>()
 
@@ -517,13 +479,16 @@ class TicketAdapter(
     }
 
     private fun exibirAlertaPremium(context: android.content.Context, mensagem: String, specificView: View? = null, isError: Boolean = false) {
-        if (context is android.app.Activity) {
+        if (specificView != null) {
+            AlertHelper.exibirAlertaPremium(specificView, mensagem, isError)
+        } else if (context is android.app.Activity) {
             AlertHelper.exibirAlertaPremium(context, mensagem, isError)
         }
     }
 
     private val FONTES_PEDIDO = arrayOf("Direct", "E-Mail", "Formcreator", "Helpdesk", "Phone", "Written", "Other")
     private val PRIORIDADES = arrayOf("Muito Baixo", "Baixo", "Médio", "Alto", "Muito Alto", "Principal")
+    private val ESTADOS = arrayOf("Novo", "A processar (atribuído)", "A processar (planeado)", "Aguardando", "Resolvido", "Encerrado")
 
     private fun showAtoresManagementDialog(ticketId: String, ticket: Map<String, Any?>, reqName: String, techName: String, holder: TicketViewHolder) {
         val context = holder.itemView.context
@@ -533,10 +498,19 @@ class TicketAdapter(
             .create()
 
         val tvReq = dialogView.findViewById<TextView>(R.id.tv_current_requester)
-        val tvTech = dialogView.findViewById<TextView>(R.id.tv_current_technician)
         val btnEditReq = dialogView.findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.btn_edit_requester)
-        val btnEditTech = dialogView.findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.btn_edit_technician)
         
+        val llObserversContainer = dialogView.findViewById<LinearLayout>(R.id.ll_observers_container)
+        val btnAddObserverField = dialogView.findViewById<View>(R.id.btn_add_observer_field)
+
+        val llTechniciansContainer = dialogView.findViewById<LinearLayout>(R.id.ll_technicians_container)
+        val btnAddTechField = dialogView.findViewById<View>(R.id.btn_add_technician_field)
+
+        val layoutEstado = dialogView.findViewById<View>(R.id.layout_estado)
+        val llEstadoOpcoes = dialogView.findViewById<LinearLayout>(R.id.ll_estado_opcoes)
+        val tvEstadoSel = dialogView.findViewById<TextView>(R.id.tv_estado_selecionado)
+        val ivEstadoSeta = dialogView.findViewById<ImageView>(R.id.iv_estado_seta)
+
         val rgTipo = dialogView.findViewById<RadioGroup>(R.id.rg_tipo)
         val rbIncidente = dialogView.findViewById<RadioButton>(R.id.rb_incidente)
         val rbPedido = dialogView.findViewById<RadioButton>(R.id.rb_pedido)
@@ -575,19 +549,14 @@ class TicketAdapter(
         val pbReq = dialogView.findViewById<ProgressBar>(R.id.pb_search_requester)
         val ivReqSeta = dialogView.findViewById<ImageView>(R.id.iv_requester_seta)
 
-        val layoutTechnician = dialogView.findViewById<View>(R.id.layout_technician)
-        val llTechnicianSearch = dialogView.findViewById<LinearLayout>(R.id.ll_technician_search_container)
-        val etSearchTech = dialogView.findViewById<EditText>(R.id.et_search_technician)
-        val rvTechResults = dialogView.findViewById<RecyclerView>(R.id.rv_technician_results)
-        val pbTech = dialogView.findViewById<ProgressBar>(R.id.pb_search_technician)
-        val ivTechSeta = dialogView.findViewById<ImageView>(R.id.iv_technician_seta)
-
         val isBlocked = isRestricted(context)
         val lockdownMsg = "Sem permissão para alterar tickets."
 
         fun showLockdownAlert() {
             exibirAlertaPremium(context, lockdownMsg, dialogView, isError = true)
         }
+
+        Log.d("TicketAdapterDebug", "showAtoresManagementDialog: ticketId = $ticketId, ticket keys = ${ticket.keys}, ticket = $ticket")
 
         // 🔥 LÓGICA INTELIGENTE: Detetar valores atuais do ticket 🔥
         val typeValue = extractIdFunc?.invoke(ticket["14"]) ?: "1"
@@ -610,54 +579,8 @@ class TicketAdapter(
             else -> "Médio"
         }
 
-        // 🔥 ESTRATÉGIA DEFINITIVA: buscar o ticket diretamente pelo ID para obter a fonte real 🔥
         tvFonteSel.text = "A carregar..."
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val sessionToken = PreferenceManager.getSessionToken(context)
-                val appToken = PreferenceManager.getAppToken(context)
-                val resp = GlpiRetrofit.api.getTicketById(ticketId, sessionToken, appToken)
-                val fullTicket: Map<String, Any> = if (resp.isSuccessful) resp.body() ?: emptyMap() else emptyMap()
-                
-                // requesttypes_id com expand_dropdowns=true pode vir como String "Helpdesk",
-                // como número "1", ou como Map {id, name}
-                fun resolveSourceName(value: Any?): String {
-                    if (value == null) return "Direct"
-                    val str = when (value) {
-                        is Map<*, *> -> value["name"]?.toString() ?: value["id"]?.toString() ?: ""
-                        else -> value.toString()
-                    }.trim()
-                    return when {
-                        str.isEmpty() || str == "null" || str == "0" -> "Direct"
-                        str.contains("Helpdesk", ignoreCase = true) -> "Helpdesk"
-                        str.contains("E-Mail", ignoreCase = true) || str.contains("Email", ignoreCase = true) -> "E-Mail"
-                        str.contains("Phone", ignoreCase = true) || str.contains("Telefone", ignoreCase = true) -> "Phone"
-                        str.contains("Written", ignoreCase = true) || str.contains("Escrito", ignoreCase = true) -> "Written"
-                        str.contains("Other", ignoreCase = true) || str.contains("Outro", ignoreCase = true) -> "Other"
-                        str.contains("Formcreator", ignoreCase = true) -> "Formcreator"
-                        str.contains("Direct", ignoreCase = true) || str.contains("Direto", ignoreCase = true) -> "Direct"
-                        str == "1" -> "Helpdesk"
-                        str == "2" -> "E-Mail"
-                        str == "3" -> "Phone"
-                        str == "4" -> "Direct"
-                        str == "5" -> "Written"
-                        str == "6" -> "Other"
-                        str == "7" -> "Formcreator"
-                        str.toDoubleOrNull() != null -> "Direct" // ID desconhecido
-                        else -> str // nome literal
-                    }
-                }
-                val sourceText = resolveSourceName(fullTicket["requesttypes_id"])
 
-                withContext(Dispatchers.Main) {
-                    tvFonteSel.text = sourceText
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    tvFonteSel.text = "Direct"
-                }
-            }
-        }
 
         val rawCategory = ticket["7"]?.toString() ?: ""
         tvCategoriaSel.text = if (rawCategory.isNotEmpty() && rawCategory != "null") rawCategory else "Pesquisar categoria..."
@@ -665,10 +588,7 @@ class TicketAdapter(
         val realRequester = formatarNome(ticket["4"], tvReq)
         tvReq.text = realRequester ?: "Não definido"
 
-        val realTechnician = formatarNome(ticket["5"], tvTech)
-        tvTech.text = realTechnician ?: "Não atribuído"
-
-        // 🔥 TTO e TTR: Pré-preencher com valores atuais 🔥
+        // TTO e TTR
         val currentTTO = ticket["158"]?.toString() ?: ""
         val currentTTR = ticket["151"]?.toString() ?: ""
         tvTTO.text = if (currentTTO.isNotEmpty() && currentTTO != "null") currentTTO else "---- / -- / --"
@@ -680,7 +600,6 @@ class TicketAdapter(
                 return
             }
 
-            // Forçar Locale PT para que os Pickers (Data/Hora) apareçam em Português
             val localePT = java.util.Locale("pt", "PT")
             java.util.Locale.setDefault(localePT)
             val config = context.resources.configuration
@@ -690,7 +609,6 @@ class TicketAdapter(
 
             val calendar = java.util.Calendar.getInstance()
             
-            // Usar o tema universal GLPI_PickerTheme para o calendário e relógio
             android.app.DatePickerDialog(context, R.style.GLPI_PickerTheme, { _, year, month, day ->
                 calendar.set(java.util.Calendar.YEAR, year)
                 calendar.set(java.util.Calendar.MONTH, month)
@@ -707,21 +625,17 @@ class TicketAdapter(
             }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show()
         }
 
-        // Bloquear Rádio Buttons de Tipo
         rbIncidente.setOnClickListener { if (isBlocked) { showLockdownAlert(); rbPedido.isChecked = (typeValue == "2"); rbIncidente.isChecked = (typeValue != "2") } }
         rbPedido.setOnClickListener { if (isBlocked) { showLockdownAlert(); rbIncidente.isChecked = (typeValue != "2"); rbPedido.isChecked = (typeValue == "2") } }
-
-        // Bloquear Ícones de Edição de Atores
         btnEditReq.setOnClickListener { if (isBlocked) showLockdownAlert() }
-        btnEditTech.setOnClickListener { if (isBlocked) showLockdownAlert() }
 
         ivTTOCal.setOnClickListener { showDateTimePicker(tvTTO) }
         ivTTRCal.setOnClickListener { showDateTimePicker(tvTTR) }
         tvTTO.setOnClickListener { showDateTimePicker(tvTTO) }
         tvTTR.setOnClickListener { showDateTimePicker(tvTTR) }
-        
 
         fun setupExpandableCard(card: View, optionsContainer: LinearLayout, tvSelected: TextView, ivSeta: ImageView, options: Array<String>) {
+            optionsContainer.removeAllViews()
             options.forEach { option ->
                 val row = LinearLayout(holder.itemView.context).apply {
                     orientation = LinearLayout.HORIZONTAL
@@ -730,7 +644,6 @@ class TicketAdapter(
                     gravity = android.view.Gravity.CENTER_VERTICAL
                     setOnClickListener {
                         tvSelected.text = option
-                        // Update all RadioButtons in this container
                         for (i in 0 until optionsContainer.childCount) {
                             val child = optionsContainer.getChildAt(i)
                             if (child is LinearLayout) {
@@ -843,7 +756,6 @@ class TicketAdapter(
 
                             val users = if (resp.isSuccessful) resp.body()?.data ?: emptyList() else emptyList()
                             
-                            // Adicionar opção de Limpar no topo
                             val usersWithClear = mutableListOf<Map<String, Any>>()
                             usersWithClear.add(mapOf("1" to "Ninguém (Limpar)", "2" to "-1", "34" to "Ninguém", "9" to "(Limpar)"))
                             usersWithClear.addAll(users)
@@ -873,7 +785,6 @@ class TicketAdapter(
             }
         }
 
-        // 🔥 CATEGORIAS DINÂMICAS: Carregar do GLPI se estiver vazio 🔥
         fun updateCategoryUI() {
             llCategoriaOpcoes.removeAllViews()
             val sortedNames = categoryMap.keys.sorted()
@@ -885,7 +796,6 @@ class TicketAdapter(
                     gravity = android.view.Gravity.CENTER_VERTICAL
                     setOnClickListener {
                         tvCategoriaSel.text = name
-                        // Update all RadioButtons in this container
                         for (i in 0 until llCategoriaOpcoes.childCount) {
                             val child = llCategoriaOpcoes.getChildAt(i)
                             if (child is LinearLayout) {
@@ -964,19 +874,360 @@ class TicketAdapter(
             }
         }
 
+        // Setup Dropdowns
         setupExpandableCard(layoutFonte, llFonteOpcoes, tvFonteSel, ivFonteSeta, FONTES_PEDIDO)
         setupExpandableCard(layoutPrioridade, llPrioridadeOpcoes, tvPrioridadeSel, ivPrioridadeSeta, PRIORIDADES)
         setupExpandableUserSearch(layoutRequester, llRequesterSearch, etSearchReq, rvReqResults, pbReq, ivReqSeta, tvReq, 1)
-        setupExpandableUserSearch(layoutTechnician, llTechnicianSearch, etSearchTech, rvTechResults, pbTech, ivTechSeta, tvTech, 2)
 
-        // Aplicar cor azul_glpi às animações
         val blueFilter = PorterDuffColorFilter(holder.itemView.context.getColor(R.color.azul_glpi), PorterDuff.Mode.SRC_ATOP)
         btnEditReq.addValueCallback(com.airbnb.lottie.model.KeyPath("**"), com.airbnb.lottie.LottieProperty.COLOR_FILTER) { blueFilter }
-        btnEditTech.addValueCallback(com.airbnb.lottie.model.KeyPath("**"), com.airbnb.lottie.LottieProperty.COLOR_FILTER) { blueFilter }
+
+        // Setup Estado (Status) Selector dropdown
+        val currentStatusId = extractIdFunc?.invoke(ticket["12"]) ?: "1"
+        tvEstadoSel.text = when(currentStatusId) {
+            "1" -> "Novo"
+            "2" -> "A processar (atribuído)"
+            "3" -> "A processar (planeado)"
+            "4" -> "Aguardando"
+            "5" -> "Resolvido"
+            "6" -> "Encerrado"
+            else -> "Novo"
+        }
+        setupExpandableCard(layoutEstado, llEstadoOpcoes, tvEstadoSel, ivEstadoSeta, ESTADOS)
+
+        // Multiple Observers Logic
+        class ObserverCardState(
+            var userId: String,
+            var userName: String,
+            val view: View
+        )
+        val observerCards = mutableListOf<ObserverCardState>()
+
+        fun addObserverField(initialId: String, initialName: String) {
+            val cardView = LayoutInflater.from(context).inflate(R.layout.item_observer_edit, llObserversContainer, false)
+            val tvCurrentObserver = cardView.findViewById<TextView>(R.id.tv_current_observer)
+            val btnRemoveObserver = cardView.findViewById<ImageView>(R.id.btn_remove_observer)
+            val ivObserverSeta = cardView.findViewById<ImageView>(R.id.iv_observer_seta)
+            val layoutRoot = cardView.findViewById<View>(R.id.layout_observer_root)
+            val llObserverSearch = cardView.findViewById<LinearLayout>(R.id.ll_observer_search_container)
+            val etSearchObserver = cardView.findViewById<EditText>(R.id.et_search_observer)
+            val rvObserverResults = cardView.findViewById<RecyclerView>(R.id.rv_observer_results)
+            val pbObserver = cardView.findViewById<ProgressBar>(R.id.pb_search_observer)
+            val btnEditObserver = cardView.findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.btn_edit_observer)
+
+            tvCurrentObserver.text = initialName
+            val cardState = ObserverCardState(initialId, initialName, cardView)
+            observerCards.add(cardState)
+
+            val filter = PorterDuffColorFilter(context.getColor(R.color.azul_glpi), PorterDuff.Mode.SRC_ATOP)
+            btnEditObserver.addValueCallback(com.airbnb.lottie.model.KeyPath("**"), com.airbnb.lottie.LottieProperty.COLOR_FILTER) { filter }
+
+            rvObserverResults.layoutManager = LinearLayoutManager(context)
+            val adapter = UserSearchAdapter { selectedUser ->
+                val userIdStr = selectedUser["2"]?.toString()?.replace(".0", "") ?: ""
+                val fName = selectedUser["34"]?.toString() ?: ""
+                val lName = selectedUser["9"]?.toString() ?: ""
+                val fullName = "$fName $lName".trim().ifEmpty { selectedUser["1"]?.toString() ?: "Utilizador" }
+                
+                if (userIdStr == "-1") {
+                    cardState.userId = ""
+                    cardState.userName = "Sem observador"
+                    tvCurrentObserver.text = "Sem observador"
+                } else {
+                    cardState.userId = userIdStr
+                    cardState.userName = fullName
+                    tvCurrentObserver.text = fullName
+                }
+                llObserverSearch.visibility = View.GONE
+                ivObserverSeta.rotation = 0f
+            }
+            rvObserverResults.adapter = adapter
+
+            var searchJob: Job? = null
+            etSearchObserver.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val q = s.toString().trim()
+                    if (q.length < 2) { adapter.updateList(emptyList()); return }
+                    searchJob?.cancel()
+                    searchJob = scope.launch {
+                        delay(400)
+                        withContext(Dispatchers.Main) { pbObserver.visibility = View.VISIBLE }
+                        try {
+                            val sessionToken = PreferenceManager.getSessionToken(context)
+                            val appToken = PreferenceManager.getAppToken(context)
+                            val criteria = mapOf(
+                                "forcedisplay[0]" to "1",
+                                "forcedisplay[1]" to "2",
+                                "forcedisplay[2]" to "34",
+                                "forcedisplay[3]" to "9",
+                                "criteria[0][field]" to "1",
+                                "criteria[0][searchtype]" to "contains",
+                                "criteria[0][value]" to q,
+                                "criteria[1][link]" to "OR",
+                                "criteria[1][field]" to "9",
+                                "criteria[1][searchtype]" to "contains",
+                                "criteria[1][value]" to q,
+                                "criteria[2][link]" to "OR",
+                                "criteria[2][field]" to "34",
+                                "criteria[2][searchtype]" to "contains",
+                                "criteria[2][value]" to q
+                            )
+                            val resp = GlpiRetrofit.api.pesquisarUsuarios(sessionToken, appToken, criteria)
+                            val users = if (resp.isSuccessful) resp.body()?.data ?: emptyList() else emptyList()
+                            
+                            val usersWithClear = mutableListOf<Map<String, Any>>()
+                            usersWithClear.add(mapOf("1" to "Ninguém (Limpar)", "2" to "-1", "34" to "Ninguém", "9" to "(Limpar)"))
+                            usersWithClear.addAll(users)
+
+                            withContext(Dispatchers.Main) { adapter.updateList(usersWithClear) }
+                        } catch (e: Exception) { Log.e("TicketAdapter", "In-place search failed", e) }
+                        finally { withContext(Dispatchers.Main) { pbObserver.visibility = View.GONE } }
+                    }
+                }
+                override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
+                override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
+            })
+
+            layoutRoot.setOnClickListener {
+                if (isBlocked) {
+                    showLockdownAlert()
+                    return@setOnClickListener
+                }
+                if (llObserverSearch.visibility == View.GONE) {
+                    llObserverSearch.visibility = View.VISIBLE
+                    ivObserverSeta.rotation = 180f
+                    etSearchObserver.requestFocus()
+                } else {
+                    llObserverSearch.visibility = View.GONE
+                    ivObserverSeta.rotation = 0f
+                }
+            }
+
+            btnRemoveObserver.setOnClickListener {
+                if (isBlocked) {
+                    showLockdownAlert()
+                    return@setOnClickListener
+                }
+                llObserversContainer.removeView(cardView)
+                observerCards.remove(cardState)
+                if (observerCards.isEmpty()) {
+                    addObserverField("", "Sem observador")
+                }
+            }
+
+            llObserversContainer.addView(cardView)
+        }
+
+        // Multiple Technicians Logic
+        class TechCardState(
+            var userId: String,
+            var userName: String,
+            val view: View
+        )
+        val techCards = mutableListOf<TechCardState>()
+
+        fun addTechnicianField(initialId: String, initialName: String) {
+            val cardView = LayoutInflater.from(context).inflate(R.layout.item_technician_edit, llTechniciansContainer, false)
+            val tvCurrentTech = cardView.findViewById<TextView>(R.id.tv_current_technician)
+            val btnRemoveTech = cardView.findViewById<ImageView>(R.id.btn_remove_technician)
+            val ivTechSeta = cardView.findViewById<ImageView>(R.id.iv_technician_seta)
+            val layoutRoot = cardView.findViewById<View>(R.id.layout_technician_root)
+            val llTechSearch = cardView.findViewById<LinearLayout>(R.id.ll_technician_search_container)
+            val etSearchTech = cardView.findViewById<EditText>(R.id.et_search_technician)
+            val rvTechResults = cardView.findViewById<RecyclerView>(R.id.rv_technician_results)
+            val pbTech = cardView.findViewById<ProgressBar>(R.id.pb_search_technician)
+            val btnEditTech = cardView.findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.btn_edit_technician)
+
+            tvCurrentTech.text = initialName
+            val cardState = TechCardState(initialId, initialName, cardView)
+            techCards.add(cardState)
+
+            val filter = PorterDuffColorFilter(context.getColor(R.color.azul_glpi), PorterDuff.Mode.SRC_ATOP)
+            btnEditTech.addValueCallback(com.airbnb.lottie.model.KeyPath("**"), com.airbnb.lottie.LottieProperty.COLOR_FILTER) { filter }
+
+            rvTechResults.layoutManager = LinearLayoutManager(context)
+            val adapter = UserSearchAdapter { selectedUser ->
+                val userIdStr = selectedUser["2"]?.toString()?.replace(".0", "") ?: ""
+                val fName = selectedUser["34"]?.toString() ?: ""
+                val lName = selectedUser["9"]?.toString() ?: ""
+                val fullName = "$fName $lName".trim().ifEmpty { selectedUser["1"]?.toString() ?: "Utilizador" }
+                
+                if (userIdStr == "-1") {
+                    cardState.userId = ""
+                    cardState.userName = "Não atribuído"
+                    tvCurrentTech.text = "Não atribuído"
+                } else {
+                    cardState.userId = userIdStr
+                    cardState.userName = fullName
+                    tvCurrentTech.text = fullName
+                }
+                llTechSearch.visibility = View.GONE
+                ivTechSeta.rotation = 0f
+            }
+            rvTechResults.adapter = adapter
+
+            var searchJob: Job? = null
+            etSearchTech.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val q = s.toString().trim()
+                    if (q.length < 2) { adapter.updateList(emptyList()); return }
+                    searchJob?.cancel()
+                    searchJob = scope.launch {
+                        delay(400)
+                        withContext(Dispatchers.Main) { pbTech.visibility = View.VISIBLE }
+                        try {
+                            val sessionToken = PreferenceManager.getSessionToken(context)
+                            val appToken = PreferenceManager.getAppToken(context)
+                            val criteria = mapOf(
+                                "forcedisplay[0]" to "1",
+                                "forcedisplay[1]" to "2",
+                                "forcedisplay[2]" to "34",
+                                "forcedisplay[3]" to "9",
+                                "criteria[0][field]" to "1",
+                                "criteria[0][searchtype]" to "contains",
+                                "criteria[0][value]" to q,
+                                "criteria[1][link]" to "OR",
+                                "criteria[1][field]" to "9",
+                                "criteria[1][searchtype]" to "contains",
+                                "criteria[1][value]" to q,
+                                "criteria[2][link]" to "OR",
+                                "criteria[2][field]" to "34",
+                                "criteria[2][searchtype]" to "contains",
+                                "criteria[2][value]" to q
+                            )
+                            val resp = GlpiRetrofit.api.pesquisarUsuarios(sessionToken, appToken, criteria)
+                            val users = if (resp.isSuccessful) resp.body()?.data ?: emptyList() else emptyList()
+                            
+                            val usersWithClear = mutableListOf<Map<String, Any>>()
+                            usersWithClear.add(mapOf("1" to "Ninguém (Limpar)", "2" to "-1", "34" to "Ninguém", "9" to "(Limpar)"))
+                            usersWithClear.addAll(users)
+
+                            withContext(Dispatchers.Main) { adapter.updateList(usersWithClear) }
+                        } catch (e: Exception) { Log.e("TicketAdapter", "In-place search failed", e) }
+                        finally { withContext(Dispatchers.Main) { pbTech.visibility = View.GONE } }
+                    }
+                }
+                override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
+                override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
+            })
+
+            layoutRoot.setOnClickListener {
+                if (isBlocked) {
+                    showLockdownAlert()
+                    return@setOnClickListener
+                }
+                if (llTechSearch.visibility == View.GONE) {
+                    llTechSearch.visibility = View.VISIBLE
+                    ivTechSeta.rotation = 180f
+                    etSearchTech.requestFocus()
+                } else {
+                    llTechSearch.visibility = View.GONE
+                    ivTechSeta.rotation = 0f
+                }
+            }
+
+            btnRemoveTech.setOnClickListener {
+                if (isBlocked) {
+                    showLockdownAlert()
+                    return@setOnClickListener
+                }
+                llTechniciansContainer.removeView(cardView)
+                techCards.remove(cardState)
+                if (techCards.isEmpty()) {
+                    addTechnicianField("", "Não atribuído")
+                }
+            }
+
+            llTechniciansContainer.addView(cardView)
+        }
+
+        fun extractTechnicians(value: Any?): List<Pair<String, String>> {
+            if (value == null) return emptyList()
+            
+            fun processSingleTech(item: Any?): Pair<String, String>? {
+                if (item == null) return null
+                if (item is Map<*, *>) {
+                    val id = item["id"]?.toString()?.substringBefore(".") ?: ""
+                    val fname = item["firstname"]?.toString() ?: ""
+                    val rname = item["realname"]?.toString() ?: ""
+                    val cname = item["completename"]?.toString() ?: ""
+                    val name = item["name"]?.toString() ?: ""
+                    val rawName = if (fname.isNotEmpty() || rname.isNotEmpty()) {
+                        "$fname $rname".trim()
+                    } else {
+                        cname.ifEmpty { name }
+                    }
+                    val processedName = formatarStringNome(rawName) ?: "[ID: $id]"
+                    if (id.isNotEmpty()) {
+                        return Pair(id, processedName)
+                    }
+                }
+                val s = item.toString().trim()
+                if (s == "null" || s.isEmpty()) return null
+                if (s.contains("-") && s.length > 8) return null
+                if (s.contains(">") || listOf("Software", "Hardware", "null", "Novo", "Incidente").any { s.equals(it, ignoreCase = true) }) return null
+                val idPotencial = s.toDoubleOrNull()?.toInt()?.toString()
+                if (idPotencial != null) {
+                    val cached = UNAME_CACHE[idPotencial] ?: "[ID: $idPotencial]"
+                    return Pair(idPotencial, formatarStringNome(cached) ?: cached)
+                }
+                return Pair("", formatarStringNome(s) ?: s)
+            }
+
+            if (value is List<*>) {
+                return value.mapNotNull { processSingleTech(it) }
+            }
+            val single = processSingleTech(value)
+            if (single != null) {
+                return listOf(single)
+            }
+            return emptyList()
+        }
+
+        // Initialize technicians cards
+        val initialTechs = extractTechnicians(ticket["5"])
+        if (initialTechs.isEmpty()) {
+            addTechnicianField("", "Não atribuído")
+        } else {
+            initialTechs.forEach { tech ->
+                addTechnicianField(tech.first, tech.second)
+            }
+        }
+
+        btnAddTechField.setOnClickListener {
+            if (isBlocked) {
+                showLockdownAlert()
+                return@setOnClickListener
+            }
+            addTechnicianField("", "Não atribuído")
+        }
+
+        // Initialize observer cards
+        val initialObservers = extractTechnicians(ticket["66"])
+        if (initialObservers.isEmpty()) {
+            addObserverField("", "Sem observador")
+        } else {
+            initialObservers.forEach { obs ->
+                addObserverField(obs.first, obs.second)
+            }
+        }
+
+        btnAddObserverField.setOnClickListener {
+            if (isBlocked) {
+                showLockdownAlert()
+                return@setOnClickListener
+            }
+            addObserverField("", "Sem observador")
+        }
 
         btnSalvar.setOnClickListener {
             if (isRestricted(context)) {
                 exibirAlertaPremium(context, "Sem permissão para alterar tickets.", dialogView)
+                return@setOnClickListener
+            }
+            val initialStatusId = extractIdFunc?.invoke(ticket["12"]) ?: "1"
+            if (initialStatusId == "6") {
+                exibirAlertaPremium(context, "Este ticket encontra-se encerrado e não pode ser editado.", dialogView, isError = true)
                 return@setOnClickListener
             }
             val selectedType = if (rbIncidente.isChecked) 1 else 2
@@ -993,7 +1244,7 @@ class TicketAdapter(
                 selectedFonteName.equals("Written", ignoreCase = true) || selectedFonteName.equals("Escrito", ignoreCase = true) -> 5
                 selectedFonteName.equals("Other", ignoreCase = true) || selectedFonteName.equals("Outro", ignoreCase = true) -> 6
                 selectedFonteName.equals("Formcreator", ignoreCase = true) -> 7
-                else -> 4 // Fallback para Direct
+                else -> 4
             }
 
             // Mapeamento de Prioridade
@@ -1006,14 +1257,23 @@ class TicketAdapter(
                 "Principal" -> 6
                 else -> 3
             }
+
+            val selectedStatusName = tvEstadoSel.text.toString()
+            val selectedStatusId = when (selectedStatusName) {
+                "Novo" -> 1
+                "A processar (atribuído)" -> 2
+                "A processar (planeado)" -> 3
+                "Aguardando" -> 4
+                "Resolvido" -> 5
+                "Encerrado" -> 6
+                else -> 1
+            }
             
             scope.launch {
                 try {
                     val sessionToken = PreferenceManager.getSessionToken(holder.itemView.context)
                     val appToken = PreferenceManager.getAppToken(holder.itemView.context)
                     
-                    // Nota: O mapeamento de categoria ID precisaria ser feito se tivéssemos os IDs da API.
-                    // Por agora, atualizamos o tipo, fonte e prioridade.
                     val selectedCategoryName = tvCategoriaSel.text.toString()
                     val selectedCategoryId = categoryMap[selectedCategoryName]
 
@@ -1021,7 +1281,8 @@ class TicketAdapter(
                         "id" to ticketId,
                         "type" to selectedType,
                         "requesttypes_id" to selectedSourceId,
-                        "priority" to selectedPriorityId
+                        "priority" to selectedPriorityId,
+                        "status" to selectedStatusId
                     )
                     
                     if (selectedCategoryId != null) {
@@ -1042,15 +1303,131 @@ class TicketAdapter(
                     
                     val resp = GlpiRetrofit.api.updateTicketStatus(ticketId, sessionToken, appToken, input)
                     
-                    withContext(Dispatchers.Main) {
-                        if (resp.isSuccessful) {
+                    if (resp.isSuccessful) {
+                        // Synchronize technicians
+                        val respActors = GlpiRetrofit.api.getTicketActors(ticketId, sessionToken, appToken)
+                        if (respActors.isSuccessful) {
+                            val actors = respActors.body() ?: emptyList()
+                            
+                            // Technicians (Type = 2)
+                            val serverTechs = actors.filter {
+                                (it["type"]?.toString() ?: "").substringBefore(".") == "2"
+                            }
+                            val serverUserIds = serverTechs.map { (it["users_id"]?.toString() ?: "").substringBefore(".") }
+                            val selectedUserIds = techCards.map { it.userId }.filter { it.isNotEmpty() }
+                            
+                            // Delete technicians removed in UI
+                            serverTechs.forEach { actor ->
+                                val userId = (actor["users_id"]?.toString() ?: "").substringBefore(".")
+                                if (!selectedUserIds.contains(userId)) {
+                                    val linkId = (actor["id"]?.toString() ?: "").substringBefore(".").toIntOrNull()
+                                    if (linkId != null) {
+                                        GlpiRetrofit.api.deleteTicketActor(linkId, sessionToken, appToken)
+                                    }
+                                }
+                            }
+                            
+                            // Add technicians newly assigned in UI
+                            selectedUserIds.forEach { userId ->
+                                if (!serverUserIds.contains(userId)) {
+                                    val tId = ticketId.toIntOrNull() ?: ticketId
+                                    val uId = userId.toIntOrNull() ?: userId
+                                    val inputUser = mapOf("input" to mapOf("tickets_id" to tId, "users_id" to uId, "type" to 2))
+                                    val resUser = GlpiRetrofit.api.atribuirTicket(sessionToken, appToken, inputUser)
+                                    if (resUser.isSuccessful) {
+                                        val card = techCards.find { it.userId == userId }
+                                        if (card != null) {
+                                            UNAME_CACHE[userId] = card.userName
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Observers (Type = 3)
+                            val serverObservers = actors.filter {
+                                (it["type"]?.toString() ?: "").substringBefore(".") == "3"
+                            }
+                            val serverObserverUserIds = serverObservers.map { (it["users_id"]?.toString() ?: "").substringBefore(".") }
+                            val selectedObserverUserIds = observerCards.map { it.userId }.filter { it.isNotEmpty() }
+                            
+                            // Delete observers removed in UI
+                            serverObservers.forEach { actor ->
+                                val userId = (actor["users_id"]?.toString() ?: "").substringBefore(".")
+                                if (!selectedObserverUserIds.contains(userId)) {
+                                    val linkId = (actor["id"]?.toString() ?: "").substringBefore(".").toIntOrNull()
+                                    if (linkId != null) {
+                                        GlpiRetrofit.api.deleteTicketActor(linkId, sessionToken, appToken)
+                                    }
+                                }
+                            }
+                            
+                            // Add observers newly assigned in UI
+                            selectedObserverUserIds.forEach { userId ->
+                                if (!serverObserverUserIds.contains(userId)) {
+                                    val tId = ticketId.toIntOrNull() ?: ticketId
+                                    val uId = userId.toIntOrNull() ?: userId
+                                    val inputUser = mapOf("input" to mapOf("tickets_id" to tId, "users_id" to uId, "type" to 3))
+                                    val resUser = GlpiRetrofit.api.atribuirTicket(sessionToken, appToken, inputUser)
+                                    if (resUser.isSuccessful) {
+                                        val card = observerCards.find { it.userId == userId }
+                                        if (card != null) {
+                                            UNAME_CACHE[userId] = card.userName
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Update local dataset
+                        val index = tickets.indexOfFirst { 
+                            val tid = it["2"]?.toString()?.replace(".0", "") ?: it["id"]?.toString()?.replace(".0", "")
+                            tid == ticketId 
+                        }
+                        if (index != -1) {
+                            val mutableTicket = tickets[index].toMutableMap()
+                            mutableTicket["12"] = selectedStatusId.toString()
+                            
+                            val activeTechs = techCards.filter { it.userId.isNotEmpty() }
+                            if (activeTechs.isEmpty()) {
+                                mutableTicket.remove("5")
+                            } else {
+                                mutableTicket["5"] = activeTechs.map { card ->
+                                    mapOf(
+                                        "id" to card.userId,
+                                        "name" to card.userName
+                                    )
+                                }
+                            }
+                            
+                            val activeObservers = observerCards.filter { it.userId.isNotEmpty() }
+                            if (activeObservers.isEmpty()) {
+                                mutableTicket.remove("66")
+                            } else {
+                                mutableTicket["66"] = activeObservers.map { card ->
+                                    mapOf(
+                                        "id" to card.userId,
+                                        "name" to card.userName
+                                    )
+                                }
+                            }
+                            
+                            val newList = tickets.toMutableList()
+                            newList[index] = mutableTicket
+                            tickets = newList
+                        }
+
+                        withContext(Dispatchers.Main) {
                             exibirAlertaPremium(context, "Ticket gravado com sucesso!", null, isError = false)
                             dialog.dismiss()
-                        } else {
+                            this@TicketAdapter.notifyDataSetChanged()
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
                             exibirAlertaPremium(context, "Erro ao gravar alterações", null, isError = true)
                         }
                     }
                 } catch (e: Exception) {
+                    Log.e("TicketAdapter", "Failed to save ticket", e)
                     withContext(Dispatchers.Main) {
                         exibirAlertaPremium(context, "Erro de conexão", null, isError = true)
                     }
@@ -1058,10 +1435,155 @@ class TicketAdapter(
             }
         }
 
+        // Fetch ticket details and ticket actors (technicians and observers) in parallel
+        scope.launch(Dispatchers.IO) {
+            try {
+                val sessionToken = PreferenceManager.getSessionToken(context)
+                val appToken = PreferenceManager.getAppToken(context)
+                
+                val (resp, respActors) = supervisorScope {
+                    val ticketDeferred = async { GlpiRetrofit.api.getTicketById(ticketId, sessionToken, appToken) }
+                    val actorsDeferred = async { GlpiRetrofit.api.getTicketActors(ticketId, sessionToken, appToken) }
+                    
+                    val r = try { ticketDeferred.await() } catch (e: Exception) {
+                        Log.e("TicketAdapter", "Failed to fetch ticket $ticketId", e)
+                        null
+                    }
+                    val ra = try { actorsDeferred.await() } catch (e: Exception) {
+                        Log.e("TicketAdapter", "Failed to fetch actors for ticket $ticketId", e)
+                        null
+                    }
+                    Pair(r, ra)
+                }
+                
+                val fullTicket: Map<String, Any> = if (resp != null && resp.isSuccessful) resp.body() ?: emptyMap() else emptyMap()
+                
+                fun resolveSourceName(value: Any?): String {
+                    if (value == null) return "Direct"
+                    val str = when (value) {
+                        is Map<*, *> -> value["name"]?.toString() ?: value["id"]?.toString() ?: ""
+                        else -> value.toString()
+                    }.trim()
+                    return when {
+                        str.isEmpty() || str == "null" || str == "0" -> "Direct"
+                        str.contains("Helpdesk", ignoreCase = true) -> "Helpdesk"
+                        str.contains("E-Mail", ignoreCase = true) || str.contains("Email", ignoreCase = true) -> "E-Mail"
+                        str.contains("Phone", ignoreCase = true) || str.contains("Telefone", ignoreCase = true) -> "Phone"
+                        str.contains("Written", ignoreCase = true) || str.contains("Escrito", ignoreCase = true) -> "Written"
+                        str.contains("Other", ignoreCase = true) || str.contains("Outro", ignoreCase = true) -> "Other"
+                        str.contains("Formcreator", ignoreCase = true) -> "Formcreator"
+                        str.contains("Direct", ignoreCase = true) || str.contains("Direto", ignoreCase = true) -> "Direct"
+                        str == "1" -> "Helpdesk"
+                        str == "2" -> "E-Mail"
+                        str == "3" -> "Phone"
+                        str == "4" -> "Direct"
+                        str == "5" -> "Written"
+                        str == "6" -> "Other"
+                        str == "7" -> "Formcreator"
+                        str.toDoubleOrNull() != null -> "Direct"
+                        else -> str
+                    }
+                }
+                val sourceText = resolveSourceName(fullTicket["requesttypes_id"])
+                
+                val apiTTO = fullTicket["time_to_own"]?.toString() ?: ""
+                val apiTTR = fullTicket["time_to_resolve"]?.toString() ?: ""
+                
+                val cleanTto = if (apiTTO.isNotEmpty() && apiTTO != "null") apiTTO else "---- / -- / --"
+                val cleanTtr = if (apiTTR.isNotEmpty() && apiTTR != "null") apiTTR else "---- / -- / --"
+
+                val techList = mutableListOf<Pair<String, String>>()
+                val observerList = mutableListOf<Pair<String, String>>()
+                var requesterId = ""
+                var requesterName = ""
+                var hasActors = false
+
+                if (respActors != null && respActors.isSuccessful) {
+                    val actors = respActors.body() ?: emptyList()
+                    hasActors = true
+                    actors.forEach { actor ->
+                        val userId = (actor["users_id"]?.toString() ?: "").substringBefore(".")
+                        val type = (actor["type"]?.toString() ?: "").substringBefore(".")
+                        if (userId.isNotEmpty()) {
+                            var name = UNAME_CACHE[userId]
+                            if (name == null) {
+                                try {
+                                    val userResp = GlpiRetrofit.api.getUser(sessionToken, appToken, userId)
+                                    if (userResp.isSuccessful) {
+                                        val u = userResp.body()
+                                        if (u != null) {
+                                            val fname = u.firstname ?: ""
+                                            val rname = u.realname ?: ""
+                                            val uname = u.name ?: ""
+                                            val cname = u.completename ?: ""
+                                            val rawName = if (fname.isNotEmpty() || rname.isNotEmpty()) {
+                                                "$fname $rname".trim()
+                                            } else {
+                                                cname.ifEmpty { uname.ifEmpty { "ID: $userId" } }
+                                            }
+                                            name = formatarStringNome(rawName) ?: "[ID: $userId]"
+                                            UNAME_CACHE[userId] = name
+                                        }
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("TicketAdapter", "Failed to resolve user $userId name", e)
+                                }
+                            }
+                            val resolvedName = name ?: "[ID: $userId]"
+                            when (type) {
+                                "1" -> {
+                                    requesterId = userId
+                                    requesterName = resolvedName
+                                }
+                                "2" -> techList.add(Pair(userId, resolvedName))
+                                "3" -> observerList.add(Pair(userId, resolvedName))
+                            }
+                        }
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    tvFonteSel.text = sourceText
+                    tvTTO.text = cleanTto
+                    tvTTR.text = cleanTtr
+                    
+                    if (hasActors) {
+                        if (requesterName.isNotEmpty()) {
+                            tvReq.text = requesterName
+                        }
+                        
+                        llTechniciansContainer.removeAllViews()
+                        techCards.clear()
+                        if (techList.isEmpty()) {
+                            addTechnicianField("", "Não atribuído")
+                        } else {
+                            techList.forEach { tech ->
+                                addTechnicianField(tech.first, tech.second)
+                            }
+                        }
+
+                        llObserversContainer.removeAllViews()
+                        observerCards.clear()
+                        if (observerList.isEmpty()) {
+                            addObserverField("", "Sem observador")
+                        } else {
+                            observerList.forEach { obs ->
+                                addObserverField(obs.first, obs.second)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("TicketAdapter", "Parallel fetch failed", e)
+                withContext(Dispatchers.Main) {
+                    tvFonteSel.text = "Direct"
+                }
+            }
+        }
+
         dialog.show()
         dialogView.clipToOutline = true
 
-        // Obter a altura máxima do ecrã (ex: 82% do ecrã)
         val displayMetrics = context.resources.displayMetrics
         val maxHeight = (displayMetrics.heightPixels * 0.82).toInt()
 
@@ -1072,7 +1594,6 @@ class TicketAdapter(
             )
             window.setBackgroundDrawableResource(android.R.color.transparent)
 
-            // Garantir que a janela não ultrapassa a altura do ecrã, ativando o ScrollView
             val decorView = window.decorView
             decorView.post {
                 try {
@@ -1404,21 +1925,25 @@ class TicketAdapter(
         val context = originalHolder.itemView.context
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ticket_focus_mode, null)
         
-        // Criar Diálogo Full Screen com fundo branco real e centramento forçado
-        val dialog = AlertDialog.Builder(context, android.R.style.Theme_NoTitleBar_Fullscreen).setView(dialogView).create()
+        // Criar Diálogo Full Screen adaptativo com centramento forçado
+        val dialog = android.app.Dialog(context, android.R.style.Theme_NoTitleBar_Fullscreen)
+        dialog.setContentView(dialogView)
+        val isDarkMode = (context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+        val themeColor = context.getColor(R.color.fundo_app)
+
         dialog.window?.let { window ->
-            window.setBackgroundDrawableResource(android.R.color.white)
+            window.setBackgroundDrawableResource(R.color.fundo_app)
             window.setLayout(android.view.WindowManager.LayoutParams.MATCH_PARENT, android.view.WindowManager.LayoutParams.MATCH_PARENT)
             window.setGravity(android.view.Gravity.CENTER)
             
             // Forçar que o conteúdo preencha as barras de sistema
             window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             
-            // Barra de Navegação Branca com ícones escuros (API Moderna)
-            window.navigationBarColor = android.graphics.Color.WHITE
+            // Barra de Navegação Adaptativa
+            window.navigationBarColor = themeColor
             val controller = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
-            controller.isAppearanceLightStatusBars = true
-            controller.isAppearanceLightNavigationBars = true
+            controller.isAppearanceLightStatusBars = !isDarkMode
+            controller.isAppearanceLightNavigationBars = !isDarkMode
         }
 
         // Inflar o ticket preservando as dimensões originais (passando o container como parent)
@@ -1453,8 +1978,14 @@ class TicketAdapter(
         tvPrio.visibility = if (prioridadeNome.isNotEmpty()) View.VISIBLE else View.GONE
         tvPrio.setTextColor(ContextCompat.getColor(context, if (prioridadeId.toIntOrNull() ?: 0 >= 4) R.color.vermelho_forte else R.color.azul_glpi))
 
-        ticketView.findViewById<TextView>(R.id.tv_ticket_requester).text = originalHolder.tvRequester.text
-        ticketView.findViewById<TextView>(R.id.tv_ticket_technician).text = originalHolder.tvTechnician.text
+        val tvFocusReq = ticketView.findViewById<TextView>(R.id.tv_ticket_requester)
+        tvFocusReq.text = originalHolder.tvRequester.text
+        tvFocusReq.maxLines = 10
+
+        val tvFocusTech = ticketView.findViewById<TextView>(R.id.tv_ticket_technician)
+        tvFocusTech.text = originalHolder.tvTechnician.text
+        tvFocusTech.maxLines = 10
+
         ticketView.findViewById<TextView>(R.id.tv_ticket_data).text = originalHolder.tvData.text
 
         // Garantir que a descrição não aparece se estiver colapsado no original
@@ -1470,10 +2001,7 @@ class TicketAdapter(
             dialog.dismiss()
             showAddFollowupDialog(ticketId, originalHolder)
         }
-        dialogView.findViewById<View>(R.id.btn_menu_resolver).setOnClickListener {
-            dialog.dismiss()
-            marcarComoResolvido(ticketId, originalHolder)
-        }
+
         dialogView.findViewById<View>(R.id.btn_menu_editar).setOnClickListener {
             dialog.dismiss()
             showAtoresManagementDialog(ticketId, ticket, reqStr, techStr, originalHolder)

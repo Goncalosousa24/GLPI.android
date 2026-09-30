@@ -137,14 +137,14 @@
                     android:background="@color/linha_separadora"
                     app:layout_constraintTop_toBottomOf="@id/tv_notif_geral" />
 
-                <!-- Tickets Abertos -->
+                <!-- Requerente -->
                 <TextView
-                    android:id="@+id/tv_notif_abertos"
+                    android:id="@+id/tv_notif_requerente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:paddingVertical="8dp"
-                    android:text="Tickets Abertos"
+                    android:text="Requerente"
                     android:textColor="@color/texto_principal"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -153,7 +153,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_notif_abertos"
+                    android:id="@+id/switch_notif_requerente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.SwitchAzul"
@@ -165,26 +165,26 @@
                     app:track="@drawable/bg_switch_track_elegant"
                     app:trackTint="@null"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_notif_abertos"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_abertos" />
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_requerente"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_requerente" />
 
-                <!-- Tickets Encerrados -->
+                <!-- Observador -->
                 <TextView
-                    android:id="@+id/tv_notif_encerrados"
+                    android:id="@+id/tv_notif_observador"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:paddingVertical="8dp"
-                    android:text="Tickets Encerrados"
+                    android:text="Observador"
                     android:textColor="@color/texto_principal"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    app:layout_constraintTop_toBottomOf="@id/tv_notif_abertos"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notif_requerente"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_notif_encerrados"
+                    android:id="@+id/switch_notif_observador"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.SwitchAzul"
@@ -196,8 +196,70 @@
                     app:track="@drawable/bg_switch_track_elegant"
                     app:trackTint="@null"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_notif_encerrados"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_encerrados" />
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_observador"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_observador" />
+
+                <!-- Atribuído -->
+                <TextView
+                    android:id="@+id/tv_notif_atribuido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Atribuído"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notif_observador"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notif_atribuido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_atribuido"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_atribuido" />
+
+                <!-- Finalizado -->
+                <TextView
+                    android:id="@+id/tv_notif_finalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Finalizado"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notif_atribuido"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notif_finalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.SwitchAzul"
+                    android:scaleX="1.25"
+                    android:scaleY="1.25"
+                    android:padding="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:track="@drawable/bg_switch_track_elegant"
+                    app:trackTint="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_notif_finalizado"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_notif_finalizado" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

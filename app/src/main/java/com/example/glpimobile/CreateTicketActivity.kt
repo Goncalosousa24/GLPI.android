@@ -92,7 +92,7 @@ class CreateTicketActivity : AppCompatActivity() {
             PorterDuffColorFilter(corBranca, PorterDuff.Mode.SRC_ATOP)
         }
 
-        btnVoltar.setOnClickListener { voltarParaMenu() }
+        btnVoltar.setOnClickListener { voltarParaMenu(abrirMenu = true) }
 
         // 11. Orchestrar Focos
         configurarBordasDinamicas(
@@ -118,7 +118,7 @@ class CreateTicketActivity : AppCompatActivity() {
             val descricao = etDescricao.text.toString().trim()
 
             if (assunto.isEmpty() || descricao.isEmpty()) {
-                Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show()
+                AlertHelper.exibirAlertaPremium(this, "Preencha todos os campos.", isError = true)
                 return@setOnClickListener
             }
 
@@ -397,6 +397,10 @@ class CreateTicketActivity : AppCompatActivity() {
     private fun enviarTicketParaApi(assunto: String, descricao: String, tipo: Int, catId: Int?, fonteId: Int, priorityId: Int, tto: String?, ttr: String?) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                // Obter a data e hora local do dispositivo Android formatadas para o GLPI
+                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                val currentDateTime = sdf.format(java.util.Date())
+
                 val input = TicketInput(
                     name = assunto,
                     content = descricao,
@@ -406,22 +410,30 @@ class CreateTicketActivity : AppCompatActivity() {
                     requesttypes_id = fonteId,
                     priority = priorityId,
                     time_to_own = tto,
-                    time_to_resolve = ttr
+                    time_to_resolve = ttr,
+                    date = currentDateTime,
+                    date_mod = currentDateTime
                 )
                 val response = GlpiRetrofit.api.criarTicket(GlpiConfig.SESSION_TOKEN, GlpiConfig.APP_TOKEN, TicketRequest(input))
                 withContext(Dispatchers.Main) {
                     if (response.id != null) {
                         if (selectedUris.isNotEmpty()) {
-                            Toast.makeText(this@CreateTicketActivity, "Enviando anexos...", Toast.LENGTH_SHORT).show()
+                            AlertHelper.exibirAlertaPremium(this@CreateTicketActivity, "A enviar anexos...", isError = false)
                             uploadDocumentos(response.id)
                         } else {
-                            Toast.makeText(this@CreateTicketActivity, "Ticket #${response.id} criado!", Toast.LENGTH_LONG).show()
-                            voltarParaMenu()
+                            AlertHelper.exibirAlertaPremium(this@CreateTicketActivity, "Ticket #${response.id} criado!", isError = false)
+                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                voltarParaMenu(abrirMenu = false)
+                            }, 1500)
                         }
-                    } else Toast.makeText(this@CreateTicketActivity, "Erro ao criar.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        AlertHelper.exibirAlertaPremium(this@CreateTicketActivity, "Erro ao criar ticket.", isError = true)
+                    }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { Toast.makeText(this@CreateTicketActivity, "Erro de ligação.", Toast.LENGTH_SHORT).show() }
+                withContext(Dispatchers.Main) {
+                    AlertHelper.exibirAlertaPremium(this@CreateTicketActivity, "Erro de ligação.", isError = true)
+                }
             }
         }
     }
@@ -442,20 +454,22 @@ class CreateTicketActivity : AppCompatActivity() {
                 } catch (e: Exception) {}
             }
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@CreateTicketActivity, "Ticket criado com sucesso!", Toast.LENGTH_LONG).show()
-                voltarParaMenu()
+                AlertHelper.exibirAlertaPremium(this@CreateTicketActivity, "Ticket criado com sucesso!", isError = false)
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    voltarParaMenu(abrirMenu = false)
+                }, 1500)
             }
         }
     }
 
-    private fun voltarParaMenu() {
+    private fun voltarParaMenu(abrirMenu: Boolean = true) {
         val intent = Intent(this, DashboardActivity::class.java)
-        intent.putExtra("ABRIR_MENU", true)
+        intent.putExtra("ABRIR_MENU", abrirMenu)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         finish()
     }
 
-    override fun onBackPressed() { voltarParaMenu() }
+    override fun onBackPressed() { voltarParaMenu(abrirMenu = true) }
 }

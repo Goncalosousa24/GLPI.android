@@ -51,27 +51,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Opção: Resolver -->
-        <LinearLayout
-            android:id="@+id/btn_menu_resolver"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:background="@drawable/bg_button_white_oval"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MARCAR COMO RESOLVIDO"
-                android:textColor="@color/texto_principal"
-                android:textSize="14sp"
-                android:fontFamily="@font/amiko_bold"
-                android:textStyle="bold" />
-        </LinearLayout>
+
 
         <!-- Opção: Editar -->
         <LinearLayout

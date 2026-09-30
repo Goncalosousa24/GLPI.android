@@ -10,11 +10,15 @@ object PreferenceManager {
     private const val KEY_SESSION_TOKEN = "session_token"
     private const val KEY_DARK_MODE = "dark_mode_v2"
     private const val KEY_NOTIF_ENABLED = "notif_enabled"
-    private const val KEY_NOTIF_OPEN = "notif_open"
-    private const val KEY_NOTIF_CLOSED = "notif_closed"
+    private const val KEY_NOTIF_REQUERENTE = "notif_requerente"
+    private const val KEY_NOTIF_OBSERVADOR = "notif_observador"
+    private const val KEY_NOTIF_ATRIBUIDO = "notif_atribuido"
+    private const val KEY_NOTIF_FINALIZADO = "notif_finalizado"
     private const val KEY_BIOMETRIC_ENABLED = "biometric_enabled"
-    private const val KEY_LAST_OPEN_COUNT = "last_open_count"
-    private const val KEY_LAST_CLOSED_COUNT = "last_closed_count"
+    private const val KEY_LAST_REQUERENTE_COUNT = "last_requerente_count"
+    private const val KEY_LAST_OBSERVADOR_COUNT = "last_observador_count"
+    private const val KEY_LAST_ATRIBUIDO_COUNT = "last_atribuido_count"
+    private const val KEY_LAST_FINALIZADO_COUNT = "last_finalizado_count"
     private const val KEY_USER_NAME = "cached_user_name"
     private const val KEY_USER_EMAIL = "cached_user_email"
     private const val KEY_USER_PROFILE = "cached_user_profile"
@@ -41,12 +45,7 @@ object PreferenceManager {
     }
 
     fun getBaseUrl(context: Context): String {
-        val url = getPrefs(context).getString(KEY_BASE_URL, "http://glpi.ad.cm-vilaverde.pt/") ?: "http://glpi.ad.cm-vilaverde.pt/"
-        if (url == "http://10.0.2.2:8080/") {
-            setBaseUrl(context, "http://glpi.ad.cm-vilaverde.pt/")
-            return "http://glpi.ad.cm-vilaverde.pt/"
-        }
-        return url
+        return getPrefs(context).getString(KEY_BASE_URL, "") ?: ""
     }
 
     fun setBaseUrl(context: Context, url: String) {
@@ -54,7 +53,7 @@ object PreferenceManager {
     }
 
     fun getAppToken(context: Context): String {
-        return getPrefs(context).getString(KEY_APP_TOKEN, "Kv6GgUHREqU0e35dKamiQSh5vjUYenPrqMItEeIh") ?: "Kv6GgUHREqU0e35dKamiQSh5vjUYenPrqMItEeIh"
+        return getPrefs(context).getString(KEY_APP_TOKEN, "") ?: ""
     }
 
     fun setAppToken(context: Context, token: String) {
@@ -85,20 +84,36 @@ object PreferenceManager {
         getPrefs(context).edit().putBoolean(KEY_NOTIF_ENABLED, enabled).apply()
     }
 
-    fun isNotifOpenEnabled(context: Context): Boolean {
-        return getPrefs(context).getBoolean(KEY_NOTIF_OPEN, true)
+    fun isNotifRequerenteEnabled(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_NOTIF_REQUERENTE, true)
     }
 
-    fun setNotifOpenEnabled(context: Context, enabled: Boolean) {
-        getPrefs(context).edit().putBoolean(KEY_NOTIF_OPEN, enabled).apply()
+    fun setNotifRequerenteEnabled(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_NOTIF_REQUERENTE, enabled).apply()
     }
 
-    fun isNotifClosedEnabled(context: Context): Boolean {
-        return getPrefs(context).getBoolean(KEY_NOTIF_CLOSED, true)
+    fun isNotifObservadorEnabled(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_NOTIF_OBSERVADOR, true)
     }
 
-    fun setNotifClosedEnabled(context: Context, enabled: Boolean) {
-        getPrefs(context).edit().putBoolean(KEY_NOTIF_CLOSED, enabled).apply()
+    fun setNotifObservadorEnabled(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_NOTIF_OBSERVADOR, enabled).apply()
+    }
+
+    fun isNotifAtribuidoEnabled(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_NOTIF_ATRIBUIDO, true)
+    }
+
+    fun setNotifAtribuidoEnabled(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_NOTIF_ATRIBUIDO, enabled).apply()
+    }
+
+    fun isNotifFinalizadoEnabled(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_NOTIF_FINALIZADO, true)
+    }
+
+    fun setNotifFinalizadoEnabled(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_NOTIF_FINALIZADO, enabled).apply()
     }
 
     fun isBiometricEnabled(context: Context): Boolean {
@@ -109,20 +124,36 @@ object PreferenceManager {
         getPrefs(context).edit().putBoolean(KEY_BIOMETRIC_ENABLED, enabled).apply()
     }
 
-    fun getLastOpenCount(context: Context): Int {
-        return getPrefs(context).getInt(KEY_LAST_OPEN_COUNT, -1)
+    fun getLastRequerenteCount(context: Context): Int {
+        return getPrefs(context).getInt(KEY_LAST_REQUERENTE_COUNT, -1)
     }
 
-    fun setLastOpenCount(context: Context, count: Int) {
-        getPrefs(context).edit().putInt(KEY_LAST_OPEN_COUNT, count).apply()
+    fun setLastRequerenteCount(context: Context, count: Int) {
+        getPrefs(context).edit().putInt(KEY_LAST_REQUERENTE_COUNT, count).apply()
     }
 
-    fun getLastClosedCount(context: Context): Int {
-        return getPrefs(context).getInt(KEY_LAST_CLOSED_COUNT, -1)
+    fun getLastObservadorCount(context: Context): Int {
+        return getPrefs(context).getInt(KEY_LAST_OBSERVADOR_COUNT, -1)
     }
 
-    fun setLastClosedCount(context: Context, count: Int) {
-        getPrefs(context).edit().putInt(KEY_LAST_CLOSED_COUNT, count).apply()
+    fun setLastObservadorCount(context: Context, count: Int) {
+        getPrefs(context).edit().putInt(KEY_LAST_OBSERVADOR_COUNT, count).apply()
+    }
+
+    fun getLastAtribuidoCount(context: Context): Int {
+        return getPrefs(context).getInt(KEY_LAST_ATRIBUIDO_COUNT, -1)
+    }
+
+    fun setLastAtribuidoCount(context: Context, count: Int) {
+        getPrefs(context).edit().putInt(KEY_LAST_ATRIBUIDO_COUNT, count).apply()
+    }
+
+    fun getLastFinalizadoCount(context: Context): Int {
+        return getPrefs(context).getInt(KEY_LAST_FINALIZADO_COUNT, -1)
+    }
+
+    fun setLastFinalizadoCount(context: Context, count: Int) {
+        getPrefs(context).edit().putInt(KEY_LAST_FINALIZADO_COUNT, count).apply()
     }
 
     // --- CACHE DE PERFIL ---
@@ -190,7 +221,11 @@ object PreferenceManager {
 
     // --- CACHE DE UTILIZADORES (JSON) ---
     fun getUserListCache(context: Context): String? = getPrefs(context).getString(KEY_USER_LIST_CACHE, null)
-    fun setUserListCache(context: Context, value: String) = getPrefs(context).edit().putString(KEY_USER_LIST_CACHE, value).apply()
+    fun setUserListCache(context: Context, value: String?) {
+        val editor = getPrefs(context).edit()
+        if (value == null) editor.remove(KEY_USER_LIST_CACHE) else editor.putString(KEY_USER_LIST_CACHE, value)
+        editor.apply()
+    }
 
     // --- ID DO UTILIZADOR ---
     fun getUserId(context: Context): Int = getPrefs(context).getInt(KEY_USER_ID, 0)

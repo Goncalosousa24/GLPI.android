@@ -40,6 +40,10 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.lifecycle.lifecycleScope
@@ -146,6 +150,20 @@ class DashboardActivity : AppCompatActivity() {
             AlertHelper.exibirAlertaPremium(this, "Bem-vindo!", isError = false)
             intent.removeExtra("SHOW_WELCOME")
         }
+
+        requestNotificationPermission()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    101
+                )
+            }
+        }
     }
 
     override fun onResume() {
@@ -210,13 +228,13 @@ class DashboardActivity : AppCompatActivity() {
                         
                         withContext(Dispatchers.Main) {
                             PreferenceManager.setUserProfile(this@DashboardActivity, serverProfileName)
-                            isReadOnlyProfile = PreferenceManager.isRestrictedProfile(this@DashboardActivity)
+                            isReadOnlyProfile = PreferenceManager.isReadOnlyProfile(this@DashboardActivity)
                             PreferenceManager.clearAllDataCache(this@DashboardActivity)
                             recarregarDadosAoMudarPerfil()
                         }
                     } else {
                         withContext(Dispatchers.Main) {
-                            isReadOnlyProfile = PreferenceManager.isRestrictedProfile(this@DashboardActivity)
+                            isReadOnlyProfile = PreferenceManager.isReadOnlyProfile(this@DashboardActivity)
                         }
                     }
                 }
@@ -278,9 +296,8 @@ class DashboardActivity : AppCompatActivity() {
                         Intent(this, CreateTicketActivity::class.java)
                     }
                 }
-                R.id.nav_my_tickets -> Intent(this, MyCreatedTicketsActivity::class.java)
+                R.id.nav_vista_geral -> Intent(this, GeneralViewTicketsActivity::class.java)
                 R.id.nav_delete_tickets -> Intent(this, DeleteTicketsActivity::class.java)
-                R.id.nav_resolved_tickets -> Intent(this, ResolvedTicketsActivity::class.java)
                 R.id.nav_estatisticas -> Intent(this, StatisticsActivity::class.java)
                 R.id.nav_editar_tickets -> Intent(this, EditTicketsActivity::class.java)
                 else -> null
@@ -352,7 +369,7 @@ class DashboardActivity : AppCompatActivity() {
         // Etiquetas fixas conforme solicitado
         findViewById<TextView>(R.id.tv_label_abertos)?.text = "NOVOS"
         findViewById<TextView>(R.id.tv_label_progresso)?.text = "EM PROGRESSO"
-        findViewById<TextView>(R.id.tv_label_resolvido)?.text = "RESOLVIDOS"
+        findViewById<TextView>(R.id.tv_label_resolvido)?.text = "FINALIZADOS"
         findViewById<TextView>(R.id.tv_label_prioritarios)?.text = "PRIORITÁRIOS"
         
         // Atualizar visual do botão através do estado de seleção (Selectors nativos)
@@ -421,10 +438,10 @@ class DashboardActivity : AppCompatActivity() {
 
                     // 🔥 PERSISTIR O PERFIL E VERIFICAR PERMISSÕES 🔥
                     PreferenceManager.setUserProfile(this@DashboardActivity, profileName)
-                    isReadOnlyProfile = PreferenceManager.isRestrictedProfile(this@DashboardActivity)
+                    isReadOnlyProfile = PreferenceManager.isReadOnlyProfile(this@DashboardActivity)
                     
                     if (isReadOnlyProfile) {
-                        Log.d("DASHBOARD_PERM", "Perfil detetado como Restrito (Leitura/Observador): $profileName. Funcionalidades bloqueadas.")
+                        Log.d("DASHBOARD_PERM", "Perfil detetado como Leitura (Read-Only): $profileName. Funcionalidades de escrita bloqueadas.")
                     }
                 } else {
                     Log.e("DASHBOARD_AUTH", "Falha ao obter sessão: ${resSession.code()}")

@@ -20,7 +20,7 @@ object GlpiConfig {
         get() = PreferenceManager.getUserFullName(GlpiApp.instance)
 
     // 🔥 MODO OFFLINE: Ative para trabalhar no design sem acesso à API
-    const val OFFLINE_MODE = false
+    const val OFFLINE_MODE = true
 
     // Estado da Agenda para a sessão atual (Reinicia quando a app fecha)
     var currentAgendaFilter: String = "INDIVIDUAL"

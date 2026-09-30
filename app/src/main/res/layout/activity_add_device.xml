@@ -269,5 +269,14 @@
             android:fontFamily="@font/amiko_bold"
             android:textStyle="bold" />
     </FrameLayout>
+
+    <include
+        layout="@layout/layout_custom_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
  
 </androidx.constraintlayout.widget.ConstraintLayout>

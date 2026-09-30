@@ -41,6 +41,7 @@ class EditTicketsActivity : AppCompatActivity() {
     private lateinit var btnAnterior: View
     private lateinit var btnProxima: View
     private lateinit var nestedScroll: androidx.core.widget.NestedScrollView
+    private lateinit var paginationLayout: View
 
     private val TOKEN_SESSAO = GlpiConfig.SESSION_TOKEN
     private val TOKEN_APP = GlpiConfig.APP_TOKEN
@@ -55,6 +56,7 @@ class EditTicketsActivity : AppCompatActivity() {
         btnAnterior = findViewById(R.id.btn_pagina_anterior_edit)
         btnProxima = findViewById(R.id.btn_proxima_pagina_edit)
         nestedScroll = findViewById(R.id.nested_scroll_edit)
+        paginationLayout = findViewById(R.id.pagination_edit)
 
         rvEditTickets.layoutManager = LinearLayoutManager(this)
 
@@ -206,8 +208,12 @@ class EditTicketsActivity : AppCompatActivity() {
         rvEditTickets.adapter = TicketAdapter(paginatedList, showEditButton = true)
         rvEditTickets.scheduleLayoutAnimation()
 
-        btnAnterior.visibility = if (currentPage > 0) View.VISIBLE else View.GONE
-        btnProxima.visibility = if (end < fullTicketsList.size) View.VISIBLE else View.GONE
+        val showAnterior = currentPage > 0
+        val showProxima = end < fullTicketsList.size
+
+        btnAnterior.visibility = if (showAnterior) View.VISIBLE else View.GONE
+        btnProxima.visibility = if (showProxima) View.VISIBLE else View.GONE
+        paginationLayout.visibility = if (showAnterior || showProxima) View.VISIBLE else View.GONE
 
         nestedScroll.smoothScrollTo(0, 0)
     }

@@ -179,22 +179,45 @@ class UserAssetsActivity : AppCompatActivity() {
         
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // 1. Carregar utilizadores
+                // 1. Carregar utilizadores em chunks
                 val forcedisplayUser = mapOf(
                     "forcedisplay[0]" to "1",
                     "forcedisplay[1]" to "2"
                 )
-                val responseUsers = GlpiRetrofit.api.searchItems(
-                    itemtype = "User",
-                    sessionToken = TOKEN_SESSAO,
-                    appToken = TOKEN_APP,
-                    range = "0-200",
-                    criteria = forcedisplayUser
-                )
-
-                val bodyDataUsers = if (responseUsers.isSuccessful) responseUsers.body()?.data ?: emptyList() else emptyList()
                 
-                // 2. Carregar IDs/Logins de utilizadores com equipamentos
+                val combinedUsers = mutableListOf<Map<String, Any>>()
+                var offsetUser = 0
+                val limit = 500
+                var hasMoreUser = true
+                
+                while (hasMoreUser) {
+                    val range = "$offsetUser-${offsetUser + limit - 1}"
+                    val responseUsers = GlpiRetrofit.api.searchItems(
+                        itemtype = "User",
+                        sessionToken = TOKEN_SESSAO,
+                        appToken = TOKEN_APP,
+                        range = range,
+                        criteria = forcedisplayUser
+                    )
+                    
+                    if (responseUsers.isSuccessful) {
+                        val data = responseUsers.body()?.data
+                        if (!data.isNullOrEmpty()) {
+                            combinedUsers.addAll(data)
+                            if (data.size < limit) {
+                                hasMoreUser = false
+                            } else {
+                                offsetUser += limit
+                            }
+                        } else {
+                            hasMoreUser = false
+                        }
+                    } else {
+                        hasMoreUser = false
+                    }
+                }
+
+                // 2. Carregar IDs/Logins de utilizadores com equipamentos em chunks
                 val tipos = listOf("Computer", "Monitor", "NetworkEquipment", "Printer")
                 val assetUserIdentifiers = mutableSetOf<String>()
                 
@@ -203,29 +226,49 @@ class UserAssetsActivity : AppCompatActivity() {
                         val forcedisplayAsset = mapOf(
                             "forcedisplay[0]" to "70" // Campo do utilizador
                         )
-                        val res = GlpiRetrofit.api.searchItems(
-                            itemtype = tipo,
-                            sessionToken = TOKEN_SESSAO,
-                            appToken = TOKEN_APP,
-                            range = "0-1000",
-                            criteria = forcedisplayAsset
-                        )
+                        
+                        var offsetAsset = 0
+                        var hasMoreAsset = true
+                        
+                        while (hasMoreAsset) {
+                            val range = "$offsetAsset-${offsetAsset + limit - 1}"
+                            val res = GlpiRetrofit.api.searchItems(
+                                itemtype = tipo,
+                                sessionToken = TOKEN_SESSAO,
+                                appToken = TOKEN_APP,
+                                range = range,
+                                criteria = forcedisplayAsset
+                            )
 
-                        val resData = if (res.isSuccessful) res.body()?.data ?: emptyList() else emptyList()
-                        resData.forEach { item ->
-                            val identifier = item["70"]?.toString() ?: ""
-                            if (identifier.isNotEmpty() && identifier != "0" && identifier != "null") {
-                                assetUserIdentifiers.add(identifier.lowercase())
+                            if (res.isSuccessful) {
+                                val resData = res.body()?.data
+                                if (!resData.isNullOrEmpty()) {
+                                    resData.forEach { item ->
+                                        val identifier = item["70"]?.toString() ?: ""
+                                        if (identifier.isNotEmpty() && identifier != "0" && identifier != "null") {
+                                            assetUserIdentifiers.add(identifier.lowercase())
+                                        }
+                                    }
+                                    if (resData.size < limit) {
+                                        hasMoreAsset = false
+                                    } else {
+                                        offsetAsset += limit
+                                    }
+                                } else {
+                                    hasMoreAsset = false
+                                }
+                            } else {
+                                hasMoreAsset = false
                             }
                         }
                     } catch (e: Exception) {}
                 }
                 
                 withContext(Dispatchers.Main) {
-                    fullUserList = bodyDataUsers.filter {
+                    fullUserList = combinedUsers.filter {
                         val name = it["1"]?.toString()?.lowercase() ?: ""
                         name != "glpi" && name != "tech" && name != "normal" && name != "post-only"
-                    }.toMutableList()
+                    }.distinctBy { it["2"]?.toString() }.toMutableList()
                     
                     usersWithAssetsIds = assetUserIdentifiers
                     
@@ -258,7 +301,8 @@ class UserAssetsActivity : AppCompatActivity() {
         val query = searchBar.text.toString().trim()
         
         var filtrados = fullUserList.filter {
-            (it["1"]?.toString() ?: "").contains(query, ignoreCase = true)
+            val name = it["1"]?.toString() ?: ""
+            KeyboardHelper.removeAccents(name).contains(KeyboardHelper.removeAccents(query), ignoreCase = true)
         }
         
         filtrados = when (currentFilter) {
@@ -327,12 +371,14 @@ class UserAssetsActivity : AppCompatActivity() {
                     tipos.forEach { tipo ->
                         val deferred = async {
                             try {
-                                val res = GlpiRetrofit.api.searchByCriteria(
+                                // Pesquisa por utilizador (campo 70) OU técnico responsável (campo 24)
+                                val res = GlpiRetrofit.api.searchByUserOrTech(
                                     itemtype = tipo,
                                     sessionToken = TOKEN_SESSAO,
                                     appToken = TOKEN_APP,
-                                    field = 70, 
-                                    value = userId
+                                    value0 = userId,
+                                    value1 = userId,
+                                    range = "0-999"
                                 )
                                 val resData = if (res.isSuccessful) res.body()?.data ?: emptyList() else emptyList()
                                 resData.map { item ->

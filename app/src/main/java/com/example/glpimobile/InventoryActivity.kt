@@ -54,6 +54,7 @@ class InventoryActivity : AppCompatActivity() {
 
     private lateinit var btnAnterior: View
     private lateinit var btnProxima: View
+    private lateinit var paginationInventory: View
     private lateinit var nestedScroll: NestedScrollView
     private var searchJob: Job? = null
 
@@ -104,7 +105,6 @@ class InventoryActivity : AppCompatActivity() {
                 }
                 R.id.nav_borrow_device -> Intent(this, ReservationsActivity::class.java)
                 R.id.nav_activity -> Intent(this, LogsActivity::class.java)
-                R.id.nav_scan -> Intent(this, ScannerActivity::class.java)
                 R.id.nav_asset_history -> Intent(this, AssetHistoryActivity::class.java)
                 R.id.nav_report_problem -> {
                     if (isReadOnlyProfile) {
@@ -118,15 +118,17 @@ class InventoryActivity : AppCompatActivity() {
             }
 
             intent?.let {
-                if (item.itemId == R.id.nav_scan) {
-                    startActivityForResult(it, SCAN_REQUEST_CODE)
-                } else {
-                    startActivity(it)
-                }
+                startActivity(it)
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             }
 
             true
+        }
+
+        findViewById<FrameLayout>(R.id.btn_scan_search).setOnClickListener {
+            val intent = Intent(this, ScannerActivity::class.java)
+            startActivityForResult(intent, SCAN_REQUEST_CODE)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
 
         rvInventario = findViewById(R.id.rv_inventario)
@@ -197,6 +199,7 @@ class InventoryActivity : AppCompatActivity() {
 
         btnAnterior = findViewById(R.id.btn_pagina_anterior)
         btnProxima = findViewById(R.id.btn_proxima_pagina)
+        paginationInventory = findViewById(R.id.pagination_inventory)
         nestedScroll = findViewById(R.id.nested_scroll_main)
 
         val lupaAnim = findViewById<LottieAnimationView>(R.id.lupa_animation)
@@ -331,9 +334,8 @@ class InventoryActivity : AppCompatActivity() {
                     criteria["criteria[$criteriaIndex][criteria][1][value]"] = searchText
                 }
 
-                var totalCountAPI = 0
                 val jobs = tipos.map { tipo ->
-                    async<List<Map<String, Any>>> {
+                    async<Pair<List<Map<String, Any>>, Int>> {
                         try {
                             val res = GlpiRetrofit.api.searchInventory(
                                 itemtype = tipo,
@@ -344,18 +346,21 @@ class InventoryActivity : AppCompatActivity() {
                             )
                             if (res.isSuccessful) {
                                 val body = res.body()
-                                totalCountAPI += body?.totalcount ?: 0
-                                body?.data?.map { item ->
+                                val tc = body?.totalcount ?: 0
+                                val list = body?.data?.map { item ->
                                     val mapaEditavel = item.toMutableMap()
                                     mapaEditavel["TipoReal"] = tipo
                                     mapaEditavel
                                 } ?: emptyList()
-                            } else emptyList()
-                        } catch (e: Exception) { emptyList() }
+                                Pair(list, tc)
+                            } else Pair(emptyList(), 0)
+                        } catch (e: Exception) { Pair(emptyList(), 0) }
                     }
                 }
 
-                listaResultados.addAll(jobs.awaitAll().flatten())
+                val results = jobs.awaitAll()
+                listaResultados.addAll(results.flatMap { it.first })
+                val maxTotalCount = results.maxOfOrNull { it.second } ?: 0
 
                 withContext(Dispatchers.Main) {
                     val btnFiltro = findViewById<FrameLayout>(R.id.btn_filtro_inventory)
@@ -376,7 +381,7 @@ class InventoryActivity : AppCompatActivity() {
                     rvInventario.scheduleLayoutAnimation()
                     
                     // 🔥 Passamos o total da API para a função de botões 🔥
-                    atualizarBotoesPagina(fullInventoryList.size, totalCountAPI)
+                    atualizarBotoesPagina(fullInventoryList.size, maxTotalCount)
                     nestedScroll.smoothScrollTo(0, 0)
                 }
             } catch (e: Exception) { }
@@ -410,12 +415,16 @@ class InventoryActivity : AppCompatActivity() {
         itemTypeAtual = tipoReal
     }
 
-    private fun atualizarBotoesPagina(tamanhoPaginaAtual: Int, totalCountAPI: Int) {
-        btnAnterior.visibility = if (paginaAtual > 0) View.VISIBLE else View.GONE
+    private fun atualizarBotoesPagina(tamanhoPaginaAtual: Int, maxTotalCount: Int) {
+        val showAnterior = paginaAtual > 0
+        btnAnterior.visibility = if (showAnterior) View.VISIBLE else View.GONE
         
-        // 🔥 Lógica robusta: Próximo só se ainda houver itens para além do que já mostramos 🔥
+        // 🔥 Lógica robusta: Próximo só se ainda houver itens para além do que já mostramos e a página estiver cheia 🔥
         val itensJaMostrados = paginaAtual * itensPorPagina + tamanhoPaginaAtual
-        btnProxima.visibility = if (itensJaMostrados < totalCountAPI) View.VISIBLE else View.GONE
+        val showProxima = (itensJaMostrados < maxTotalCount) && (tamanhoPaginaAtual == itensPorPagina)
+        btnProxima.visibility = if (showProxima) View.VISIBLE else View.GONE
+
+        paginationInventory.visibility = if (showAnterior || showProxima) View.VISIBLE else View.GONE
     }
 
     private fun configurarChips() {
@@ -459,6 +468,7 @@ class InventoryActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.search_bar).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val texto = s.toString().trim()
+                paginaAtual = 0 // Reset pagination page when search changes
                 if (texto.isEmpty()) {
                     // Se o utilizador estava em "TODOS" antes de pesquisar, volta ao "TODOS" visualmente
                     if (manualTypeSelected == "All") {

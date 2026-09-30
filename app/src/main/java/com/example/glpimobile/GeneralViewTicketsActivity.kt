@@ -7,28 +7,23 @@ import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 
-class MyTicketsHistoryActivity : AppCompatActivity() {
+class GeneralViewTicketsActivity : AppCompatActivity() {
 
     private lateinit var rvHistory: RecyclerView
-    private lateinit var adapter: TicketHistoryAdapter
+    private lateinit var adapter: GeneralViewTicketsAdapter
     private lateinit var lottieLoading: LottieAnimationView
     private lateinit var tvEmpty: TextView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var tvTitulo: TextView
     private lateinit var etSearch: EditText
     private lateinit var btnFilter: FrameLayout
     private lateinit var btnAnterior: androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +38,6 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
     
     private var currentPage: Int = 0
     private val pageSize: Int = 10
-    private var filterMonthOnly: Boolean = false
     
     private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
@@ -53,20 +47,17 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_tickets_history)
+        setContentView(R.layout.activity_general_view_tickets)
 
-        filterMonthOnly = intent.getBooleanExtra("EXTRA_FILTER_MONTH", false)
-
-        tvTitulo = findViewById(R.id.tv_titulo_my_tickets)
-        rvHistory = findViewById(R.id.rv_my_tickets_history)
-        lottieLoading = findViewById(R.id.lottie_loading_my_tickets)
-        tvEmpty = findViewById(R.id.tv_empty_my_tickets)
-        swipeRefresh = findViewById(R.id.swipeRefresh_my_tickets)
-        etSearch = findViewById(R.id.et_search_history)
-        btnFilter = findViewById(R.id.btn_filter_history)
-        btnAnterior = findViewById(R.id.btn_pagina_anterior_history)
-        btnProximo = findViewById(R.id.btn_proxima_pagina_history)
-        nestedScroll = findViewById(R.id.nested_scroll_my_tickets)
+        rvHistory = findViewById(R.id.rv_general_view_tickets)
+        lottieLoading = findViewById(R.id.lottie_loading_general_view)
+        tvEmpty = findViewById(R.id.tv_empty_general_view)
+        swipeRefresh = findViewById(R.id.swipeRefresh_general_view)
+        etSearch = findViewById(R.id.et_search_general)
+        btnFilter = findViewById(R.id.btn_filter_general)
+        btnAnterior = findViewById(R.id.btn_pagina_anterior_general)
+        btnProximo = findViewById(R.id.btn_proxima_pagina_general)
+        nestedScroll = findViewById(R.id.nested_scroll_general_view)
 
         // Aplicar cor azul GLPI à animação de carregamento
         val corAzulGlpi = androidx.core.content.ContextCompat.getColor(this, R.color.azul_glpi)
@@ -74,20 +65,23 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
             android.graphics.PorterDuffColorFilter(corAzulGlpi, android.graphics.PorterDuff.Mode.SRC_ATOP)
         }
 
+        // Configurar RecyclerView
         rvHistory.layoutManager = LinearLayoutManager(this)
-        adapter = TicketHistoryAdapter(mutableListOf())
+        adapter = GeneralViewTicketsAdapter(mutableListOf())
         rvHistory.adapter = adapter
 
-        findViewById<FrameLayout>(R.id.btn_voltar_my_tickets).setOnClickListener {
+        // Botão voltar
+        findViewById<FrameLayout>(R.id.btn_voltar_general_view).setOnClickListener {
             onBackPressed()
         }
 
         // Aplicar cor Branca à seta do Cabeçalho
-        val lottieSetaHeader = findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.lottie_seta_my_tickets)
+        val lottieSetaHeader = findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.lottie_seta_general_view)
         lottieSetaHeader?.addValueCallback(com.airbnb.lottie.model.KeyPath("**"), com.airbnb.lottie.LottieProperty.COLOR_FILTER) {
             android.graphics.PorterDuffColorFilter(android.graphics.Color.WHITE, android.graphics.PorterDuff.Mode.SRC_ATOP)
         }
 
+        // Configurar pesquisa com debounce
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -98,7 +92,7 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                 // 1. Filtragem Local Imediata
                 applyFilters()
                 
-                // 2. Lógica Debounce para Pesquisa Global (no servidor)
+                // 2. Lógica Debounce para Pesquisa Global no Servidor
                 searchRunnable?.let { searchHandler.removeCallbacks(it) }
                 
                 if (query.isNotEmpty()) {
@@ -112,7 +106,7 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
             }
         })
 
-        // Botão de Filtro (Abre Menu)
+        // Botão de Filtro
         btnFilter.setOnClickListener {
             showFilterMenu(it)
         }
@@ -133,16 +127,40 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
         }
 
         swipeRefresh.setOnRefreshListener {
-            carregarHistorico()
+            carregarTickets()
         }
 
         playFilterAnimation() // Play on open
-        carregarHistorico()
+        carregarTickets()
     }
 
     private fun showFilterMenu(view: View) {
-        val items = arrayOf("TODOS", "CRIADOS", "REQUERENTE", "OBSERVADOR", "ATRIBUÍDO")
-        val statusIds = arrayOf("TODOS", "22", "4", "66", "5")
+        val items = arrayOf(
+            "Todos",
+            "Novo",
+            "A processar (atribuído)",
+            "A processar (planeado)",
+            "Aguardando",
+            "Resolvido",
+            "Encerrado",
+            "Não Resolvido (todos excepto encerrados e resolvidos)",
+            "Não Encerrado (todos menos unicamente Encerrados)",
+            "A processar (todos a processar)",
+            "Resolvidos + Encerrados"
+        )
+        val statusIds = arrayOf(
+            "TODOS",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "1,2,3,4",
+            "1,2,3,4,5",
+            "2,3",
+            "5,6"
+        )
         
         val dialogView = layoutInflater.inflate(R.layout.dialog_custom_filter_state, null)
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -163,10 +181,10 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                 orientation = android.widget.LinearLayout.HORIZONTAL
                 layoutParams = android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                    (48 * d).toInt()
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                 gravity = android.view.Gravity.CENTER_VERTICAL
-                setPadding((24 * d).toInt(), 0, (24 * d).toInt(), 0)
+                setPadding((24 * d).toInt(), (12 * d).toInt(), (24 * d).toInt(), (12 * d).toInt())
                 
                 val outValue = android.util.TypedValue()
                 context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
@@ -174,9 +192,9 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                 
                 setOnClickListener {
                     currentStatusFilter = statusIds[index]
-                    AlertHelper.exibirAlertaPremium(this@MyTicketsHistoryActivity, "Filtrado por: $title")
+                    AlertHelper.exibirAlertaPremium(this@GeneralViewTicketsActivity, "Filtrado por: $title")
                     playFilterAnimation()
-                    carregarHistorico()
+                    carregarTickets()
                     dialog.dismiss()
                 }
             }
@@ -186,7 +204,6 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                 text = title
                 setTextColor(androidx.core.content.ContextCompat.getColor(context, R.color.texto_principal))
                 textSize = 14f
-                isAllCaps = true
                 typeface = androidx.core.content.res.ResourcesCompat.getFont(context, R.font.amiko_bold)
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
                 gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
@@ -213,7 +230,6 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
     }
 
     private fun applyFilters() {
-        // Se temos resultados de uma pesquisa global e ainda há texto na barra, usamos esses
         val baseList = if (currentQuery.isNotEmpty() && globalSearchData != null) {
             globalSearchData!!
         } else {
@@ -222,9 +238,16 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
 
         var filtered = baseList
 
-        // 1. Filtrar por Estado/Papel (Local logic removed - fetched directly via API)
-        
-        // 2. Filtrar por Pesquisa (Título ou ID)
+        // 1. Filtrar por Estado
+        if (currentStatusFilter != "TODOS") {
+            val validStatuses = currentStatusFilter.split(",")
+            filtered = filtered.filter { ticket ->
+                val rawEstado = extractId(ticket["12"])
+                validStatuses.contains(rawEstado)
+            }
+        }
+
+        // 2. Filtrar por Pesquisa Local (Título ou ID)
         if (currentQuery.isNotEmpty()) {
             filtered = filtered.filter { ticket ->
                 val titulo = ticket["1"]?.toString()?.lowercase() ?: ""
@@ -239,10 +262,11 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
         currentPage = 0 // Sempre resetar para a primeira página ao filtrar
         applyPagination()
         
+        // Active Filter UI state
         if (currentStatusFilter == "TODOS") {
             btnFilter.setBackgroundResource(R.drawable.bg_cartao_brilhante)
         } else {
-            btnFilter.setBackgroundResource(R.drawable.bg_filtro_borda_azul_transparente)
+            btnFilter.setBackgroundResource(R.drawable.bg_filtro_ativo)
         }
 
         if (filtered.isEmpty()) {
@@ -269,19 +293,8 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
         btnAnterior.visibility = if (currentPage > 0) View.VISIBLE else View.GONE
         btnProximo.visibility = if (end < filteredTicketsList.size) View.VISIBLE else View.GONE
         
-        val showPagination = btnAnterior.visibility == View.VISIBLE || btnProximo.visibility == View.VISIBLE
-        findViewById<View>(R.id.pagination_history).visibility = if (showPagination) View.VISIBLE else View.GONE
-        
         // Garantir que a lista surge sempre do topo
         nestedScroll.smoothScrollTo(0, 0)
-    }
-
-    private fun formatarNome(nome: String): String {
-        if (nome.isEmpty()) return nome
-        return nome.split(".")
-            .joinToString(" ") { word ->
-                word.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-            }
     }
 
     private fun executarPesquisaGlobal(query: String) {
@@ -294,15 +307,13 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
             }
             
             try {
-                // Identificar se é ID (apenas números) ou texto
                 val isNumeric = query.all { it.isDigit() }
                 
+                // Realizar a pesquisa de tickets activos no GLPI (isDeleted = 0)
                 val response = if (isNumeric) {
-                    // Pesquisar por ID (Campo 2)
-                    GlpiRetrofit.api.pesquisarTickets(TOKEN_SESSAO, TOKEN_APP, 2, "contains", query)
+                    GlpiRetrofit.api.pesquisarTickets(TOKEN_SESSAO, TOKEN_APP, 2, "contains", query, range = "0-299", isDeleted = 0)
                 } else {
-                    // Pesquisar por Título/Assunto (Campo 1)
-                    GlpiRetrofit.api.pesquisarTickets(TOKEN_SESSAO, TOKEN_APP, 1, "contains", query)
+                    GlpiRetrofit.api.pesquisarTickets(TOKEN_SESSAO, TOKEN_APP, 1, "contains", query, range = "0-299", isDeleted = 0)
                 }
                 
                 withContext(Dispatchers.Main) {
@@ -311,11 +322,9 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val searchData = response.body()?.data ?: emptyList()
                         if (searchData.isNotEmpty()) {
-                            // Guardar resultados e reaplicar filtros (para respeitar o estado selecionado)
                             globalSearchData = searchData
                             applyFilters()
                         } else {
-                            // Se não encontrou nada globalmente e a lista local já estava vazia
                             if (filteredTicketsList.isEmpty()) {
                                 tvEmpty.visibility = View.VISIBLE
                                 tvEmpty.text = "Nenhum ticket encontrado no GLPI."
@@ -325,7 +334,6 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                             }
                         }
                     } else {
-                        // Erro silencioso ou retry local
                         if (filteredTicketsList.isEmpty()) {
                             tvEmpty.visibility = View.VISIBLE
                             tvEmpty.text = "Erro ao pesquisar no servidor."
@@ -344,48 +352,65 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun carregarHistorico() {
+    private fun buildStatusCriteria(statusFilter: String): Map<String, String> {
+        val criteriaMap = mutableMapOf<String, String>()
+        if (statusFilter == "TODOS") return criteriaMap
+
+        val statuses = statusFilter.split(",")
+        if (statuses.size == 1) {
+            criteriaMap["criteria[0][field]"] = "12"
+            criteriaMap["criteria[0][searchtype]"] = "equals"
+            criteriaMap["criteria[0][value]"] = statuses[0]
+        } else {
+            statuses.forEachIndexed { index, status ->
+                if (index > 0) {
+                    criteriaMap["criteria[$index][link]"] = "OR"
+                }
+                criteriaMap["criteria[$index][field]"] = "12"
+                criteriaMap["criteria[$index][searchtype]"] = "equals"
+                criteriaMap["criteria[$index][value]"] = status
+            }
+        }
+        return criteriaMap
+    }
+
+    private fun carregarTickets() {
         lottieLoading.visibility = View.VISIBLE
         tvEmpty.visibility = View.GONE
-
-        CoroutineScope(Dispatchers.IO).launch {
+        
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Obter o ID do utilizador guardado no PreferenceManager
-                val realUserId = PreferenceManager.getUserId(this@MyTicketsHistoryActivity)
-
-                // Escolher o endpoint correto consoante o filtro ativo:
-                // - TODOS  → 4 critérios em OR (Requerente, Atribuído, Criados, Observador)
-                // - Outro  → 1 único critério com o campo do papel selecionado
-                val resposta = if (currentStatusFilter == "TODOS") {
-                    GlpiRetrofit.api.getHistoricoTicketsPaginado(
-                        TOKEN_SESSAO, TOKEN_APP,
-                        range = "0-150",
-                        userId1 = realUserId, field1 = 4,   // Requerente
-                        userId2 = realUserId, field2 = 5,   // Atribuído
-                        userId3 = realUserId, field3 = 22,  // Criados
-                        userId4 = realUserId, field4 = 66,  // Observador
-                        cacheBuster = System.currentTimeMillis()
+                val filter = currentStatusFilter
+                val resposta = if (filter == "TODOS") {
+                    GlpiRetrofit.api.getTodosTicketsAtivos(
+                        TOKEN_SESSAO, TOKEN_APP, 
+                        range = "0-149",
+                        isDeleted = 0
                     )
                 } else {
-                    GlpiRetrofit.api.getHistoricoTicketsPorPapel(
+                    val criteriaMap = buildStatusCriteria(filter)
+                    GlpiRetrofit.api.pesquisarTicketsDinamico(
                         TOKEN_SESSAO, TOKEN_APP,
-                        range = "0-150",
-                        field = currentStatusFilter.toInt(),
-                        userId = realUserId,
-                        cacheBuster = System.currentTimeMillis()
+                        range = "0-149",
+                        isDeleted = 0,
+                        criteria = criteriaMap
                     )
                 }
 
                 withContext(Dispatchers.Main) {
                     lottieLoading.visibility = View.GONE
                     swipeRefresh.isRefreshing = false
-                    tvTitulo.text = "HISTÓRICO"
-
+                    
                     val bodyData = if (resposta.isSuccessful) resposta.body()?.data ?: emptyList() else emptyList()
-                    fullTicketsList = bodyData
-                    applyFilters()
+                    if (bodyData.isEmpty()) {
+                        fullTicketsList = listOf()
+                        tvEmpty.visibility = View.VISIBLE
+                        tvEmpty.text = "Nenhum ticket encontrado."
+                    } else {
+                        fullTicketsList = bodyData
+                        applyFilters()
+                    }
                 }
-
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     lottieLoading.visibility = View.GONE
@@ -395,6 +420,18 @@ class MyTicketsHistoryActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun extractId(valor: Any?): String {
+        if (valor == null) return ""
+        if (valor is Map<*, *>) return valor["id"]?.toString()?.substringBefore(".") ?: ""
+        if (valor is List<*>) {
+            val primeiro = valor.firstOrNull()
+            if (primeiro is Map<*, *>) return primeiro["id"]?.toString()?.substringBefore(".") ?: ""
+            return primeiro?.toString()?.substringBefore(".") ?: ""
+        }
+        val s = valor.toString()
+        return if (s.contains(".")) s.substringBefore(".") else s
     }
 
     override fun dispatchTouchEvent(ev: android.view.MotionEvent?): Boolean {

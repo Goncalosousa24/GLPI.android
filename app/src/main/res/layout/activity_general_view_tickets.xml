@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fundo_app"
-    tools:context=".MyTicketsHistoryActivity">
+    tools:context=".GeneralViewTicketsActivity">
 
     <!-- ANIMAÇÃO DE CARREGAMENTO (CENTRO DA TELA) -->
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_loading_my_tickets"
+        android:id="@+id/lottie_loading_general_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:visibility="gone"
@@ -22,24 +22,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- HEADER REMOVIDO DAQUI E PASSADO PARA O FINAL -->
-
     <!-- CONTEÚDO SCROLLABLE (COLOCADO PRIMEIRO PARA FICAR POR BAIXO NA CAMADA VISUAL) -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh_my_tickets"
+        android:id="@+id/swipeRefresh_general_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/search_and_filter_layout_history"
+        app:layout_constraintTop_toBottomOf="@+id/search_and_filter_layout_general"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_my_tickets"
+            android:id="@+id/nested_scroll_general_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:clipToPadding="false"
             android:paddingHorizontal="20dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,25 +46,25 @@
                 android:paddingTop="16dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_my_tickets_history"
+                    android:id="@+id/rv_general_view_tickets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    android:paddingBottom="0dp"
+                    android:paddingBottom="10dp"
                     android:nestedScrollingEnabled="false"
                     android:layoutAnimation="@anim/layout_animation_slide_up" />
 
                 <!-- Paginação -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/pagination_history"
+                    android:id="@+id/pagination_general_view"
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/btn_pagina_anterior_history"
+                        android:id="@+id/btn_pagina_anterior_general"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@drawable/bg_cartao_brilhante"
@@ -75,10 +73,10 @@
                         android:focusable="true"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btn_proxima_pagina_history">
+                        app:layout_constraintEnd_toStartOf="@+id/btn_proxima_pagina_general">
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_seta_voltar_history"
+                            android:id="@+id/lottie_seta_voltar_general"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:scaleX="-1"
@@ -93,7 +91,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/btn_proxima_pagina_history"
+                        android:id="@+id/btn_proxima_pagina_general"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="100dp"
@@ -101,11 +99,11 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:layout_goneMarginStart="0dp"
-                        app:layout_constraintStart_toEndOf="@+id/btn_pagina_anterior_history"
+                        app:layout_constraintStart_toEndOf="@+id/btn_pagina_anterior_general"
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_seta_avancar_history"
+                            android:id="@+id/lottie_seta_avancar_general"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             app:lottie_rawRes="@raw/seta_direita"
@@ -120,12 +118,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/tv_empty_my_tickets"
+                    android:id="@+id/tv_empty_general_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="50dp"
-                    android:text="Nenhum ticket encontrado no histórico."
+                    android:text="Nenhum ticket encontrado."
                     android:textColor="@color/texto_dica"
                     android:textSize="14sp"
                     android:visibility="gone" />
@@ -134,28 +132,28 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- BARREIRA VISUAL (AGORA DEPOIS DA LISTA PARA FICAR POR CIMA) -->
+    <!-- BARREIRA VISUAL -->
     <View
-        android:id="@+id/search_barrier_bg"
+        android:id="@+id/search_barrier_bg_general"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/fundo_app"
-        app:layout_constraintTop_toBottomOf="@id/header_bg_my_tickets"
-        app:layout_constraintBottom_toBottomOf="@id/search_and_filter_layout_history"
+        app:layout_constraintTop_toBottomOf="@id/header_bg_general_view"
+        app:layout_constraintBottom_toBottomOf="@id/search_and_filter_layout_general"
         android:layout_marginBottom="-12dp" />
 
     <!-- BARRA DE PESQUISA E FILTROS -->
     <LinearLayout
-        android:id="@+id/search_and_filter_layout_history"
+        android:id="@+id/search_and_filter_layout_general"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/header_bg_my_tickets">
+        app:layout_constraintTop_toBottomOf="@id/header_bg_general_view">
 
         <FrameLayout
-            android:id="@+id/search_container_history"
+            android:id="@+id/search_container_general"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -163,7 +161,7 @@
             android:addStatesFromChildren="true">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lottie_lupa_history"
+                android:id="@+id/lottie_lupa_general"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
@@ -174,11 +172,11 @@
                 app:lottie_colorFilter="@color/azul_glpi" />
 
             <EditText
-                android:id="@+id/et_search_history"
+                android:id="@+id/et_search_general"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:hint="Pesquisar no histórico..."
+                android:hint="Pesquisar tickets..."
                 android:textColorHint="@color/texto_dica"
                 android:paddingStart="52dp"
                 android:paddingEnd="16dp"
@@ -188,7 +186,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/btn_filter_history"
+            android:id="@+id/btn_filter_general"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
@@ -210,23 +208,23 @@
 
     <!-- HEADER (FIXO NO TOPO - CAMADA SUPERIOR) -->
     <View
-        android:id="@+id/header_bg_my_tickets"
+        android:id="@+id/header_bg_general_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bg_header_arredondado"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/header_layout_my_tickets"
+        app:layout_constraintBottom_toBottomOf="@+id/header_layout_general_view"
         android:layout_marginBottom="-16dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header_layout_my_tickets"
+        android:id="@+id/header_layout_general_view"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/btn_voltar_my_tickets"
+            android:id="@+id/btn_voltar_general_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -236,7 +234,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lottie_seta_my_tickets"
+                android:id="@+id/lottie_seta_general_view"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -246,10 +244,10 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/tv_titulo_my_tickets"
+            android:id="@+id/tv_titulo_general_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MEUS TICKETS"
+            android:text="VISTA GERAL"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -259,7 +257,6 @@
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- REMOVIDO DAQUI E PASSADO PARA CIMA NO XML PARA FICAR NO FUNDO -->
     <!-- Alerta Personalizado (Toast Premium) -->
     <include
         layout="@layout/layout_custom_alert"

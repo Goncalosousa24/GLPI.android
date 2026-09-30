@@ -1,7 +1,9 @@
 package com.example.glpimobile
 
+import android.app.Activity
 import android.app.Application
-
+import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 
 class GlpiApp : Application() {
@@ -21,6 +23,22 @@ class GlpiApp : Application() {
             0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
+
+        // Registrar callbacks para aplicar a dispensa automática do teclado em todas as atividades
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityStarted(activity: Activity) {}
+            override fun onActivityResumed(activity: Activity) {
+                val root = activity.findViewById<View>(android.R.id.content)
+                root?.post {
+                    KeyboardHelper.setupDismissKeyboardOnScroll(root, activity)
+                }
+            }
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {}
+        })
     }
 }
 

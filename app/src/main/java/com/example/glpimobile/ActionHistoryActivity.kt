@@ -102,6 +102,9 @@ class ActionHistoryActivity : AppCompatActivity() {
 
         btnAnterior.visibility = if (currentPage > 0) View.VISIBLE else View.GONE
         btnProxima.visibility = if (end < fullLogsList.size) View.VISIBLE else View.GONE
+        
+        val showPagination = btnAnterior.visibility == View.VISIBLE || btnProxima.visibility == View.VISIBLE
+        findViewById<View>(R.id.pagination_history).visibility = if (showPagination) View.VISIBLE else View.GONE
 
         // Procura o NestedScrollView dentro do SwipeRefresh
         nestedScroll.smoothScrollTo(0, 0)

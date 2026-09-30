@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/amiko_bold"
-            android:text="TICKETS RESOLVIDOS"
+            android:text="TICKETS FINALIZADOS"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -101,6 +101,27 @@
                 android:inputType="text" />
         </FrameLayout>
 
+        <!-- Botão de Filtro -->
+        <FrameLayout
+            android:id="@+id/btn_filtro"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_cartao_brilhante"
+            android:clickable="true"
+            android:focusable="true">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_filtro"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/filtro"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false" />
+        </FrameLayout>
+
+        <!-- Botão de Ordem -->
         <FrameLayout
             android:id="@+id/btn_ordem"
             android:layout_width="50dp"
@@ -165,10 +186,10 @@
                 <!-- Paginação (Estilo Padrão) -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/pagination_resolved"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:visibility="gone">
+                    android:layout_marginTop="24dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/btn_pagina_anterior_resolved"

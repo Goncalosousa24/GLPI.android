@@ -21,6 +21,6 @@
         android:width="42dp"
         android:height="42dp"
         android:gravity="center"
-        android:drawable="@drawable/ic_splash_logo_white" />
+        android:drawable="@drawable/ic_splash_logo_black" />
 
 </layer-list>

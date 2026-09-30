@@ -39,9 +39,11 @@ class ProfileActivity : AppCompatActivity() {
     private var perfilAtual = "TODOS"
     private var paginaAtual = 0
     private val itensPorPagina = 10
+    private var searchJob: kotlinx.coroutines.Job? = null
 
     private lateinit var btnAnterior: View
     private lateinit var btnProximo: View
+    private lateinit var spacePerfil: View
     private lateinit var nestedScroll: NestedScrollView
 
     private val TOKEN_SESSAO = GlpiConfig.SESSION_TOKEN
@@ -79,6 +81,7 @@ class ProfileActivity : AppCompatActivity() {
 
         btnAnterior = findViewById(R.id.btn_perfil_anterior)
         btnProximo = findViewById(R.id.btn_perfil_proximo)
+        spacePerfil = findViewById(R.id.space_perfil)
         nestedScroll = findViewById(R.id.nested_scroll_profile)
 
         // Estilização Lottie Lupa e Setas de Paginação
@@ -111,7 +114,14 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         findViewById<EditText>(R.id.search_bar_profile)?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { aplicarFiltroEAtualizar() }
+            override fun afterTextChanged(s: Editable?) { 
+                searchJob?.cancel()
+                searchJob = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+                    kotlinx.coroutines.delay(500)
+                    val apiJob = carregarUtilizadores(s?.toString() ?: "")
+                    searchJob = apiJob
+                }
+            }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -127,19 +137,9 @@ class ProfileActivity : AppCompatActivity() {
             false
         }
 
-        // --- 0. Carregar do Cache se existir ---
-        val cache = PreferenceManager.getUserListCache(this)
-        if (!cache.isNullOrEmpty()) {
-            try {
-                val type = object : com.google.gson.reflect.TypeToken<MutableList<Map<String, Any>>>() {}.type
-                fullUserList = com.google.gson.Gson().fromJson(cache, type)
-                aplicarFiltroEAtualizar()
-            } catch (e: Exception) {
-                carregarUtilizadores()
-            }
-        } else {
-            carregarUtilizadores()
-        }
+        // Limpar cache antiga e sempre carregar do servidor (garante dados sem duplicados)
+        PreferenceManager.setUserListCache(this, null)
+        carregarUtilizadores()
 
         playFilterAnimation() // Play on open
     }
@@ -206,34 +206,68 @@ class ProfileActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
-    private fun carregarUtilizadores() {
-        CoroutineScope(Dispatchers.IO).launch {
+    private fun carregarUtilizadores(query: String = ""): kotlinx.coroutines.Job {
+        return CoroutineScope(Dispatchers.IO).launch {
             try {
-                val forcedisplay = mapOf(
+                val forcedisplay = mutableMapOf(
                     "forcedisplay[0]" to "1", // Nome
                     "forcedisplay[1]" to "2", // ID
                     "forcedisplay[2]" to "20" // Perfil
                 )
-                val resposta = GlpiRetrofit.api.searchItems(
-                    itemtype = "User",
-                    sessionToken = TOKEN_SESSAO,
-                    appToken = TOKEN_APP,
-                    range = "0-400",
-                    criteria = forcedisplay
-                )
+                
+                if (query.isNotEmpty()) {
+                    forcedisplay["criteria[0][field]"] = "1"
+                    forcedisplay["criteria[0][searchtype]"] = "contains"
+                    forcedisplay["criteria[0][value]"] = query
+                }
+                
+                val combinedUsers = mutableListOf<Map<String, Any>>()
+                var offset = 0
+                val limit = 500
+                var hasMore = true
+                
+                while (hasMore) {
+                    val range = "$offset-${offset + limit - 1}"
+                    val resposta = GlpiRetrofit.api.searchItems(
+                        itemtype = "User",
+                        sessionToken = TOKEN_SESSAO,
+                        appToken = TOKEN_APP,
+                        range = range,
+                        criteria = forcedisplay
+                    )
+                    
+                    if (resposta.isSuccessful) {
+                        val data = resposta.body()?.data
+                        if (!data.isNullOrEmpty()) {
+                            combinedUsers.addAll(data)
+                            if (data.size < limit) {
+                                hasMore = false
+                            } else {
+                                offset += limit
+                            }
+                        } else {
+                            hasMore = false
+                        }
+                    } else {
+                        hasMore = false
+                    }
+                }
 
                 withContext(Dispatchers.Main) {
-                    val todosDados = if (resposta.isSuccessful) resposta.body()?.data ?: emptyList() else emptyList()
-                    fullUserList = todosDados.filter {
+                    // Guardar TODAS as linhas (um utilizador pode ter múltiplos perfis)
+                    // A deduplicação por nome é feita após aplicar o filtro de perfil
+                    fullUserList = combinedUsers.filter {
                         val nome = (it["1"]?.toString() ?: "").lowercase()
-                        nome != "glpi" && nome != "tech" && nome != "normal" && nome != "post-only"
+                        nome != "glpi" && nome != "tech" && nome != "normal" && nome != "post-only" && nome.isNotEmpty()
                     }.toMutableList()
                     
-                    // Guardar em cache
-                    try {
-                        val json = com.google.gson.Gson().toJson(fullUserList)
-                        PreferenceManager.setUserListCache(this@ProfileActivity, json)
-                    } catch (e: Exception) {}
+                    // Guardar em cache apenas se não houver pesquisa
+                    if (query.isEmpty()) {
+                        try {
+                            val json = com.google.gson.Gson().toJson(fullUserList)
+                            PreferenceManager.setUserListCache(this@ProfileActivity, json)
+                        } catch (e: Exception) {}
+                    }
 
                     aplicarFiltroEAtualizar()
                 }
@@ -262,11 +296,17 @@ class ProfileActivity : AppCompatActivity() {
 
         val texto = findViewById<EditText>(R.id.search_bar_profile)?.text?.toString() ?: ""
         if (texto.isNotEmpty()) {
+            val queryNormalized = KeyboardHelper.removeAccents(texto)
             listaFiltrada = listaFiltrada.filter {
-                (it["1"]?.toString() ?: "").contains(texto, ignoreCase = true) ||
-                        (it["20"]?.toString() ?: "").contains(texto, ignoreCase = true)
+                val nameNormalized = KeyboardHelper.removeAccents(it["1"]?.toString() ?: "")
+                val profileNormalized = KeyboardHelper.removeAccents(it["20"]?.toString() ?: "")
+                nameNormalized.contains(queryNormalized, ignoreCase = true) ||
+                        profileNormalized.contains(queryNormalized, ignoreCase = true)
             }.toMutableList()
         }
+        
+        // Remover duplicados pelo nome do utilizador (campo "1")
+        listaFiltrada = listaFiltrada.distinctBy { it["1"]?.toString()?.lowercase() }.toMutableList()
         paginaAtual = 0
         atualizarEcraPaginacao()
         
@@ -373,6 +413,7 @@ class ProfileActivity : AppCompatActivity() {
 
         btnAnterior.visibility = if (paginaAtual > 0) View.VISIBLE else View.GONE
         btnProximo.visibility = if (fim < listaFiltrada.size) View.VISIBLE else View.GONE
+        spacePerfil.visibility = if (btnAnterior.visibility == View.VISIBLE && btnProximo.visibility == View.VISIBLE) View.VISIBLE else View.GONE
     }
 
 }

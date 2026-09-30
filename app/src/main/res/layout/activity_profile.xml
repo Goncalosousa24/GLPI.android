@@ -181,7 +181,6 @@
                         android:id="@+id/btn_perfil_anterior"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginEnd="40dp"
                         android:background="@drawable/bg_cartao_brilhante"
                         android:visibility="gone"
                         android:elevation="2dp">
@@ -198,6 +197,13 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/space_perfil"
+                        android:layout_width="40dp"
+                        android:layout_height="1dp"
+                        android:visibility="gone" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/btn_perfil_proximo"
                         android:layout_width="50dp"

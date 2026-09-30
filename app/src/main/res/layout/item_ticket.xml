@@ -122,7 +122,10 @@
             android:text="Criado por: Carregando..."
             android:textColor="@color/texto_principal"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
 
         <TextView
             android:id="@+id/tv_ticket_technician"
@@ -132,7 +135,9 @@
             android:text="Atribuído a: Não atribuído"
             android:textColor="@color/texto_principal"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
     </LinearLayout>
 
     <View

@@ -78,7 +78,7 @@ interface GlpiApiService {
         @Query("is_deleted") isDeleted: Int // 0 para ativos, 1 para eliminados
     ): SearchResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=15&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=151&forcedisplay[22]=158&range=0-999")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=15&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=151&forcedisplay[22]=158&forcedisplay[23]=66&range=0-999")
     suspend fun getTodosMeusTicketsStats(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -92,7 +92,7 @@ interface GlpiApiService {
         @Query("_unused5") login2: String = ""
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?sort=15&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=15&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
     suspend fun getMeusTicketsCriados(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -119,7 +119,7 @@ interface GlpiApiService {
         @Query("_unused3") login2: String
     ): retrofit2.Response<SearchResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=12&criteria[1][searchtype]=equals&criteria[1][value]=1&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=12&criteria[1][searchtype]=equals&criteria[1][value]=1&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66")
     suspend fun getTicketsCriadosPorMim(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -136,7 +136,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getTicketsCriadosPorMimTudo(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -153,7 +153,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getTicketsCriadosGerais(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -165,7 +165,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getTicketsCriadosGeraisTudo(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -189,7 +189,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=4&criteria[1][link]=AND&criteria[1][field]=5&criteria[1][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=151&forcedisplay[18]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=4&criteria[1][link]=AND&criteria[1][field]=5&criteria[1][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=151&forcedisplay[18]=158&forcedisplay[19]=66&expand_dropdowns=true")
     suspend fun getTicketsAtribuidosAMim(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -198,7 +198,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-1000"
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=5&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=6&criteria[1][criteria][1][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=5&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=6&criteria[1][criteria][1][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&forcedisplay[26]=66&expand_dropdowns=true")
     suspend fun getTicketsAtribuidosFinalizadosHistorico(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -210,7 +210,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): retrofit2.Response<TicketListResponse>
     
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=2&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=4&criteria[1][criteria][1][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=2&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=4&criteria[1][criteria][1][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&forcedisplay[26]=66&expand_dropdowns=true")
     suspend fun getTicketsCriadosFinalizadosHistorico(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -223,7 +223,7 @@ interface GlpiApiService {
     ): retrofit2.Response<TicketListResponse>
 
 
-    @GET("apirest.php/search/Ticket?sort=17&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=151&forcedisplay[18]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=17&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=151&forcedisplay[18]=158&forcedisplay[19]=66&expand_dropdowns=true")
     suspend fun getTicketsResolvidosPorMim(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -238,7 +238,7 @@ interface GlpiApiService {
         @Query("criteria[1][searchtype]") searchStatus: String = "morethan"
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][field]=19&criteria[1][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][field]=19&criteria[1][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&forcedisplay[26]=66&expand_dropdowns=true")
     suspend fun getListaGeralFinalizadosHistorico(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -248,7 +248,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-299"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=24&forcedisplay[19]=151&forcedisplay[20]=158&forcedisplay[22]=13&forcedisplay[23]=7&forcedisplay[24]=10&forcedisplay[25]=11&forcedisplay[26]=66&expand_dropdowns=true")
     suspend fun getTicketsMeusFinalizadosHistorico(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -266,7 +266,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-299"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=1&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=9&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=1&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=9&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
     suspend fun getTicketsNovosEdit(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -275,7 +275,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=3&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=4&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=9&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=3&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=4&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[2]=9&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
     suspend fun getTicketsEmProgressoEdit(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -284,7 +284,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=17&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=17&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
     suspend fun getListaTicketsRecentPorEstado(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -320,7 +320,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-3000"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=OR&criteria[1][field]=5&criteria[1][searchtype]=equals&criteria[2][link]=OR&criteria[2][field]=22&criteria[2][searchtype]=equals&sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getUltimasAtividades(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -335,7 +335,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-9"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=66&expand_dropdowns=true")
     suspend fun getTicketsPorData(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -343,7 +343,7 @@ interface GlpiApiService {
         @Query("criteria[0][field]") field: Int = 15,
         @Query("criteria[0][searchtype]") type: String = "contains"
     ): retrofit2.Response<TicketListResponse>
-    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=66&expand_dropdowns=true")
     suspend fun getHistoricoTicketsPaginado(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -357,12 +357,28 @@ interface GlpiApiService {
         @Query("criteria[1][searchtype]") search2: String = "equals",
         @Query("criteria[2][link]") link3: String = "OR",
         @Query("criteria[2][value]") userId3: Int,
-        @Query("criteria[2][field]") field3: Int = 22, // Observer
+        @Query("criteria[2][field]") field3: Int = 22, // Author
         @Query("criteria[2][searchtype]") search3: String = "equals",
+        @Query("criteria[3][link]") link4: String = "OR",
+        @Query("criteria[3][value]") userId4: Int,
+        @Query("criteria[3][field]") field4: Int = 66, // Observer
+        @Query("criteria[3][searchtype]") search4: String = "equals",
         @Query("_cache_buster") cacheBuster: Long = System.currentTimeMillis()
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    // Endpoint limpo para filtrar o histórico por um único papel (CRIADOS, REQUERENTE, OBSERVADOR ou ATRIBUÍDO)
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=66&expand_dropdowns=true")
+    suspend fun getHistoricoTicketsPorPapel(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("range") range: String = "0-150",
+        @Query("criteria[0][field]") field: Int,       // 4=Requerente, 5=Atribuído, 22=Criados, 66=Observador
+        @Query("criteria[0][searchtype]") searchType: String = "equals",
+        @Query("criteria[0][value]") userId: Int,
+        @Query("_cache_buster") cacheBuster: Long = System.currentTimeMillis()
+    ): retrofit2.Response<TicketListResponse>
+
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getAgendaAtivos(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -370,7 +386,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-500"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=2&criteria[1][link]=OR&criteria[1][field]=12&criteria[1][searchtype]=equals&criteria[1][value]=4&criteria[2][link]=OR&criteria[2][field]=12&criteria[2][searchtype]=equals&criteria[2][value]=3&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=2&criteria[1][link]=OR&criteria[1][field]=12&criteria[1][searchtype]=equals&criteria[1][value]=4&criteria[2][link]=OR&criteria[2][field]=12&criteria[2][searchtype]=equals&criteria[2][value]=3&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getListaProgressoTotal(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -379,7 +395,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-149"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getListaTicketsPorEstadoTotal(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -391,7 +407,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-149"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=3&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=4&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=2&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=3&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=4&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getTicketsMeusEmResolucao(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -408,7 +424,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-149"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[1][link]=AND&criteria[1][criteria][0][field]=4&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=5&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=22&criteria[1][criteria][2][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getTicketsMeusEmProgressoPorEstado(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -426,7 +442,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-149"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=151&forcedisplay[19]=158&forcedisplay[20]=66&expand_dropdowns=true")
     suspend fun getAgendaAtivosByUser(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -485,7 +501,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-500"
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=18&order=ASC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=18&order=ASC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=66&expand_dropdowns=true")
     suspend fun getTicketsExpirados(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -499,7 +515,7 @@ interface GlpiApiService {
         @Query("range") range: String = "0-500"
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?sort=18&order=ASC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=18&order=ASC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=18&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=66&expand_dropdowns=true")
     suspend fun getTodosTicketsExpirados(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -510,7 +526,7 @@ interface GlpiApiService {
     ): TicketListResponse
 
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
     suspend fun pesquisarTickets(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -521,7 +537,17 @@ interface GlpiApiService {
         @Query("is_deleted") isDeleted: Int = 0
     ): retrofit2.Response<TicketListResponse>
 
-    @GET("apirest.php/search/Ticket?sort=17&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=151&forcedisplay[4]=158&forcedisplay[5]=19&forcedisplay[6]=15&forcedisplay[7]=12&forcedisplay[8]=21&forcedisplay[9]=17&forcedisplay[10]=16&forcedisplay[11]=4&forcedisplay[12]=5&forcedisplay[13]=22&forcedisplay[14]=8&forcedisplay[15]=14&forcedisplay[16]=70&forcedisplay[17]=71&forcedisplay[18]=6&forcedisplay[19]=7&forcedisplay[20]=3&forcedisplay[21]=24&forcedisplay[22]=66&expand_dropdowns=true")
+    suspend fun pesquisarTicketsDinamico(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("range") range: String = "0-149",
+        @Query("is_deleted") isDeleted: Int = 0,
+        @QueryMap criteria: Map<String, String>
+    ): retrofit2.Response<TicketListResponse>
+
+
+    @GET("apirest.php/search/Ticket?sort=17&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun pesquisarTicketsResolvidos(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -590,6 +616,39 @@ interface GlpiApiService {
         @Query("criteria[1][value]") dataLimite: String
     ): retrofit2.Response<SearchResponse>
 
+    @GET("apirest.php/search/Ticket?criteria[0][field]=4&criteria[0][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=12&criteria[1][searchtype]=lessthan&criteria[1][value]=5&range=0-1")
+    suspend fun getCountRequerenteAtivos(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("criteria[0][value]") userId: Int
+    ): retrofit2.Response<SearchResponse>
+
+    @GET("apirest.php/search/Ticket?criteria[0][field]=66&criteria[0][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=12&criteria[1][searchtype]=lessthan&criteria[1][value]=5&range=0-1")
+    suspend fun getCountObservadorAtivos(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("criteria[0][value]") userId: Int
+    ): retrofit2.Response<SearchResponse>
+
+    @GET("apirest.php/search/Ticket?criteria[0][field]=5&criteria[0][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=12&criteria[1][searchtype]=lessthan&criteria[1][value]=5&range=0-1")
+    suspend fun getCountAtribuidoAtivos(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("criteria[0][value]") userId: Int
+    ): retrofit2.Response<SearchResponse>
+
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=66&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=22&criteria[0][criteria][3][searchtype]=equals&criteria[1][link]=AND&criteria[1][criteria][0][field]=12&criteria[1][criteria][0][value]=5&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=12&criteria[1][criteria][1][value]=6&criteria[2][link]=AND&criteria[2][field]=19&criteria[2][searchtype]=morethan&range=0-1")
+    suspend fun getCountFinalizadosRecentes(
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        @Query("criteria[0][criteria][0][value]") userId1: Int,
+        @Query("criteria[0][criteria][1][value]") userId2: Int,
+        @Query("criteria[0][criteria][2][value]") userId3: Int,
+        @Query("criteria[0][criteria][3][value]") userId4: Int,
+        @Query("criteria[2][value]") dataLimite: String
+    ): retrofit2.Response<SearchResponse>
+
+
     @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=1&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=2&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=3&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=12&criteria[0][criteria][3][searchtype]=equals&criteria[0][criteria][3][value]=4&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][0][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&range=0-1")
     suspend fun getCountPrioritariosDashboard(@Header("Session-Token") sessionToken: String, @Header("App-Token") appToken: String): retrofit2.Response<SearchResponse>
 
@@ -607,7 +666,7 @@ interface GlpiApiService {
         @Query("_unused5") login2: String
     ): retrofit2.Response<SearchResponse>
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=1&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=2&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=3&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=12&criteria[0][criteria][3][searchtype]=equals&criteria[0][criteria][3][value]=4&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][0][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=1&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=2&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=3&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=12&criteria[0][criteria][3][searchtype]=equals&criteria[0][criteria][3][value]=4&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][0][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getListaPrioritariosTotal(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -616,7 +675,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][0][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&criteria[2][link]=AND&criteria[2][criteria][0][field]=12&criteria[2][criteria][0][value]=1&criteria[2][criteria][1][link]=OR&criteria[2][criteria][1][field]=12&criteria[2][criteria][1][value]=2&criteria[2][criteria][2][link]=OR&criteria[2][criteria][2][field]=12&criteria[2][criteria][2][value]=3&criteria[2][criteria][3][link]=OR&criteria[2][criteria][3][field]=12&criteria[2][criteria][3][value]=4&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][0][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&criteria[2][link]=AND&criteria[2][criteria][0][field]=12&criteria[2][criteria][0][value]=1&criteria[2][criteria][1][link]=OR&criteria[2][criteria][1][field]=12&criteria[2][criteria][1][value]=2&criteria[2][criteria][2][link]=OR&criteria[2][criteria][2][field]=12&criteria[2][criteria][2][value]=3&criteria[2][criteria][3][link]=OR&criteria[2][criteria][3][field]=12&criteria[2][criteria][3][value]=4&expand_dropdowns=true&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getListaPrioritariosMeus(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -634,7 +693,7 @@ interface GlpiApiService {
     ): TicketListResponse
 
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&criteria[2][link]=AND&criteria[2][field]=17&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=5&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=6&criteria[1][link]=AND&criteria[1][criteria][0][field]=3&criteria[1][criteria][0][searchtype]=equals&criteria[1][criteria][1][value]=4&criteria[1][criteria][1][link]=OR&criteria[1][criteria][1][field]=3&criteria[1][criteria][1][searchtype]=equals&criteria[1][criteria][1][value]=5&criteria[1][criteria][2][link]=OR&criteria[1][criteria][2][field]=3&criteria[1][criteria][2][searchtype]=equals&criteria[1][criteria][2][value]=6&criteria[2][link]=AND&criteria[2][field]=17&criteria[2][searchtype]=morethan&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getListaPrioritariosFinalizadosHistorico(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -644,7 +703,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 17
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=1&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=2&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=3&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=12&criteria[0][criteria][3][searchtype]=equals&criteria[0][criteria][3][value]=4&criteria[1][link]=AND&criteria[1][field]=3&criteria[1][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=12&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][0][value]=1&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=12&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][1][value]=2&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=12&criteria[0][criteria][2][searchtype]=equals&criteria[0][criteria][2][value]=3&criteria[0][criteria][3][link]=OR&criteria[0][criteria][3][field]=12&criteria[0][criteria][3][searchtype]=equals&criteria[0][criteria][3][value]=4&criteria[1][link]=AND&criteria[1][field]=3&criteria[1][searchtype]=equals&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getListaPrioritariosPorPrioridade(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -654,7 +713,7 @@ interface GlpiApiService {
         @Query("sort") sort: Int = 19
     ): TicketListResponse
 
-    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=3&criteria[1][searchtype]=equals&criteria[2][link]=AND&criteria[2][criteria][0][field]=12&criteria[2][criteria][0][value]=1&criteria[2][criteria][1][link]=OR&criteria[2][criteria][1][field]=12&criteria[2][criteria][1][value]=2&criteria[2][criteria][2][link]=OR&criteria[2][criteria][2][field]=12&criteria[2][criteria][2][value]=3&criteria[2][criteria][3][link]=OR&criteria[2][criteria][3][field]=12&criteria[2][criteria][3][value]=4&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?criteria[0][criteria][0][field]=4&criteria[0][criteria][0][searchtype]=equals&criteria[0][criteria][1][link]=OR&criteria[0][criteria][1][field]=5&criteria[0][criteria][1][searchtype]=equals&criteria[0][criteria][2][link]=OR&criteria[0][criteria][2][field]=22&criteria[0][criteria][2][searchtype]=equals&criteria[1][link]=AND&criteria[1][field]=3&criteria[1][searchtype]=equals&criteria[2][link]=AND&criteria[2][criteria][0][field]=12&criteria[2][criteria][0][value]=1&criteria[2][criteria][1][link]=OR&criteria[2][criteria][1][field]=12&criteria[2][criteria][1][value]=2&criteria[2][criteria][2][link]=OR&criteria[2][criteria][2][field]=12&criteria[2][criteria][2][value]=3&criteria[2][criteria][3][link]=OR&criteria[2][criteria][3][field]=12&criteria[2][criteria][3][value]=4&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getListaPrioritariosPorPrioridadeMeus(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -713,6 +772,29 @@ interface GlpiApiService {
         @Query("forcedisplay[2]") f2: Int = 5,
         @Query("forcedisplay[3]") f3: Int = 20,
         @Query("forcedisplay[4]") f4: Int = 80
+    ): retrofit2.Response<SearchResponse>
+
+    // Pesquisa por utilizador (campo 70) OU técnico responsável (campo 24) — usada em Meus Dispositivos
+    @GET("apirest.php/search/{itemtype}")
+    suspend fun searchByUserOrTech(
+        @Path("itemtype") itemtype: String,
+        @Header("Session-Token") sessionToken: String,
+        @Header("App-Token") appToken: String,
+        // Critério 0: utilizador (campo 70)
+        @Query("criteria[0][field]") field0: Int = 70,
+        @Query("criteria[0][searchtype]") searchType0: String = "equals",
+        @Query("criteria[0][value]") value0: String,
+        // Critério 1: técnico responsável (campo 24) com OR
+        @Query("criteria[1][link]") link1: String = "OR",
+        @Query("criteria[1][field]") field1: Int = 24,
+        @Query("criteria[1][searchtype]") searchType1: String = "equals",
+        @Query("criteria[1][value]") value1: String,
+        @Query("range") range: String = "0-999",
+        @Query("forcedisplay[0]") f0: Int = 1,
+        @Query("forcedisplay[1]") f1: Int = 2,
+        @Query("forcedisplay[2]") f2: Int = 5,
+        @Query("forcedisplay[3]") f3: Int = 70,
+        @Query("forcedisplay[4]") f4: Int = 24
     ): retrofit2.Response<SearchResponse>
 
     // Pesquisa por número de série incluindo campo 3 (localização) — usada em Reportar Problema
@@ -870,14 +952,14 @@ interface GlpiApiService {
         @Header("App-Token") appToken: String
     ): retrofit2.Response<okhttp3.ResponseBody>
 
-    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=4&forcedisplay[6]=5&forcedisplay[7]=22&forcedisplay[8]=8&forcedisplay[9]=14&forcedisplay[10]=70&forcedisplay[11]=71&forcedisplay[12]=6&forcedisplay[13]=7&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?sort=19&order=DESC&forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=4&forcedisplay[6]=5&forcedisplay[7]=22&forcedisplay[8]=8&forcedisplay[9]=14&forcedisplay[10]=70&forcedisplay[11]=71&forcedisplay[12]=6&forcedisplay[13]=7&forcedisplay[14]=66&expand_dropdowns=true")
     suspend fun getTicketsByIds(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
         @QueryMap criteria: Map<String, String>
     ): retrofit2.Response<okhttp3.ResponseBody>
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&sort=19&order=DESC&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&sort=19&order=DESC&expand_dropdowns=true")
     suspend fun getUltimasAtividadesGeral(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -945,7 +1027,7 @@ interface GlpiApiService {
         @Path("itemtype") itemtype: String,
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
-        @Body request: Map<String, Any>
+        @Body request: @JvmSuppressWildcards Map<String, Any>
     ): retrofit2.Response<DeviceCreateResponse>
 
     @PUT("apirest.php/{itemtype}/{id}")
@@ -954,7 +1036,7 @@ interface GlpiApiService {
         @Path("id") id: Int,
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
-        @Body request: Map<String, Any>
+        @Body request: @JvmSuppressWildcards Map<String, Any>
     ): retrofit2.Response<ResponseBody>
 
     @GET("apirest.php/Ticket/{id}/ITILFollowup")
@@ -1075,7 +1157,7 @@ interface GlpiApiService {
         @Body input: @JvmSuppressWildcards Map<String, Any>
     ): Response<Unit>
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getTicketsByItemSearch(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -1091,7 +1173,7 @@ interface GlpiApiService {
 
 
 
-    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&expand_dropdowns=true")
+    @GET("apirest.php/search/Ticket?forcedisplay[0]=2&forcedisplay[1]=1&forcedisplay[3]=15&forcedisplay[4]=12&forcedisplay[5]=21&forcedisplay[6]=17&forcedisplay[7]=16&forcedisplay[8]=4&forcedisplay[9]=5&forcedisplay[10]=22&forcedisplay[11]=8&forcedisplay[12]=14&forcedisplay[13]=70&forcedisplay[14]=71&forcedisplay[15]=6&forcedisplay[16]=7&forcedisplay[17]=3&forcedisplay[18]=66&expand_dropdowns=true")
     suspend fun getTodosTicketsAtivos(
         @Header("Session-Token") sessionToken: String,
         @Header("App-Token") appToken: String,
@@ -1121,7 +1203,71 @@ object GlpiRetrofit {
                 val mockResponse = when {
                     url.contains("initSession") -> "{\"session_token\":\"mock_token_offline\"}"
                     url.contains("getFullSession") -> "{\"session\":{\"glpiID\":1,\"glpi_id\":1,\"glpiactiveprofile\":{\"name\":\"Admin (Offline)\"}}}"
-                    url.contains("search") || url.contains("Ticket") || url.contains("Log") -> "{\"totalcount\":0,\"data\":[],\"count\":0}"
+                    url.contains("Location") -> "[{\"id\":1,\"name\":\"Gabinete 1\"},{\"id\":2,\"name\":\"Gabinete 2\"}]"
+                    url.contains("State") -> "[{\"id\":1,\"name\":\"Em uso\"},{\"id\":2,\"name\":\"Em stock\"}]"
+                    url.contains("search/User") || url.contains("User") -> {
+                        val rangeStr = request.url.queryParameter("range") ?: "0-9"
+                        val parts = rangeStr.split("-")
+                        val start = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                        val end = parts.getOrNull(1)?.toIntOrNull() ?: 9
+                        
+                        val mockList = mutableListOf<String>()
+                        for (i in 1..25) {
+                            mockList.add("""
+                                {
+                                    "2": $i,
+                                    "1": "utilizador$i",
+                                    "9": "Apelido$i",
+                                    "34": "Utilizador$i"
+                                }
+                            """.trimIndent())
+                        }
+                        val subList = if (start < mockList.size) {
+                            mockList.subList(start, minOf(end + 1, mockList.size))
+                        } else {
+                            emptyList()
+                        }
+                        "{\"totalcount\": 25, \"count\": ${subList.size}, \"data\": [${subList.joinToString(",")}]}"
+                    }
+                    url.contains("search") -> {
+                        val rangeStr = request.url.queryParameter("range") ?: "0-9"
+                        val parts = rangeStr.split("-")
+                        val start = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                        val end = parts.getOrNull(1)?.toIntOrNull() ?: 9
+                        
+                        val itemtype = when {
+                            url.contains("Computer") -> "Computer"
+                            url.contains("Monitor") -> "Monitor"
+                            url.contains("Printer") -> "Printer"
+                            url.contains("NetworkEquipment") -> "NetworkEquipment"
+                            url.contains("Peripheral") -> "Peripheral"
+                            else -> "Device"
+                        }
+                        
+                        val mockList = mutableListOf<String>()
+                        for (i in 1..25) {
+                            mockList.add("""
+                                {
+                                    "1": "$itemtype Fictício $i",
+                                    "2": ${100 + i},
+                                    "3": {"name": "Gabinete ${(i % 2) + 1}"},
+                                    "5": "SN-MOCK-${itemtype.uppercase()}-$i",
+                                    "70": "Utilizador $i",
+                                    "31": "Em uso"
+                                }
+                            """.trimIndent())
+                        }
+                        
+                        val subList = if (start < mockList.size) {
+                            mockList.subList(start, minOf(end + 1, mockList.size))
+                        } else {
+                            emptyList()
+                        }
+                        
+                        "{\"totalcount\": 25, \"count\": ${subList.size}, \"data\": [${subList.joinToString(",")}]}"
+                    }
+                    url.contains("Ticket_User") || url.contains("ITILFollowup") || url.contains("ITILSolution") || url.contains("Log") -> "[]"
+                    url.contains("Ticket") -> "{\"totalcount\":0,\"data\":[],\"count\":0}"
                     else -> "[]"
                 }
 

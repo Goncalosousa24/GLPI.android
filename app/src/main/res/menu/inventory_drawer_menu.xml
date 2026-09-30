@@ -11,9 +11,6 @@
             android:id="@+id/nav_borrow_device"
             android:title="RESERVAS" />
 
-        <item
-            android:id="@+id/nav_scan"
-            android:title="SCAN DE EQUIPAMENTO" />
 
         <item
             android:id="@+id/nav_report_problem"

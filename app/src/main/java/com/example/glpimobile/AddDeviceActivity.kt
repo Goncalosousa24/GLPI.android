@@ -247,23 +247,45 @@ class AddDeviceActivity : AppCompatActivity() {
                     "forcedisplay[0]" to "1",
                     "forcedisplay[1]" to "2"
                 )
-                val response = GlpiRetrofit.api.pesquisarUsuarios(GlpiConfig.SESSION_TOKEN, GlpiConfig.APP_TOKEN, criteria, range = "0-1000")
+                
+                val combinedUsers = mutableListOf<Map<String, Any>>()
+                var offset = 0
+                val limit = 500
+                var hasMore = true
+                
+                while (hasMore) {
+                    val range = "$offset-${offset + limit - 1}"
+                    val response = GlpiRetrofit.api.pesquisarUsuarios(GlpiConfig.SESSION_TOKEN, GlpiConfig.APP_TOKEN, criteria, range = range)
+                    
+                    if (response.isSuccessful) {
+                        val data = response.body()?.data
+                        if (!data.isNullOrEmpty()) {
+                            combinedUsers.addAll(data)
+                            if (data.size < limit) {
+                                hasMore = false
+                            } else {
+                                offset += limit
+                            }
+                        } else {
+                            hasMore = false
+                        }
+                    } else {
+                        hasMore = false
+                    }
+                }
 
                 technicianMap.clear()
 
-                if (response.isSuccessful) {
-                    val usersList = response.body()?.data ?: emptyList()
-                    usersList.forEach { item ->
-                        val name = item["1"]?.toString() ?: ""
-                        val id = item["2"]?.toString()?.toDoubleOrNull()?.toInt() ?: 0
-                        if (name.isNotEmpty()) {
-                            technicianMap[name] = id
-                        }
+                combinedUsers.distinctBy { it["2"]?.toString() }.forEach { item ->
+                    val name = item["1"]?.toString() ?: ""
+                    val id = item["2"]?.toString()?.toDoubleOrNull()?.toInt() ?: 0
+                    if (name.isNotEmpty()) {
+                        technicianMap[name] = id
                     }
-
-                    val nomesUsuarios = technicianMap.keys.sortedBy { it.lowercase() }
-                    tecnicosFinal.addAll(nomesUsuarios)
                 }
+
+                val nomesUsuarios = technicianMap.keys.sortedBy { it.lowercase() }
+                tecnicosFinal.addAll(nomesUsuarios)
  
                 withContext(Dispatchers.Main) {
                     val adapterTecnico = ArrayAdapter(this@AddDeviceActivity, android.R.layout.simple_list_item_1, tecnicosFinal)
@@ -378,6 +400,12 @@ class AddDeviceActivity : AppCompatActivity() {
                         input["comment"] = "Adicionado via GLPI Mobile App"
                         input["entities_id"] = "0" // Forçar Entidade Raiz para teste
                         
+                        // Enviar as datas corretas usando o relógio local do Android
+                        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                        val currentDateTime = sdf.format(java.util.Date())
+                        input["date_creation"] = currentDateTime
+                        input["date_mod"] = currentDateTime
+
                         if (sn.isNotEmpty()) input["serial"] = sn
                         if (locId != null && locId > 0) input["locations_id"] = locId.toString()
                         if (stateId != null && stateId > 0) input["states_id"] = stateId.toString()

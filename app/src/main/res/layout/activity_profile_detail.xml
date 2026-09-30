@@ -213,25 +213,7 @@
                                 android:textAllCaps="true"
                                 app:layout_constraintTop_toBottomOf="@id/label_dep"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/btn_troca_perfil" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_troca_perfil"
-                                android:layout_width="60dp"
-                                android:layout_height="34dp"
-                                android:layout_marginEnd="8dp"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:padding="0dp"
-                                app:backgroundTint="@color/azul_glpi"
-                                app:cornerRadius="17dp"
-                                app:icon="@drawable/ic_sync_white"
-                                app:iconGravity="textStart"
-                                app:iconPadding="0dp"
-                                app:iconSize="20dp"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_entidade_perfil_detail"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/tv_entidade_perfil_detail" />
+                                app:layout_constraintEnd_toEndOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout
@@ -347,6 +329,19 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_logout_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/bg_botao_vermelho"
+                            android:text="TERMINAR SESSÃO"
+                            android:fontFamily="@font/amiko_bold"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>

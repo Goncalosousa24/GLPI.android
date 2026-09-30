@@ -19,11 +19,13 @@ class GlpiFirebaseService : FirebaseMessagingService() {
         // 2. Extrair dados da mensagem (Data payload ou Notification payload)
         val title = remoteMessage.notification?.title ?: remoteMessage.data["title"] ?: "GLPI Mobile"
         val body = remoteMessage.notification?.body ?: remoteMessage.data["body"] ?: ""
-        val type = remoteMessage.data["ticket_type"] // "open" ou "closed"
+        val type = remoteMessage.data["ticket_type"] // "requerente", "observador", "atribuido" ou "finalizado"
 
         // 3. Filtrar pelas preferências do utilizador
-        if (type == "open" && !PreferenceManager.isNotifOpenEnabled(this)) return
-        if (type == "closed" && !PreferenceManager.isNotifClosedEnabled(this)) return
+        if (type == "requerente" && !PreferenceManager.isNotifRequerenteEnabled(this)) return
+        if (type == "observador" && !PreferenceManager.isNotifObservadorEnabled(this)) return
+        if (type == "atribuido" && !PreferenceManager.isNotifAtribuidoEnabled(this)) return
+        if (type == "finalizado" && !PreferenceManager.isNotifFinalizadoEnabled(this)) return
 
         // 4. Mostrar a notificação
         val intent = Intent(this, DashboardActivity::class.java).apply {

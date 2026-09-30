@@ -338,7 +338,7 @@ class DeleteTicketsActivity : AppCompatActivity() {
         
         dialogView.findViewById<View>(R.id.btn_cancelar_delete).setOnClickListener { dialog.dismiss() }
         val btnConfirmar = dialogView.findViewById<android.widget.Button>(R.id.btn_confirmar_delete)
-        btnConfirmar.text = "ELIMINAR PARA SEMPRE"
+        btnConfirmar.text = "CONFIRMAR"
         btnConfirmar.setBackgroundResource(R.drawable.bg_botao_vermelho)
         
         btnConfirmar.setOnClickListener {

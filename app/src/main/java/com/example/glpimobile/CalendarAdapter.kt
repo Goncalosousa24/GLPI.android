@@ -59,7 +59,7 @@ class CalendarAdapter(private val onDaySelected: (Date) -> Unit) :
         if (day.hasTickets) {
             val context = holder.itemView.context
             val dotColor = if (day.isExpiredTicket) {
-                ContextCompat.getColor(context, R.color.cor_urgente) // Vermelho
+                ContextCompat.getColor(context, R.color.vermelho_forte) // Vermelho Elétrico
             } else {
                 ContextCompat.getColor(context, R.color.azul_glpi) // Azul
             }

@@ -69,7 +69,9 @@ data class TicketInput(
     val urgency: Int = 3,
     val priority: Int = 3,
     val time_to_own: String? = null,
-    val time_to_resolve: String? = null
+    val time_to_resolve: String? = null,
+    val date: String? = null,
+    val date_mod: String? = null
 )
 
 data class DadosMensais(

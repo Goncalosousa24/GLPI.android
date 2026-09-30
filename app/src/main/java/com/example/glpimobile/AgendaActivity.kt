@@ -207,7 +207,6 @@ class AgendaActivity : AppCompatActivity() {
                 
                 if (isInactive) return@filter false
 
-                // Agora o ticket aparece em TODOS os dias relevantes (Criação, Prazo, TTR, TTO)
                 val dataLimite = ticket["18"]?.toString() ?: ""
                 val dataTTR = ticket["151"]?.toString() ?: ""
                 val dataTTO = ticket["158"]?.toString() ?: ""
@@ -219,7 +218,11 @@ class AgendaActivity : AppCompatActivity() {
 
                 fun matches(d: String) = d.contains(dateStr) || d.contains(dateStrInvertida) || d.contains(dateStrInvertidaTraco)
 
-                matches(dataLimite) || matches(dataTTR) || matches(dataTTO) || matches(dataCriacao)
+                if (isExpired(dataLimite, statusId)) {
+                    matches(dataLimite)
+                } else {
+                    matches(dataLimite) || matches(dataTTR) || matches(dataTTO) || matches(dataCriacao)
+                }
             }
 
             val hasTickets = ticketsDoDia.isNotEmpty()
@@ -437,7 +440,11 @@ class AgendaActivity : AppCompatActivity() {
 
             fun matches(d: String) = d.contains(dateStr) || d.contains(dateStrInvertida) || d.contains(dateStrInvertidaTraco)
 
-            matches(dataLimite) || matches(dataTTR) || matches(dataTTO) || matches(dataCriacao)
+            if (isExpired(dataLimite, statusId)) {
+                matches(dataLimite)
+            } else {
+                matches(dataLimite) || matches(dataTTR) || matches(dataTTO) || matches(dataCriacao)
+            }
         }
 
         if (ticketsDoDia.isEmpty()) {

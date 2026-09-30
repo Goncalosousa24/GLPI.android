@@ -30,7 +30,7 @@ class ProfileDetailActivity : AppCompatActivity() {
     companion object {
         private var hasInitialRefreshDoneGlobal = false
     }
-    private var realUserId: Int = 7
+    private var realUserId: Int = GlpiConfig.USER_ID.takeIf { it > 0 } ?: 0
     private var availableProfiles: List<Pair<Int, String>> = emptyList()
     private var activeProfileId: Int = 0
     private lateinit var loadingOverlay: View
@@ -89,13 +89,6 @@ class ProfileDetailActivity : AppCompatActivity() {
                     R.id.nav_my_tickets_history -> {
                         startActivity(Intent(this, MyTicketsHistoryActivity::class.java))
                     }
-                    R.id.nav_logout -> {
-                        PreferenceManager.setSessionToken(this, "")
-                        PreferenceManager.clearAllDataCache(this)
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                    }
                 }
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 true
@@ -118,6 +111,15 @@ class ProfileDetailActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.card_tickets_mes_profile)?.setOnClickListener {
                 val intent = Intent(this, MyTicketsHistoryActivity::class.java)
                 intent.putExtra("EXTRA_FILTER_MONTH", true)
+                startActivity(intent)
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            }
+
+            findViewById<View>(R.id.btn_logout_profile)?.setOnClickListener {
+                PreferenceManager.setSessionToken(this, "")
+                PreferenceManager.clearAllDataCache(this)
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             }
@@ -211,6 +213,7 @@ class ProfileDetailActivity : AppCompatActivity() {
     }
 
     private fun carregarDadosIniciais(forcedProfileName: String? = null) {
+        swipeRefresh?.post { swipeRefresh?.isRefreshing = true }
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 // 🔥 Otimização Supra-Soma: Disparar TUDO em paralelo desde o primeiro milisegundo
@@ -264,14 +267,11 @@ class ProfileDetailActivity : AppCompatActivity() {
                         PreferenceManager.setTicketsCount(this@ProfileDetailActivity, finalTickets)
                     }
                     
-                    
-                    swipeRefresh?.isRefreshing = false
                     carregarDadosPerfil(realUserId, sessionResponse, forcedProfileName)
                 }
             } catch (e: Exception) {
                 Log.e("PROFILE_FATAL", "Erro crítico ao carregar perfil: ${e.message}", e)
                 withContext(Dispatchers.Main) { 
-                    swipeRefresh?.isRefreshing = false
                     carregarDadosPerfil(realUserId, null) 
                 }
             } finally {
@@ -290,6 +290,7 @@ class ProfileDetailActivity : AppCompatActivity() {
                 userId1 = targetId,
                 userId2 = targetId,
                 userId3 = targetId,
+                userId4 = targetId,
                 cacheBuster = System.currentTimeMillis()
             )
             
@@ -311,16 +312,17 @@ class ProfileDetailActivity : AppCompatActivity() {
     private suspend fun buscarTotalEquipamentos(userId: Int): Int {
         return try {
             val tipos = listOf("Computer", "Monitor", "NetworkEquipment", "Printer")
-            // 🔥 Otimização: Disparar os 4 tipos de hardware em PARALELO
+            // 🔥 Pesquisa por utilizador (campo 70) OU técnico responsável (campo 24)
             val deferreds = tipos.map { tipo ->
                 CoroutineScope(Dispatchers.IO).async {
                     try {
-                        val response = GlpiRetrofit.api.searchByCriteria(
-                            itemtype = tipo, 
-                            sessionToken = TOKEN_SESSAO, 
-                            appToken = TOKEN_APP, 
-                            field = 70, 
-                            value = userId.toString()
+                        val response = GlpiRetrofit.api.searchByUserOrTech(
+                            itemtype = tipo,
+                            sessionToken = TOKEN_SESSAO,
+                            appToken = TOKEN_APP,
+                            value0 = userId.toString(),
+                            value1 = userId.toString(),
+                            range = "0-999"
                         )
                         if (response.isSuccessful) response.body()?.totalcount ?: 0 else 0
                     } catch (e: Exception) { 0 }
@@ -337,7 +339,6 @@ class ProfileDetailActivity : AppCompatActivity() {
         val tvNome = findViewById<TextView>(R.id.tv_nome_perfil_detail) ?: return
         val tvEmail = findViewById<TextView>(R.id.tv_email_perfil_detail) ?: return
         val tvPerfil = findViewById<TextView>(R.id.tv_entidade_perfil_detail) ?: return
-        val btnTroca = findViewById<View>(R.id.btn_troca_perfil)
         val tvSubTitulo = findViewById<TextView>(R.id.tv_tipo_perfil_detail) ?: return
 
         try {
@@ -380,12 +381,6 @@ class ProfileDetailActivity : AppCompatActivity() {
                 if (profileName.isNotEmpty()) {
                     tvPerfil.text = profileName
                 }
-                if (availableProfiles.size > 1) {
-                    btnTroca?.visibility = View.VISIBLE
-                    btnTroca?.let { configurarCliqueTrocaPerfil(it) }
-                } else {
-                    btnTroca?.visibility = View.GONE
-                }
             }
 
             val response = try {
@@ -413,7 +408,7 @@ class ProfileDetailActivity : AppCompatActivity() {
                 val rawProfile = userData["20"]?.toString() ?: profileName
                 val cleanProfile = formatarListaUnica(rawProfile)
                 
-                val rawEntity = userData["80"]?.toString() ?: "Município de Vila Verde"
+                val rawEntity = userData["80"]?.toString() ?: ""
                 val cleanEntity = formatarListaUnica(rawEntity)
 
                 withContext(Dispatchers.Main) {
@@ -427,16 +422,6 @@ class ProfileDetailActivity : AppCompatActivity() {
                     
                     tvSubTitulo.text = cleanEntity
 
-                    // Mostrar o botão de troca apenas se houver mais do que um perfil
-                    if (availableProfiles.size > 1) {
-                        btnTroca?.visibility = View.VISIBLE
-                        btnTroca?.let { configurarCliqueTrocaPerfil(it) }
-                    } else {
-                        btnTroca?.visibility = View.GONE
-                    }
-                    
-                    tvSubTitulo.text = cleanEntity
-
                     // 🔥 Guardar em cache para a próxima vez ser instantâneo
                     // Guardamos o perfil ATIVO (profileName) como prioritário na cache
                     val perfilParaCache = if (profileName.isNotEmpty()) profileName else cleanProfile
@@ -446,10 +431,20 @@ class ProfileDetailActivity : AppCompatActivity() {
                     PreferenceManager.setUserProfile(this@ProfileDetailActivity, perfilParaCache)
                     PreferenceManager.setUserEntity(this@ProfileDetailActivity, cleanEntity)
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    if (tvNome.text == "A carregar...") tvNome.text = "Não disponível"
+                    if (tvEmail.text == "A carregar...") tvEmail.text = "Não disponível"
+                    if (tvPerfil.text == "A carregar...") tvPerfil.text = "Não disponível"
+                    if (tvSubTitulo.text == "A carregar...") tvSubTitulo.text = "Não disponível"
+                }
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 tvPerfil.text = "Erro ao carregar"
+                if (tvNome.text == "A carregar...") tvNome.text = "Erro"
+                if (tvEmail.text == "A carregar...") tvEmail.text = "Erro"
+                if (tvSubTitulo.text == "A carregar...") tvSubTitulo.text = "Erro"
             }
         }
     }
@@ -459,7 +454,6 @@ class ProfileDetailActivity : AppCompatActivity() {
         val tvNome = findViewById<TextView>(R.id.tv_nome_perfil_detail)
         val tvEmail = findViewById<TextView>(R.id.tv_email_perfil_detail)
         val tvPerfil = findViewById<TextView>(R.id.tv_entidade_perfil_detail)
-        val btnTroca = findViewById<View>(R.id.btn_troca_perfil)
         val tvSubTitulo = findViewById<TextView>(R.id.tv_tipo_perfil_detail)
 
         val tvEquip = findViewById<TextView>(R.id.tv_count_equipamentos)
@@ -467,10 +461,40 @@ class ProfileDetailActivity : AppCompatActivity() {
         val lottieEquip = findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.lottie_loading_equipamentos)
         val lottieTickets = findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.lottie_loading_tickets_mes)
 
-        PreferenceManager.getUserName(this)?.let { tvNome?.text = it }
-        PreferenceManager.getUserEmail(this)?.let { tvEmail?.text = it }
-        PreferenceManager.getUserProfile(this)?.let { tvPerfil?.text = it }
-        PreferenceManager.getUserEntity(this)?.let { tvSubTitulo?.text = it }
+        val cachedName = PreferenceManager.getUserName(this)
+        val cachedEmail = PreferenceManager.getUserEmail(this)
+        val cachedProfile = PreferenceManager.getUserProfile(this)
+        val cachedEntity = PreferenceManager.getUserEntity(this)
+
+        if (!cachedName.isNullOrEmpty() && cachedName != "Utilizador") {
+            tvNome?.text = cachedName
+        } else {
+            tvNome?.text = "A carregar..."
+        }
+
+        if (!cachedEmail.isNullOrEmpty()) {
+            tvEmail?.text = cachedEmail
+        } else {
+            tvEmail?.text = "A carregar..."
+        }
+
+        if (!cachedProfile.isNullOrEmpty()) {
+            tvPerfil?.text = cachedProfile
+        } else {
+            tvPerfil?.text = "A carregar..."
+        }
+
+        if (!cachedEntity.isNullOrEmpty()) {
+            tvSubTitulo?.text = cachedEntity
+        } else {
+            tvSubTitulo?.text = "A carregar..."
+        }
+
+        // 🔥 Garantir que o realUserId é lido da cache imediatamente (antes da chamada de rede)
+        val cachedUserId = PreferenceManager.getUserId(this)
+        if (cachedUserId > 0) {
+            realUserId = cachedUserId
+        }
 
         // Carregar contagens do cache (-1 significa sem cache)
         val cAssets = PreferenceManager.getAssetsCount(this)
@@ -494,110 +518,6 @@ class ProfileDetailActivity : AppCompatActivity() {
         val drawer = drawerLayout
         if (drawer != null && drawer.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
             drawer.closeDrawer(androidx.core.view.GravityCompat.START)
-        }
-    }
-
-    private fun configurarCliqueTrocaPerfil(view: View) {
-        view.setOnClickListener {
-            if (availableProfiles.isEmpty()) return@setOnClickListener
-            showCustomProfileDialog()
-        }
-    }
-
-    private fun showCustomProfileDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_profile, null)
-        val dialog = AlertDialog.Builder(this, R.style.CustomDialogTheme)
-            .setView(dialogView)
-            .create()
-
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val container = dialogView.findViewById<LinearLayout>(R.id.ll_profiles_container)
-        val closeBtn = dialogView.findViewById<View>(R.id.iv_close_dialog)
-
-        closeBtn.setOnClickListener { dialog.dismiss() }
-
-        availableProfiles.forEach { (profileId, profileName) ->
-            val itemView = LayoutInflater.from(this).inflate(R.layout.item_dialog_profile, container, false)
-            val tvName = itemView.findViewById<TextView>(R.id.tv_item_profile_name)
-            val rb = itemView.findViewById<RadioButton>(R.id.rb_item_profile)
-
-            tvName.text = profileName
-            rb.isChecked = (profileId == activeProfileId)
-            rb.buttonTintList = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.azul_glpi)
-            )
-
-            itemView.setOnClickListener {
-                if (profileId != activeProfileId) {
-                    dialog.dismiss()
-                    executarTrocaPerfil(profileId, profileName)
-                }
-            }
-
-            container.addView(itemView)
-        }
-
-        dialog.show()
-        
-        // Ajustar largura para ser igual aos outros diálogos (ex: Filtros do Dashboard)
-        dialog.window?.let { window ->
-            val layoutParams = window.attributes
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            window.attributes = layoutParams
-        }
-    }
-
-    private fun executarTrocaPerfil(profileId: Int, selectedProfileName: String) {
-        loadingOverlay.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // --- ESTRATÉGIA DE TRIPLA TENTATIVA (FALLBACK) ---
-                
-                // 1. Tentar Formato Standard (Root JSON)
-                var response = GlpiRetrofit.api.changeActiveProfile(TOKEN_SESSAO, TOKEN_APP, mapOf("profiles_id" to profileId))
-                
-                // 2. Se falhar, tentar Formato Wrapped ("input": { ... })
-                if (!response.isSuccessful) {
-                    val payload = mapOf("input" to mapOf("profiles_id" to profileId))
-                    response = GlpiRetrofit.api.changeActiveProfileFull(TOKEN_SESSAO, TOKEN_APP, payload)
-                }
-                
-                // 3. Se falhar, tentar Formato Query String (?profiles_id=X)
-                if (!response.isSuccessful) {
-                    response = GlpiRetrofit.api.changeActiveProfileQuery(TOKEN_SESSAO, TOKEN_APP, profileId)
-                }
-
-                if (response.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-                        // O comando teve sucesso num dos formatos!
-                        PreferenceManager.setUserProfile(this@ProfileDetailActivity, selectedProfileName)
-                        PreferenceManager.clearAllDataCache(this@ProfileDetailActivity)
-                        DashboardActivity.resetRefreshFlag()
-                        hasInitialRefreshDoneGlobal = false
-                        
-                        delay(2000)
-                        carregarDadosIniciais(selectedProfileName)
-                        
-                        loadingOverlay.visibility = View.GONE
-                        AlertHelper.exibirAlertaPremium(this@ProfileDetailActivity, "Perfil alterado com sucesso!", isError = false)
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        loadingOverlay.visibility = View.GONE
-                        val code = response.code()
-                        AlertHelper.exibirAlertaPremium(this@ProfileDetailActivity, "Erro ao trocar perfil (Status: $code)", isError = true)
-                        Log.e("PROFILE_SWITCH", "Falha em todos os formatos de troca. Código final: $code")
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    loadingOverlay.visibility = View.GONE
-                    AlertHelper.exibirAlertaPremium(this@ProfileDetailActivity, "Erro técnico: ${e.message}", isError = true)
-                    Log.e("PROFILE_SWITCH", "Erro de rede/técnico na troca", e)
-                }
-            }
         }
     }
 

@@ -107,11 +107,30 @@
                         android:hint="Pesquisar nome ou S/N..."
                         android:textColorHint="@color/texto_dica"
                         android:paddingStart="52dp"
-                        android:paddingEnd="16dp"
+                        android:paddingEnd="48dp"
                         android:textColor="@color/texto_principal"
                         android:textSize="14sp"
                         android:imeOptions="actionSearch"
                         android:inputType="text" />
+
+                    <FrameLayout
+                        android:id="@+id/btn_scan_search"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                        <ImageView
+                            android:id="@+id/ic_scan_search"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_qr_code_scanner"
+                            app:tint="@color/azul_glpi" />
+                    </FrameLayout>
                 </FrameLayout>
 
                 <FrameLayout
@@ -261,6 +280,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/pagination_inventory"
+                    android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"

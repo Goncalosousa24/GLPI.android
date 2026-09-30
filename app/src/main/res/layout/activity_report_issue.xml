@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Digite ou selecione o SN" android:paddingStart="16dp"
                     android:textColor="@color/texto_principal" android:textSize="14sp"
-                    android:popupBackground="@android:color/white"
+                    android:popupBackground="@color/fundo_app"
                     android:dropDownHeight="250dp" />
             </com.google.android.material.textfield.TextInputLayout>
  
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:hint="Selecione o tipo de dispositivo" android:paddingStart="16dp"
                     android:textColor="@color/texto_principal" android:textSize="14sp"
-                    android:popupBackground="@android:color/white"
+                    android:popupBackground="@color/fundo_app"
                     android:dropDownHeight="250dp" />
             </com.google.android.material.textfield.TextInputLayout>
  
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:hint="Digite ou selecione a localização" android:paddingStart="16dp"
                     android:textColor="@color/texto_principal" android:textSize="14sp"
-                    android:popupBackground="@android:color/white"
+                    android:popupBackground="@color/fundo_app"
                     android:dropDownHeight="250dp" />
             </com.google.android.material.textfield.TextInputLayout>
  
@@ -153,7 +153,7 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:hint="O que aconteceu com o aparelho?" android:paddingStart="16dp"
                     android:textColor="@color/texto_principal" android:textSize="14sp"
-                    android:popupBackground="@android:color/white"
+                    android:popupBackground="@color/fundo_app"
                     android:dropDownHeight="250dp" />
             </com.google.android.material.textfield.TextInputLayout>
  

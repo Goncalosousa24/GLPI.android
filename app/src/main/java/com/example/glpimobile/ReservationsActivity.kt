@@ -314,10 +314,7 @@ class ReservationsActivity : AppCompatActivity() {
                 if (resListResponse.isSuccessful) {
                     val rawItems = resListResponse.body() ?: emptyList()
                     val totalItems = mutableListOf<GlpiResDevice>()
-                    
-                    // 🔥 CARREGAMENTO INCREMENTAL: Atualizar a UI em pequenos blocos de 10 🔥
                     val chunks = rawItems.chunked(10)
-                    var isFirstChunk = true
 
                     for (chunk in chunks) {
                         if (!isActive) break // Se o Job foi cancelado, parar imediatamente
@@ -359,7 +356,7 @@ class ReservationsActivity : AppCompatActivity() {
                                     val isDeleted = when (isDeletedVal) {
                                         is Boolean -> isDeletedVal
                                         is Number -> isDeletedVal.toInt() != 0
-                                        else -> isDeletedVal?.toString()?.toDoubleOrNull()?.toInt() != 0
+                                        else -> detailBody["is_deleted"]?.toString()?.toDoubleOrNull()?.toInt() != 0
                                     }
                                     if (isDeleted) {
                                         Log.d("GLPI_RES", "Ignorado: Equipamento está na lixeira (is_deleted = 1): name=${detailBody["name"]}")
@@ -380,9 +377,7 @@ class ReservationsActivity : AppCompatActivity() {
 
                                     if (reservasResponse.isSuccessful) {
                                         val rList = reservasResponse.body() ?: emptyList()
-                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).apply {
-                                            timeZone = java.util.TimeZone.getTimeZone("UTC")
-                                        }
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                                         val displayFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                                         val now = Date()
                                         val futuras = mutableListOf<Date>()
@@ -449,25 +444,16 @@ class ReservationsActivity : AppCompatActivity() {
                         
                         val results = chunkJobs.awaitAll().filterNotNull()
                         totalItems.addAll(results)
-                        
-                        // Atualizar a UI com o que já temos
-                        withContext(Dispatchers.Main) {
-                            todosOsItems = ArrayList(totalItems)
-                            aplicarFiltrosCombinados()
-
-                            // No primeiro bloco, escondemos o loading e fazemos a animação uma única vez
-                            if (isFirstChunk && todosOsItems.isNotEmpty()) {
-                                loadingView.visibility = View.GONE
-                                rvReservations.scheduleLayoutAnimation()
-                                nestedScroll.smoothScrollTo(0, 0)
-                                btnAnterior.visibility = if (paginaAtual > 0) View.VISIBLE else View.GONE
-                                isFirstChunk = false
-                            }
-                        }
                     }
                     
                     withContext(Dispatchers.Main) {
+                        todosOsItems = ArrayList(totalItems)
+                        aplicarFiltrosCombinados()
+                        
                         loadingView.visibility = View.GONE
+                        rvReservations.scheduleLayoutAnimation()
+                        nestedScroll.smoothScrollTo(0, 0)
+                        btnAnterior.visibility = if (paginaAtual > 0) View.VISIBLE else View.GONE
                     }
                 } else {
                     withContext(Dispatchers.Main) {
@@ -481,10 +467,10 @@ class ReservationsActivity : AppCompatActivity() {
                         AlertHelper.exibirAlertaPremium(this@ReservationsActivity, "Falha de rede: ${e.message}", true)
                     }
                     loadingView.visibility = View.GONE
+                }
             }
         }
     }
-}
 
     private fun efetuarReservaExplicita(item: GlpiResDevice) {
         val intent = Intent(this, AssetReservationActivity::class.java).apply {

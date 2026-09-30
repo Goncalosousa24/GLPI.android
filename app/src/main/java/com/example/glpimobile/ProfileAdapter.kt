@@ -33,10 +33,12 @@ class ProfileAdapter(
 
         // 2. Tratamento e Tradução do Perfil ou Mostrar Email
         if (showEmail) {
-            holder.tvPerfil.text = user["5"]?.toString() ?: ""
+            val email = user["5"]?.toString() ?: ""
+            holder.tvPerfil.text = email
+            holder.tvPerfil.visibility = if (email.isNotEmpty()) View.VISIBLE else View.GONE
         } else {
             val rawPerfil = user["20"]?.toString()
-            holder.tvPerfil.text = when {
+            val perfilText = when {
                 rawPerfil == null || rawPerfil == "null" || rawPerfil.isEmpty() -> "Sem Perfil"
                 rawPerfil.contains("Super-Admin", ignoreCase = true) -> "Super-Administrador"
                 rawPerfil.contains("Admin", ignoreCase = true) -> "Administrador"
@@ -47,6 +49,8 @@ class ProfileAdapter(
                 rawPerfil.contains("Read-Only", ignoreCase = true) -> "Apenas Leitura"
                 else -> rawPerfil
             }
+            holder.tvPerfil.text = perfilText
+            holder.tvPerfil.visibility = if (perfilText.isNotEmpty()) View.VISIBLE else View.GONE
         }
 
         // Esconder o campo extra
