@@ -1202,56 +1202,58 @@ object GlpiRetrofit {
                 
                 val mockResponse = when {
                     url.contains("initSession") -> "{\"session_token\":\"mock_token_offline\"}"
-                    url.contains("getFullSession") -> "{\"session\":{\"glpiID\":11,\"glpi_id\":11,\"glpiactiveprofile\":{\"name\":\"Admin (Offline)\"}}}"
+                    url.contains("getFullSession") -> "{\"session\":{\"glpiID\":11,\"glpi_id\":11,\"glpiactiveprofile\":{\"name\":\"Admin\"}}}"
                     url.contains("Location") -> "[{\"id\":1,\"name\":\"Edifício Principal\"},{\"id\":2,\"name\":\"Polo Tecnológico\"},{\"id\":3,\"name\":\"Sala de Reuniões\"}]"
                     url.contains("State") -> "[{\"id\":1,\"name\":\"Em uso\"},{\"id\":2,\"name\":\"Em stock\"},{\"id\":3,\"name\":\"Avariado\"}]"
                     url.contains("search/User") || url.contains("User") -> {
-                        val names = listOf("Gonçalo Sousa", "Maria Santos", "Rui Costa", "Ana Ferreira", "João Silva", "Tiago Oliveira", "Catarina Martins", "Pedro Ribeiro", "Sofia Almeida", "Miguel Pereira")
+                        val names = listOf("Gonçalo Sousa", "Maria Santos", "Rui Costa", "Ana Ferreira", "João Silva", "Tiago Oliveira", "Catarina Martins", "Pedro Ribeiro", "Sofia Almeida", "Miguel Pereira", "Gonçalo Sousa")
                         val start = request.url.queryParameter("range")?.split("-")?.getOrNull(0)?.toIntOrNull() ?: 0
                         val end = request.url.queryParameter("range")?.split("-")?.getOrNull(1)?.toIntOrNull() ?: 9
                         val mockList = mutableListOf<String>()
-                        for (i in 1..10) {
+                        for (i in 1..11) {
                             val parts = names[i-1].split(" ")
+                            val email = if (i == 11) "goncalosp2408@gmail.com" else "${parts[0].lowercase()}.${parts[1].lowercase()}@empresa.pt"
                             mockList.add("""
                                 {
-                                    "2": ${'$'}i,
-                                    "1": "${'$'}{parts[0].lowercase()}.${'$'}{parts[1].lowercase()}",
-                                    "9": "${'$'}{parts[1]}",
-                                    "34": "${'$'}{parts[0]}",
+                                    "2": $i,
+                                    "1": "${parts[0].lowercase()}.${parts[1].lowercase()}",
+                                    "9": "${parts[1]}",
+                                    "34": "${parts[0]}",
+                                    "5": "$email",
                                     "8": 1,
-                                    "user_id": ${'$'}i
+                                    "user_id": $i
                                 }
                             """.trimIndent())
                         }
                         val subList = if (start < mockList.size) mockList.subList(start, minOf(end + 1, mockList.size)) else emptyList()
-                        "{\"totalcount\": 10, \"count\": ${'$'}{subList.size}, \"data\": [${'$'}{subList.joinToString(",")}]}"
+                        "{\"totalcount\": 10, \"count\": ${subList.size}, \"data\": [${subList.joinToString(",")}]}"
                     }
                     url.contains("search/Ticket") || url.contains("search/?") && request.url.queryParameter("criteria[0][field]") == null -> {
-                        val titles = listOf("Rato não funciona", "PC não liga", "Acesso à rede bloqueado", "Impressora sem tinteiro", "Teclado com teclas soltas", "Atualização de software", "Erro no sistema de faturação", "Ecrã partido no portátil")
+                        val titles = listOf("Rato não funciona", "PC não liga", "Acesso à rede bloqueado", "Impressora sem tinteiro", "Teclado com teclas soltas")
                         val mockList = mutableListOf<String>()
-                        for (i in 1..8) {
+                        for (i in 1..5) {
                             val status = if (i % 3 == 0) 5 else if (i % 2 == 0) 2 else 1
                             val prioridade = if (i % 4 == 0) 5 else 3
-                            val date = "2024-05-${'$'}{10+i} 10:00:00"
+                            val date = "2024-05-${10+i} 10:00:00"
                             mockList.add("""
                                 {
-                                    "1": "${'$'}{titles[i-1]}",
-                                    "2": ${'$'}{1000 + i},
-                                    "3": "${'$'}prioridade",
+                                    "1": "${titles[i-1]}",
+                                    "2": ${1000 + i},
+                                    "3": "$prioridade",
                                     "4": 11,
-                                    "5": ${'$'}{(i%3)+1},
+                                    "5": ${(i%3)+1},
                                     "7": "Descrição do problema relatado pelo utilizador.",
-                                    "12": "${'$'}status",
-                                    "15": "${'$'}date",
-                                    "16": "${'$'}date",
-                                    "17": "${'$'}date",
-                                    "21": "${'$'}status",
-                                    "22": ${'$'}{(i%5)+1},
-                                    "id": ${'$'}{1000 + i}
+                                    "12": "$status",
+                                    "15": "$date",
+                                    "16": "$date",
+                                    "17": "$date",
+                                    "21": "$status",
+                                    "22": ${(i%5)+1},
+                                    "id": ${1000 + i}
                                 }
                             """.trimIndent())
                         }
-                        "{\"totalcount\": 8, \"count\": 8, \"data\": [${'$'}{mockList.joinToString(",")}]}"
+                        "{\"totalcount\": 5, \"count\": 5, \"data\": [${mockList.joinToString(",")}]}"
                     }
                     url.contains("search") -> {
                         val itemtype = when {
@@ -1262,28 +1264,29 @@ object GlpiRetrofit {
                             url.contains("Peripheral") -> "Peripheral"
                             else -> "Device"
                         }
-                        val models = when (itemtype) {
-                            "Computer" -> listOf("ThinkPad T14", "MacBook Pro M2", "Dell Latitude 5420")
-                            "Monitor" -> listOf("Dell UltraSharp 27", "LG 24MP60", "Samsung Odyssey")
-                            "Printer" -> listOf("HP LaserJet Pro", "Epson EcoTank", "Brother MFC")
-                            "NetworkEquipment" -> listOf("Cisco Catalyst 9300", "UniFi Switch 24", "MikroTik Router")
-                            else -> listOf("Rato Logitech Master", "Teclado Mecânico Keychron", "Webcam C920")
+                        // Gerar apenas 3 dispositivos para a secção 'Meus Dispositivos'
+                        val items = when (itemtype) {
+                            "Computer" -> listOf("MacBook Pro M2")
+                            "Monitor" -> listOf("Dell UltraSharp 27")
+                            "Peripheral" -> listOf("Rato Logitech Master")
+                            else -> emptyList()
                         }
+                        
                         val mockList = mutableListOf<String>()
-                        for (i in 1..10) {
-                            val model = models[(i-1) % models.size]
+                        for (i in 1..items.size) {
+                            val model = items[i-1]
                             mockList.add("""
                                 {
-                                    "1": "${'$'}model",
-                                    "2": ${'$'}{100 + i},
+                                    "1": "$model",
+                                    "2": ${100 + i},
                                     "3": {"name": "Edifício Principal"},
-                                    "5": "SN-${'$'}{model.replace(" ", "").uppercase()}-${'$'}i",
+                                    "5": "SN-${model.replace(" ", "").uppercase()}-$i",
                                     "70": "Gonçalo Sousa",
                                     "31": "Em uso"
                                 }
                             """.trimIndent())
                         }
-                        "{\"totalcount\": 10, \"count\": 10, \"data\": [${'$'}{mockList.joinToString(",")}]}"
+                        "{\"totalcount\": ${items.size}, \"count\": ${items.size}, \"data\": [${mockList.joinToString(",")}]}"
                     }
                     url.contains("Ticket_User") || url.contains("ITILFollowup") || url.contains("ITILSolution") || url.contains("Log") -> "[]"
                     url.contains("Ticket") -> "{\"totalcount\":0,\"data\":[],\"count\":0}"
