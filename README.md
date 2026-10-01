@@ -16,15 +16,9 @@ A fully native Android application designed to seamlessly integrate with the **G
 
 ## 📸 Screenshots
 
-*(Substitua os links abaixo pelas imagens reais da sua aplicação. Dica: ao editar este ficheiro no GitHub, pode arrastar as fotos do seu computador para o texto e o GitHub cria um link automaticamente)*
-
 | Página Principal | Inventário | Agenda | Perfil |
 |:---:|:---:|:---:|:---:|
-| <img width="330" height="692" alt="perfil" src="https://github.com/user-attachments/assets/36047b5f-80f1-4d36-b759-4af9d4a75852" />
-<img width="327" height="697" alt="agenda" src="https://github.com/user-attachments/assets/56bab24f-9e5f-4c3e-8d20-ac512c9cdfee" />
-<img width="329" height="691" alt="inventario" src="https://github.com/user-attachments/assets/bc6a9fd6-caaa-470f-a22f-0a1d5e0c1257" />
-<img width="328" height="693" alt="dashboard" src="https://github.com/user-attachments/assets/f6252ab5-347b-456a-b875-d0a1ec8108f4" />
-|
+| <img width="220" alt="dashboard" src="https://github.com/user-attachments/assets/f6252ab5-347b-456a-b875-d0a1ec8108f4" /> | <img width="220" alt="inventario" src="https://github.com/user-attachments/assets/bc6a9fd6-caaa-470f-a22f-0a1d5e0c1257" /> | <img width="220" alt="agenda" src="https://github.com/user-attachments/assets/56bab24f-9e5f-4c3e-8d20-ac512c9cdfee" /> | <img width="220" alt="perfil" src="https://github.com/user-attachments/assets/36047b5f-80f1-4d36-b759-4af9d4a75852" /> |
 
 ## 🛠️ Tech Stack & Architecture
 
