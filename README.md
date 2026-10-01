@@ -12,9 +12,10 @@ The application is divided into several powerful modules, offering a comprehensi
 
 * 🏠 **Interactive Dashboard:** Get an instant overview of your IT landscape with real-time statistics. Track tickets by status (New, In Progress, Resolved, Priority) and monitor the latest system activities at a glance.
 * 🎫 **Full Ticket Lifecycle:** Complete ITIL workflow support. Create, view, update, resolve, assign, and delete support tickets on the go. View detailed conversation histories and follow-ups.
-* 📦 **Smart Inventory & Assets:** Browse and manage assigned IT equipment (computers, monitors, network gear). Features a built-in **QR Code & Barcode Scanner** leveraging the device camera to instantly identify and audit hardware.
+* 📦 **Smart Inventory & Reservations:** Browse and manage assigned IT equipment (computers, monitors, network gear). Features a built-in **QR Code & Barcode Scanner** leveraging the device camera to instantly identify, audit, and securely **reserve devices** for future use.
 * 📅 **Agenda & Task Management:** Keep track of your workload with an interactive calendar. Easily view priority deadlines, scheduled interventions, and open tasks for any specific day.
 * 👤 **Profile & Security:** Personal overview displaying your assigned devices, monthly ticket statistics, and account details. Enforces **Biometric Security** (Fingerprint/FaceID) for secure, password-less logins.
+* 🔌 **GLPI REST API Integration:** Communicates entirely via the official GLPI REST API, ensuring secure, fast, and reliable data synchronization with your existing IT infrastructure without requiring middleware.
 * 🔔 **Background Sync & Notifications:** Built on Android `WorkManager` and Firebase Cloud Messaging (FCM) to keep data synchronized and alert users of critical updates in real-time.
 
 ## 📸 Screenshots
