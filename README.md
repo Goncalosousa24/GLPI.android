@@ -6,13 +6,16 @@
 
 A fully native Android application designed to seamlessly integrate with the **GLPI (IT Service Management)** backend. This app empowers IT professionals and regular users to manage support tickets, track hardware inventory, and organize tasks directly from their smartphones.
 
-## ✨ Key Features
+## ✨ Key Features & Modules
 
-* 🎫 **Full Ticket Lifecycle:** Create, view, update, resolve, and delete support tickets on the go.
-* 🔒 **Biometric Security:** Secure and fast login using device native Fingerprint/FaceID authentication.
-* 📷 **Smart Inventory (QR Scanner):** Built-in barcode and QR code scanner leveraging device camera to instantly identify and manage IT assets.
-* 🔔 **Background Sync & Notifications:** Uses Android WorkManager and Firebase Cloud Messaging (FCM) to alert users of new tickets and updates in real-time.
-* 📅 **Task Management:** Integrated interactive calendar and agenda views to track assigned tasks and priority deadlines.
+The application is divided into several powerful modules, offering a comprehensive mobile experience for GLPI:
+
+* 🏠 **Interactive Dashboard:** Get an instant overview of your IT landscape with real-time statistics. Track tickets by status (New, In Progress, Resolved, Priority) and monitor the latest system activities at a glance.
+* 🎫 **Full Ticket Lifecycle:** Complete ITIL workflow support. Create, view, update, resolve, assign, and delete support tickets on the go. View detailed conversation histories and follow-ups.
+* 📦 **Smart Inventory & Assets:** Browse and manage assigned IT equipment (computers, monitors, network gear). Features a built-in **QR Code & Barcode Scanner** leveraging the device camera to instantly identify and audit hardware.
+* 📅 **Agenda & Task Management:** Keep track of your workload with an interactive calendar. Easily view priority deadlines, scheduled interventions, and open tasks for any specific day.
+* 👤 **Profile & Security:** Personal overview displaying your assigned devices, monthly ticket statistics, and account details. Enforces **Biometric Security** (Fingerprint/FaceID) for secure, password-less logins.
+* 🔔 **Background Sync & Notifications:** Built on Android `WorkManager` and Firebase Cloud Messaging (FCM) to keep data synchronized and alert users of critical updates in real-time.
 
 ## 📸 Screenshots
 
