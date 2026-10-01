@@ -1229,31 +1229,48 @@ object GlpiRetrofit {
                         "{\"totalcount\": 10, \"count\": ${subList.size}, \"data\": [${subList.joinToString(",")}]}"
                     }
                     url.contains("search/Ticket") || url.contains("search/?") && request.url.queryParameter("criteria[0][field]") == null -> {
-                        val titles = listOf("Rato não funciona", "PC não liga", "Acesso à rede bloqueado", "Impressora sem tinteiro", "Teclado com teclas soltas")
-                        val mockList = mutableListOf<String>()
-                        for (i in 1..5) {
-                            val status = if (i % 3 == 0) 5 else if (i % 2 == 0) 2 else 1
-                            val prioridade = if (i % 4 == 0) 5 else 3
-                            val date = "2024-05-${10+i} 10:00:00"
-                            mockList.add("""
-                                {
-                                    "1": "${titles[i-1]}",
-                                    "2": ${1000 + i},
-                                    "3": "$prioridade",
-                                    "4": 11,
-                                    "5": ${(i%3)+1},
-                                    "7": "Descrição do problema relatado pelo utilizador.",
-                                    "12": "$status",
-                                    "15": "$date",
-                                    "16": "$date",
-                                    "17": "$date",
-                                    "21": "$status",
-                                    "22": ${(i%5)+1},
-                                    "id": ${1000 + i}
-                                }
-                            """.trimIndent())
+                        val rangeStr = request.url.queryParameter("range") ?: ""
+                        if (rangeStr == "0-1") {
+                            // É um pedido de contagem para o Dashboard
+                            val count = when {
+                                url.contains("field]=3") -> 2
+                                url.contains("value]=5") -> 48
+                                url.contains("value]=2") -> 14
+                                url.contains("value]=1") -> 7
+                                else -> 5
+                            }
+                            "{\"totalcount\": $count, \"count\": $count, \"data\": []}"
+                        } else {
+                            val titles = listOf("Rato não funciona", "PC não liga", "Acesso à rede bloqueado", "Impressora sem tinteiro", "Teclado com teclas soltas")
+                            val authors = listOf("Ana Ferreira", "João Silva", "Tiago Oliveira", "Gonçalo Sousa", "Catarina Martins")
+                            val techs = listOf("Maria Santos", "Rui Costa", "Miguel Pereira")
+                            val mockList = mutableListOf<String>()
+                            for (i in 1..5) {
+                                val status = if (i % 3 == 0) 5 else if (i % 2 == 0) 2 else 1
+                                val prioridade = if (i % 4 == 0) 5 else 3
+                                val date = "2024-05-${10+i} 10:00:00"
+                                val author = authors[(i-1)%5]
+                                val tech = techs[(i-1)%3]
+                                mockList.add("""
+                                    {
+                                        "1": "${titles[i-1]}",
+                                        "2": ${1000 + i},
+                                        "3": "$prioridade",
+                                        "4": "Gonçalo Sousa",
+                                        "5": "$tech",
+                                        "7": "Descrição do problema relatado pelo utilizador.",
+                                        "12": "$status",
+                                        "15": "$date",
+                                        "16": "$date",
+                                        "17": "$date",
+                                        "21": "$status",
+                                        "22": "$author",
+                                        "id": ${1000 + i}
+                                    }
+                                """.trimIndent())
+                            }
+                            "{\"totalcount\": 5, \"count\": 5, \"data\": [${mockList.joinToString(",")}]}"
                         }
-                        "{\"totalcount\": 5, \"count\": 5, \"data\": [${mockList.joinToString(",")}]}"
                     }
                     url.contains("search") -> {
                         val itemtype = when {
