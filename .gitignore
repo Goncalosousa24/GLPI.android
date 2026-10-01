@@ -15,3 +15,4 @@
 local.properties
 /ios/
 app/google-services.json
+.vscode/
