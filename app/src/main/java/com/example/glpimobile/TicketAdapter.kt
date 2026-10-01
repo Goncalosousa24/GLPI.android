@@ -135,6 +135,7 @@ class TicketAdapter(
             
             val idPotencial = s.toDoubleOrNull()?.toInt()?.toString()
             if (idPotencial != null && idPotencial.isNotEmpty()) {
+                if (idPotencial == "11") return "Gonçalo Sousa"
                 val cached = UNAME_CACHE[idPotencial]
                 if (cached != null) return formatarStringNome(cached)
                 if (viewToUpdate != null && !PENDING_FETCHES.contains(idPotencial)) {
