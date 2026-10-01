@@ -20,7 +20,11 @@ A fully native Android application designed to seamlessly integrate with the **G
 
 | Página Principal | Inventário | Agenda | Perfil |
 |:---:|:---:|:---:|:---:|
-| <img src="URL_DA_IMAGEM_1" width="200"/> | <img src="URL_DA_IMAGEM_2" width="200"/> | <img src="URL_DA_IMAGEM_3" width="200"/> | <img src="URL_DA_IMAGEM_4" width="200"/> |
+| <img width="330" height="692" alt="perfil" src="https://github.com/user-attachments/assets/36047b5f-80f1-4d36-b759-4af9d4a75852" />
+<img width="327" height="697" alt="agenda" src="https://github.com/user-attachments/assets/56bab24f-9e5f-4c3e-8d20-ac512c9cdfee" />
+<img width="329" height="691" alt="inventario" src="https://github.com/user-attachments/assets/bc6a9fd6-caaa-470f-a22f-0a1d5e0c1257" />
+<img width="328" height="693" alt="dashboard" src="https://github.com/user-attachments/assets/f6252ab5-347b-456a-b875-d0a1ec8108f4" />
+|
 
 ## 🛠️ Tech Stack & Architecture
 
