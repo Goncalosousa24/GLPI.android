@@ -16,3 +16,7 @@ local.properties
 /ios/
 app/google-services.json
 .vscode/
+
+# IntelliJ and Android Studio
+.idea/
+.kotlin/
