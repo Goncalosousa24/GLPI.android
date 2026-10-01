@@ -18,7 +18,7 @@ A fully native Android application designed to seamlessly integrate with the **G
 
 *(Substitua os links abaixo pelas imagens reais da sua aplicação. Dica: ao editar este ficheiro no GitHub, pode arrastar as fotos do seu computador para o texto e o GitHub cria um link automaticamente)*
 
-| Dashboard | Detalhes do Ticket | Leitor QR | Perfil |
+| Página Principal | Inventário | Agenda | Perfil |
 |:---:|:---:|:---:|:---:|
 | <img src="URL_DA_IMAGEM_1" width="200"/> | <img src="URL_DA_IMAGEM_2" width="200"/> | <img src="URL_DA_IMAGEM_3" width="200"/> | <img src="URL_DA_IMAGEM_4" width="200"/> |
 
