@@ -386,11 +386,7 @@ class DashboardActivity : AppCompatActivity() {
              it.setStroke(strokeWidth, currentStrokeColor)
         }
 
-        // 🔥 SE MODO OFFLINE ATIVO, SALTAMOS A ATUALIZAÇÃO 🔥
-        if (GlpiConfig.OFFLINE_MODE) {
-            swipeRefresh.isRefreshing = false
-            return
-        }
+        // Deixar o Dashboard atualizar mesmo em modo offline para aproveitar o interceptor de mock
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
