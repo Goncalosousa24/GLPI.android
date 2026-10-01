@@ -1248,7 +1248,9 @@ object GlpiRetrofit {
                             for (i in 1..5) {
                                 val status = if (i % 3 == 0) 5 else if (i % 2 == 0) 2 else 1
                                 val prioridade = if (i % 4 == 0) 5 else 3
-                                val date = "2024-05-${10+i} 10:00:00"
+                                                                val calendar = java.util.Calendar.getInstance()
+                                calendar.add(java.util.Calendar.DAY_OF_YEAR, i - 2) // Tickets from yesterday to 3 days from now
+                                val date = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(calendar.time)
                                 val author = authors[(i-1)%5]
                                 val tech = techs[(i-1)%3]
                                 mockList.add("""
